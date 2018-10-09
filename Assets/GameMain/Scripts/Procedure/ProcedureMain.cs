@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GameFramework.Event;
+using System.Collections.Generic;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -12,6 +13,7 @@ namespace GamePlay
         private GameBase m_CurrentGame = null;
         private bool m_GotoMenu = false;
         private float m_GotoMenuDelaySeconds = 0f;
+        private MainForm m_MainForm = null;
 
         public override bool UseNativeDialog
         {
@@ -30,7 +32,10 @@ namespace GamePlay
         {
             base.OnInit(procedureOwner);
 
-            m_Games.Add(GameMode.Survival, new SurvivalGame());
+            //初始化游戏模式
+            m_Games.Add(GameMode.Majiang, new MajiangGame());
+            m_Games.Add(GameMode.Chudadi, new ChudadiGame());
+            m_Games.Add(GameMode.Sangong, new SangongGame());
         }
 
         protected override void OnDestroy(ProcedureOwner procedureOwner)
@@ -45,9 +50,11 @@ namespace GamePlay
             base.OnEnter(procedureOwner);
 
             m_GotoMenu = false;
-            GameMode gameMode = (GameMode)procedureOwner.GetData<VarInt>(Constant.ProcedureData.GameMode).Value;
-            m_CurrentGame = m_Games[gameMode];
-            m_CurrentGame.Initialize();
+
+            //  m_CurrentGame = m_Games[gameMode];
+            // m_CurrentGame.Initialize();
+            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            GameEntry.UI.OpenUIForm(UIFormId.MainForm, this);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
@@ -83,6 +90,16 @@ namespace GamePlay
                 procedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, GameEntry.Config.GetInt("Scene.Login"));
                 ChangeState<ProcedureChangeScene>(procedureOwner);
             }
+        }
+        private void OnOpenUIFormSuccess(object sender, GameEventArgs e)
+        {
+            OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
+            if (ne.UserData != this)
+            {
+                return;
+            }
+
+            m_MainForm = (MainForm)ne.UIForm.Logic;
         }
     }
 }

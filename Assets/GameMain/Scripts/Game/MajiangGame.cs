@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GamePlay
 {
-    public class SurvivalGame : GameBase
+    public class MajiangGame : GameBase
     {
         private float m_ElapseSeconds = 0f;
 
@@ -12,7 +12,7 @@ namespace GamePlay
         {
             get
             {
-                return GameMode.Survival;
+                return GameMode.Majiang;
             }
         }
 

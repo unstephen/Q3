@@ -26,5 +26,9 @@
         /// 关于。
         /// </summary>
         AboutForm = 102,
+        /// <summary>
+        /// 主界面
+        /// </summary>
+        MainForm = 103,
     }
 }

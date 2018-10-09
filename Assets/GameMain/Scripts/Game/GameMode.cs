@@ -6,8 +6,16 @@
     public enum GameMode
     {
         /// <summary>
-        /// 生存模式。
+        /// 麻将模式。
         /// </summary>
-        Survival,
+        Majiang,
+        /// <summary>
+        /// 锄大地。
+        /// </summary>
+        Chudadi,
+        /// <summary>
+        /// 三公大吃小。
+        /// </summary>
+        Sangong
     }
 }

@@ -30,5 +30,17 @@
         /// 主界面
         /// </summary>
         MainForm = 103,
+        /// <summary>
+        /// 创建房间
+        /// </summary>
+        CreateRoomForm = 104,
+        /// <summary>
+        /// 游戏桌
+        /// </summary>
+        TableForm = 105,
+        /// <summary>
+        /// 游戏桌
+        /// </summary>
+        TopBarForm = 106,
     }
 }

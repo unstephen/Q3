@@ -114,6 +114,7 @@ namespace GamePlay
             uiComponent.CloseUIForm(uiForm.UIForm);
         }
 
+
         public static int? OpenUIForm(this UIComponent uiComponent, UIFormId uiFormId, object userData = null)
         {
             return uiComponent.OpenUIForm((int)uiFormId, userData);

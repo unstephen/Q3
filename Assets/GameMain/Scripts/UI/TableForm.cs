@@ -4,20 +4,21 @@ using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
-    public class MainForm : UGuiForm
+    public class TableForm : UGuiForm
     {
-
+        ProcedureMain main;
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
+            main = userData as ProcedureMain;
             GUILink link = GetComponent<GUILink>();
-            link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
+            link.SetEvent("Quit", UIEventType.Click, OnClickExit);
         }
 
-        public void OnStartSangong(params object[] args)
+        public void OnClickExit(params object[] args)
         {
-            var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
-            main.ChangeGame(GameMode.Sangong);
+            Close();
+            main.ChangeGame(GameMode.Lobby);
         }
 
 

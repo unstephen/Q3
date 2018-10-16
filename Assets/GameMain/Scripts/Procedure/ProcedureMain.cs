@@ -13,7 +13,7 @@ namespace GamePlay
         private GameBase m_CurrentGame = null;
         private bool m_GotoMenu = false;
         private float m_GotoMenuDelaySeconds = 0f;
-        private MainForm m_MainForm = null;
+        private CreateRoomForm m_CreateRoomForm = null;
 
         public override bool UseNativeDialog
         {
@@ -28,14 +28,35 @@ namespace GamePlay
             m_GotoMenu = true;
         }
 
+        public GameMode CurGameMode()
+        {
+            return m_CurrentGame.GameMode;
+        }
+
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
             base.OnInit(procedureOwner);
 
             //初始化游戏模式
+            m_Games.Add(GameMode.Lobby, new Lobby());
             m_Games.Add(GameMode.Majiang, new MajiangGame());
             m_Games.Add(GameMode.Chudadi, new ChudadiGame());
             m_Games.Add(GameMode.Sangong, new SangongGame());
+        }
+
+        public void ChangeGame(GameMode mode)
+        {
+            if (m_CurrentGame != null)
+            {
+                m_CurrentGame.Shutdown();
+                m_CurrentGame = null;
+            }
+            m_CurrentGame = m_Games[mode];
+            m_CurrentGame.Initialize();
+            if(mode>GameMode.Lobby)
+            {
+                GameEntry.UI.OpenUIForm(UIFormId.CreateRoomForm, this);
+            }
         }
 
         protected override void OnDestroy(ProcedureOwner procedureOwner)
@@ -51,10 +72,9 @@ namespace GamePlay
 
             m_GotoMenu = false;
 
-            //  m_CurrentGame = m_Games[gameMode];
-            // m_CurrentGame.Initialize();
-            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
-            GameEntry.UI.OpenUIForm(UIFormId.MainForm, this);
+            m_CurrentGame = m_Games[GameMode.Lobby];
+            m_CurrentGame.Initialize();
+         
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
@@ -64,7 +84,7 @@ namespace GamePlay
                 m_CurrentGame.Shutdown();
                 m_CurrentGame = null;
             }
-
+      
             base.OnLeave(procedureOwner, isShutdown);
         }
 
@@ -99,7 +119,8 @@ namespace GamePlay
                 return;
             }
 
-            m_MainForm = (MainForm)ne.UIForm.Logic;
+            m_CreateRoomForm = (CreateRoomForm)ne.UIForm.Logic;
         }
+
     }
 }

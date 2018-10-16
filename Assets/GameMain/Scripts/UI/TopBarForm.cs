@@ -4,21 +4,21 @@ using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
-    public class MainForm : UGuiForm
+    public class TopBarForm : UGuiForm
     {
 
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
             GUILink link = GetComponent<GUILink>();
-            link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
+            //link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
         }
 
-        public void OnStartSangong(params object[] args)
-        {
-            var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
-            main.ChangeGame(GameMode.Sangong);
-        }
+//         public void OnStartSangong(params object[] args)
+//         {
+//             var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
+//             main.ChangeGame(GameMode.Sangong);
+//         }
 
 
 

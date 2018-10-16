@@ -1,12 +1,10 @@
-﻿using GameFramework;
-using GameFramework.DataTable;
+﻿using UnityGameFramework.Runtime;
 using GameFramework.Event;
 using UnityEngine;
-using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
-    public class SangongGame : GameBase
+    public class Lobby : GameBase
     {
         private float m_ElapseSeconds = 0f;
 
@@ -14,15 +12,28 @@ namespace GamePlay
         {
             get
             {
-                return GameMode.Sangong;
+                return GameMode.Lobby;
             }
         }
 
         public override void Initialize()
         {
             base.Initialize();
-
+            GameEntry.UI.OpenUIForm(UIFormId.MainForm, this);
+            GameEntry.UI.OpenUIForm(UIFormId.TopBarForm, this);
+            if (GameEntry.UI.HasUIForm(UIFormId.CreateRoomForm))
+            {
+                GameEntry.UI.GetUIForm(UIFormId.CreateRoomForm).Close(true);
+            }
         }
+
+        public override void Shutdown()
+        {
+            base.Shutdown();
+            GameEntry.UI.GetUIForm(UIFormId.MainForm).Close();
+            GameEntry.UI.GetUIForm(UIFormId.TopBarForm).Close();
+        }
+
         public override void Update(float elapseSeconds, float realElapseSeconds)
         {
             base.Update(elapseSeconds, realElapseSeconds);
@@ -40,5 +51,6 @@ namespace GamePlay
                 });
             }*/
         }
+
     }
 }

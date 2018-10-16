@@ -6,6 +6,10 @@
     public enum GameMode
     {
         /// <summary>
+        /// 大厅
+        /// </summary>
+        Lobby,
+        /// <summary>
         /// 麻将模式。
         /// </summary>
         Majiang,

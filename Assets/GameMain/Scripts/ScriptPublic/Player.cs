@@ -1,4 +1,4 @@
-using system;
+using System;
 
 /*
 记录牌局内的玩家数据
@@ -9,7 +9,6 @@ public class Player
 	public string name;	
 	private uint _money;
 	
-	public bool 
 	
 	public void InitData(int playerId, string playerName, uint money)
 	{

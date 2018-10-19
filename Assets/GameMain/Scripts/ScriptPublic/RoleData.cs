@@ -1,8 +1,9 @@
-using system;
+using System;
+using System.Collections.Generic;
 
 public struct GameRecord
 {
-	public string gameName
+    public string gameName;
 	public int score;
 }
 /*

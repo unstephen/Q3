@@ -1,17 +1,16 @@
-using system;
+using System;
+using UnityEngine;
 
 /*
 牌局逻辑处理类
 */
-public class RoomManager : MonoBehaver
+public class RoomManager : MonoBehaviour
 {
 	RoomData rData;
 	
-	public Init(int id, string name, int clubId)
+	public void Init(int id, string name, int clubId)
 	{
-		rData = new RoomData
-		rData.Init(id, name, clubId);
+        rData = new RoomData();
+		rData.InitData(id, name, clubId);
 	}
-	
-	public 
 }

@@ -1,4 +1,6 @@
-using system;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 /*
 记录牌局房间数据
@@ -23,7 +25,7 @@ public class RoomData
 
 	public void AddPlayer(Player player)
 	{
-		if (CheckJoinRoom())
+		if (CheckJoinRoom(player.id))
 		{
 			roomPlayers.Add(player);
 		}
@@ -44,5 +46,6 @@ public class RoomData
 				Debug.Log("The game only allows club members to join!");
 			}
 		}
+        return false;
 	}
 }

@@ -14,6 +14,7 @@ namespace GamePlay
         private bool m_GotoMenu = false;
         private float m_GotoMenuDelaySeconds = 0f;
         private CreateRoomForm m_CreateRoomForm = null;
+        public GameBase CurrentGame { get { return m_CurrentGame; } }
 
         public override bool UseNativeDialog
         {

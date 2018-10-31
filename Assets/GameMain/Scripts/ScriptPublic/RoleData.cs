@@ -42,7 +42,7 @@ public class RoleData
 	
 	public void CheckAddRecord()
 	{
-		if (recordList.count >= 50)
+		if (recordList.Count >= 50)
 		{
 			recordList.RemoveAt(0);
 		}
@@ -50,6 +50,6 @@ public class RoleData
 	
 	public GameRecord GetRecordByIndex(int index)
 	{
-		return GameRecord[index];
+		return recordList[index];
 	}
 }

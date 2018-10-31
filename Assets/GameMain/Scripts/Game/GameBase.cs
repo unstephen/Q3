@@ -1,4 +1,6 @@
-﻿using GameFramework;
+﻿using System;
+using System.Collections.Generic;
+using GameFramework;
 using GameFramework.Event;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -19,16 +21,18 @@ namespace GamePlay
             protected set;
         }
 
-
+        private Actor m_myPlayer = null;
+        private Dictionary<Type, string> abilityNameDic = new Dictionary<Type, string>();
 
         public virtual void Initialize()
         {
+            RegAbilityName();
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Subscribe(ShowEntityFailureEventArgs.EventId, OnShowEntityFailure);
 
 
             GameOver = false;
- 
+            m_myPlayer = null;
         }
 
         public virtual void Shutdown()
@@ -59,6 +63,20 @@ namespace GamePlay
         {
             ShowEntityFailureEventArgs ne = (ShowEntityFailureEventArgs)e;
             Log.Warning("Show entity failure with error message '{0}'.", ne.ErrorMessage);
+        }
+        public string GetAbilityName(Type type)
+        {
+            string ret ="";
+            if(abilityNameDic.TryGetValue(type, out ret))
+            {
+                return ret;
+            }
+            return ret;
+        }
+        private void RegAbilityName()
+        {
+            abilityNameDic.Clear();
+            abilityNameDic.Add(typeof(BuffControll), "BuffControll");
         }
     }
 }

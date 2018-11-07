@@ -21,7 +21,6 @@ namespace GamePlay
             protected set;
         }
 
-        private Actor m_myPlayer = null;
         private Dictionary<Type, string> abilityNameDic = new Dictionary<Type, string>();
 
         public virtual void Initialize()
@@ -32,7 +31,7 @@ namespace GamePlay
 
 
             GameOver = false;
-            m_myPlayer = null;
+
         }
 
         public virtual void Shutdown()

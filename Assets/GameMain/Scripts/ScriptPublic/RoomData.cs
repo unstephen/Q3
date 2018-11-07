@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 /*
@@ -7,25 +8,36 @@ using UnityEngine;
 */
 public class RoomData
 {
-	public int id;
-	public string name;
-	
-	List<Player> roomPlayers;
+	public ReactiveProperty<int> id;
+	public ReactiveProperty<string> name;	
+	ReactiveCollection<Player> roomPlayers;
 	
 	int _clubId;
 	
 	public void InitData(int roomId, string roomName, int clubId = 0)
 	{
-		id = roomId;
-		name = roomName;
+		id = new ReactiveProperty<int>(roomId);
+		name = new ReactiveProperty<string>(roomName);
 		_clubId = clubId;
 		
-		roomPlayers = new List<Player>();
+		roomPlayers = new ReactiveCollection<Player>();
+		//test数据
+		var player1 = new Player();
+		player1.InitData(1001,"刘亦菲",1000);
+		AddPlayer(player1);
+		
+		var player2 = new Player();
+		player2.InitData(1002,"奶茶妹妹",1000);
+		AddPlayer(player2);
+		
+		var player3 = new Player();
+		player3.InitData(1003,"东哥",1000);
+		AddPlayer(player3);
 	}
 
 	public void AddPlayer(Player player)
 	{
-		if (CheckJoinRoom(player.id))
+		if (CheckJoinRoom(player.clubId.Value))
 		{
 			roomPlayers.Add(player);
 		}

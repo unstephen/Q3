@@ -36,7 +36,7 @@ namespace GamePlay
                     GameEntry.UI.OpenUIForm(UIFormId.TableForm, main);
                     break;
             }
-            main.ChangeGame(mode);
+         //   main.ChangeGame(mode);
         }
 
 #if UNITY_2017_3_OR_NEWER

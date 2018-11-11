@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public struct PokerData
 {
-    public int num; //1-k 1-13
-    public int realNum; //1-10 J、Q、K 0点
-    public int color; // 3 黑桃; 2 红桃; 1 梅花; 0 方块
+    public ReactiveProperty<int> num; //1-k 1-13
+    public ReactiveProperty<int> realNum; //1-10 J、Q、K 0点
+    public ReactiveProperty<int> color; // 3 黑桃; 2 红桃; 1 梅花; 0 方块
 
     public PokerData(int _num, int _color)
     {
-        num = _num;
-        color = _color;
-        realNum = num > 10 ? 0 : num;
+        num = new ReactiveProperty<int>(_num);
+        realNum = new ReactiveProperty<int>(_num > 10 ? 0 : _num);
+        color =  new ReactiveProperty<int>(_color);
     }
-}
+}    
 
 public class PlayerPokerGroup
 {

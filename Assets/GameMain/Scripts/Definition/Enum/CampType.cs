@@ -37,4 +37,28 @@
         /// </summary>
         Neutral2,
     }
+    public enum CardTypes
+    {
+        //方片
+        Diamonds = 0,
+        //梅花
+        Clubs,
+        //红桃
+        Hearts,
+        //黑桃
+        Spades
+    }
+    public enum CardManagerStates
+    {
+        //准备
+        Ready,
+        //洗牌
+        ShuffleCards,
+        //发牌
+        DealCards,
+        //叫牌
+        Bid,
+        //出牌
+        Playing
+    }
 }

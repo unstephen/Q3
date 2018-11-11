@@ -13,6 +13,7 @@ namespace GamePlay
             main = userData as ProcedureMain;
             GUILink link = GetComponent<GUILink>();
             link.SetEvent("Quit", UIEventType.Click, OnClickExit);
+            link.SetEvent("Quit", UIEventType.Click, OnClickExit);
         }
 
         public void OnClickExit(params object[] args)

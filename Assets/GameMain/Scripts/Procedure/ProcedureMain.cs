@@ -54,9 +54,17 @@ namespace GamePlay
             }
             m_CurrentGame = m_Games[mode];
             m_CurrentGame.Initialize();
+            //初始化房间
+            RoomManager.Instance.Init(10000,"testRoom",0);
+            
             if(mode>GameMode.Lobby)
             {
+                GameEntry.Sound.PlayMusic(3);
                 GameEntry.UI.OpenUIForm(UIFormId.CreateRoomForm, this);
+            }
+            else
+            {
+                GameEntry.Sound.PlayMusic(2);
             }
         }
 

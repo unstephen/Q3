@@ -1,33 +1,40 @@
 using System;
 using System.Collections.Generic;
+using UniRx;
 
 public struct GameRecord
 {
-    public string gameName;
-	public int score;
+    public ReactiveProperty<string> gameName;
+	public ReactiveProperty<int> score;
+
+	public GameRecord(string Name,int Score)
+	{
+		gameName = new ReactiveProperty<string>(Name);
+		score = new ReactiveProperty<int>(Score);
+	}
 }
 /*
 记录登录的角色数据	
 */
 public class RoleData
 {
-	public int id;
-	public string name;
+	public ReactiveProperty<int> id;
+	public ReactiveProperty<string> name;
 	
-	private uint _Money;	
-	private int _clubId;
+	private ReactiveProperty<uint> _Money;	
+	private ReactiveProperty<int> _clubId;
 	
-	public List<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
-	private int recoreLimite;
+	public ReactiveCollection<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
+	private ReactiveProperty<int> recoreLimite;
 	
 	public void InitData(int roleId, string roleName, uint money, int clubId)
 	{
-		id = roleId;
-		name = roleName;
-		_Money = money;
-		_clubId = clubId;
+		id = new ReactiveProperty<int>(roleId);
+		name = new ReactiveProperty<string>(roleName);
+		_Money = new ReactiveProperty<uint>(money);
+		_clubId = new ReactiveProperty<int>(clubId);
 		
-		recordList = new List<GameRecord>();
+		recordList = new ReactiveCollection<GameRecord>();
 	}
 	
 	public void AddRecord(string name, int score)
@@ -35,8 +42,8 @@ public class RoleData
 		CheckAddRecord();
 		
 		GameRecord tempRecord = new GameRecord();
-		tempRecord.gameName = name;
-		tempRecord.score = score;
+		tempRecord.gameName.Value = name;
+		tempRecord.score.Value = score;
 		recordList.Add(tempRecord);
 	}
 	

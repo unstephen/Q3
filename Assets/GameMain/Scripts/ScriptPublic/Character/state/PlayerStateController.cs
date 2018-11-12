@@ -2,12 +2,12 @@ using GameFramework;
 using GameFramework.Fsm;
 using GameFramework.Procedure;
 
-public class PlayerStateController : IPlayerStateController
+public class PlayerStateController
 {
     private IFsmManager m_FsmManager;
-    private IFsm<IPlayerStateController> m_ProcedureFsm;
+    private IFsm<Player> m_PlayerFsm;
 
-    public void Init(IFsmManager FSM,params PlayerStateBase[] states)
+    public void Init(Player player,IFsmManager FSM,params PlayerStateBase[] states)
     {
         if (FSM == null)
 
@@ -21,9 +21,15 @@ public class PlayerStateController : IPlayerStateController
 
         m_FsmManager = FSM;
 
-        m_ProcedureFsm = m_FsmManager.CreateFsm(this, states);
+        m_PlayerFsm = m_FsmManager.CreateFsm(player.name.Value,player, states);
         
     }
+
+    public void Start<T>() where T : PlayerStateBase
+    {
+        m_PlayerFsm.Start<T>();
+    }
+
     public void FireEvent()
     {
         

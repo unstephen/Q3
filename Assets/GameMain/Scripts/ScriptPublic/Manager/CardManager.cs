@@ -1,17 +1,34 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
-/*
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using DG.Tweening;
+using GamePlay;
+using UniRx;
+#if false
 public class CardManager : MonoSingleton<CardManager> 
 {
     private string[] cardNames;  //所有牌集合
-    
+    public Transform heapPos;           //牌堆位置
+    public Transform[] playerHeapPos;    //玩家牌堆位置
+    public CardManagerStates cardManagerState;  //卡牌回合状态
+    private int termCurrentIndex;  //回合当前玩家索引
+    private int termStartIndex;  //回合开始玩家索引
+    public GameObject coverPrefab;      //背面排预制件
+    public float dealCardSpeed = 20;  //发牌速度
     public override void Init()
     {
          cardNames = GetCardNames();
-    } 
-    
-      #region 洗牌、发牌
+    }
+
+    public ReactiveCollection<Player> Players
+    {
+        get { return RoomManager.Instance.rData.roomPlayers; }
+    }
+
+    #region 洗牌、发牌
     /// <summary>
     /// 洗牌
     /// </summary>
@@ -42,17 +59,11 @@ public class CardManager : MonoSingleton<CardManager>
         heapPos.gameObject.SetActive(true);
         playerHeapPos.ToList().ForEach(s => { s.gameObject.SetActive(true); });
 
-        var cardNamesNeeded = ifForBid
-            ? cardNames.Skip(cardNames.Length - 3).Take(3)  //如果是抢地主牌，取最后3张
-            : cardNames.Take(cardNames.Length - 3);         //如果首次发牌
+        //按玩家数量，每人3张牌来取牌
+        var cardNamesNeeded = cardNames.Take(Players.Count * 3);       
 
         //计算每张地主牌的位置
         int cardIndex = 0;
-        var width = (bidCards.GetComponent<RectTransform>().sizeDelta.x - 20) / 3;
-        var centerBidPos = Vector3.zero;
-        var leftBidPos = centerBidPos - Vector3.left * width;
-        var rightBidPos = centerBidPos + Vector3.left * width;
-        List<Vector3> bidPoss = new List<Vector3> { leftBidPos, centerBidPos, rightBidPos };
         foreach (var cardName in cardNamesNeeded)
         {
             //给当前玩家发一张牌
@@ -66,19 +77,9 @@ public class CardManager : MonoSingleton<CardManager>
 
             yield return new WaitForSeconds(1 / dealCardSpeed);
 
-            //如果给地主发牌
-            if (ifForBid)
-            {
-                //显示地主牌
-                var bidcard = Instantiate(cardPrefab, bidCards.transform.TransformPoint(bidPoss[cardIndex]), Quaternion.identity, bidCards.transform);
-                bidcard.GetComponent<Card>().InitImage(new CardInfo(cardName));
-                bidcard.GetComponent<RectTransform>().localScale = Vector3.one * 0.3f;
-            }
-            else
-            {
-                //下一个需要发牌者
-                SetNextPlayer();
-            }
+         
+            //下一个需要发牌者
+            SetNextPlayer();
 
             cardIndex++;
         }
@@ -88,22 +89,8 @@ public class CardManager : MonoSingleton<CardManager>
         playerHeapPos[0].gameObject.SetActive(false);
 
         //发普通牌
-        if (!ifForBid)
-        {
-            //显示玩家手牌
-            ShowPlayerSelfCards();
-            StartBiding();
-        }
-        //发地主牌
-        else
-        {
-            if (Players[bankerIndex] is PlayerSelf)
-            {
-                //显示玩家手牌
-                ShowPlayerSelfCards();
-            }
-            StartFollowing();
-        }
+        //显示玩家手牌
+        ShowPlayerSelfCards();
     }
 
     /// <summary>
@@ -168,4 +155,5 @@ public class CardManager : MonoSingleton<CardManager>
         return null;
     }
     #endregion
-}*/
+}
+#endif

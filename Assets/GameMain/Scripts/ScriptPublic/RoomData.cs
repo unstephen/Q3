@@ -10,7 +10,7 @@ public class RoomData
 {
 	public ReactiveProperty<int> id;
 	public ReactiveProperty<string> name;	
-	ReactiveCollection<Player> roomPlayers;
+	public ReactiveCollection<Player> roomPlayers;
 	
 	int _clubId;
 	

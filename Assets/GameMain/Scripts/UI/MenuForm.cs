@@ -41,7 +41,8 @@ namespace GamePlay
                 Log.Warning("ProcedureMenu is invalid when open MenuForm.");
                 return;
             }
-
+//            PlayerStateInit s = new PlayerStateInit();
+//            s.star
         }
 
 #if UNITY_2017_3_OR_NEWER

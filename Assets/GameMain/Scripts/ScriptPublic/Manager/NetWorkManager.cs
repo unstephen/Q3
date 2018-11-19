@@ -66,18 +66,18 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="contentType">媒体格式</param>
     /// <param name="encode">编码</param>
     /// <returns>泛型集合</returns>
-    public static T PostAndRespSignle<T>(string url, int timeout = 1000, string postData = "", string contentType = "application/json;", string encode = "UTF-8")
+    public T PostAndRespSignle<T>(string url, int timeout = 1000, string postData = "", string contentType = "application/json;", string encode = "UTF-8")
     {
         if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(encode) && !string.IsNullOrEmpty(contentType) && postData != null)
         {
             // webRequest.Headers.Add("Authorization", "Bearer " + "SportApiAuthData");
-            HttpWebResponse webResponse = null;
+            //HttpWebResponse webResponse = null;
             Stream responseStream = null;
             Stream requestStream = null;
             StreamReader streamReader = null;
             try
             {
-                string respstr = GetStreamReader(url, responseStream, requestStream, streamReader, webResponse, timeout, encode, postData, contentType);
+                string respstr = GetStreamReader(url, responseStream, requestStream, streamReader, timeout, encode, postData, contentType);
                 return JsonMapper.ToObject<T>(respstr);
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             finally
             {
                 if (responseStream != null) responseStream.Dispose();
-                if (webResponse != null) webResponse.Dispose();
+                //if (webResponse != null) webResponse.Dispose();
                 if (requestStream != null) requestStream.Dispose();
                 if (streamReader != null) streamReader.Dispose();
             }
@@ -104,18 +104,18 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="contentType"></param>
     /// <param name="encode"></param>
     /// <returns>响应流字符串</returns>
-    public static string PostAndRespStr(string url, int timeout = 5000, string postData = "", string contentType = "application/json;", string encode = "UTF-8")
+    public string PostAndRespStr(string url, int timeout = 5000, string postData = "", string contentType = "application/json;", string encode = "UTF-8")
     {
         if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(encode) && !string.IsNullOrEmpty(contentType) && postData != null)
         {
-            HttpWebResponse webResponse = null;
+            //HttpWebResponse webResponse = null;
             Stream responseStream = null;
             Stream requestStream = null;
             StreamReader streamReader = null;
             try
             {
 
-                return GetStreamReader(url, responseStream, requestStream, streamReader, webResponse, timeout, encode, postData, contentType);
+                return GetStreamReader(url, responseStream, requestStream, streamReader, timeout, encode, postData, contentType);
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             finally
             {
                 if (responseStream != null) responseStream.Dispose();
-                if (webResponse != null) webResponse.Dispose();
+                //if (webResponse != null) webResponse.Dispose();
                 if (requestStream != null) requestStream.Dispose();
                 if (streamReader != null) streamReader.Dispose();
             }
@@ -132,7 +132,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         return null;
     }
 
-    private static string GetStreamReader(string Virtualpath, Stream responseStream, Stream requestStream, StreamReader streamReader, WebResponse webResponse, int timeout, string encode, string postData, string contentType)
+    private string GetStreamReader(string Virtualpath, Stream responseStream, Stream requestStream, StreamReader streamReader , int timeout, string encode, string postData, string contentType)
     {
         byte[] data = Encoding.GetEncoding(encode).GetBytes(postData);
         HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(GameConst.httpUrl);
@@ -142,8 +142,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         webRequest.Timeout = timeout;
         requestStream = webRequest.GetRequestStream();
         requestStream.Write(data, 0, data.Length);
-        webResponse = (HttpWebResponse)webRequest.GetResponse();
-        responseStream = webResponse.GetResponseStream();
+        responseStream = webRequest.GetResponse().GetResponseStream();
         if (responseStream == null) { return ""; }
         streamReader = new StreamReader(responseStream, Encoding.GetEncoding(encode));
         return streamReader.ReadToEnd();
@@ -155,7 +154,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="url">url</param>
     /// <param name="filePath">文件路径</param>
     /// <returns>响应流字符串</returns>
-    public static string PostFile(string url, string filePath, string contentType = "application/octet-stream", string encode = "UTF-8")
+    public string PostFile(string url, string filePath, string contentType = "application/octet-stream", string encode = "UTF-8")
     {
         if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(encode) && !string.IsNullOrEmpty(contentType) && !string.IsNullOrEmpty(filePath))
         {
@@ -250,16 +249,16 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="timeout"></param>
     /// <param name="encode"></param>
     /// <returns>响应流字符串</returns>
-    public static string GetResponseString(string url, int timeout = 5000, string encode = "UTF-8")
+    public string GetResponseString(string url, int timeout = 5000, string encode = "UTF-8")
     {
         if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(encode))
         {
             Stream responseStream = null;
             StreamReader streamReader = null;
-            WebResponse webResponse = null;
+            //WebResponse webResponse = null;
             try
             {
-                return GetRespStr(url, responseStream, streamReader, webResponse, timeout, encode);
+                return GetRespStr(url, responseStream, streamReader, timeout, encode);
             }
             catch (Exception ex)
             {
@@ -269,21 +268,25 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             {
                 if (responseStream != null) responseStream.Dispose();
                 if (streamReader != null) streamReader.Dispose();
-                if (webResponse != null) webResponse.Dispose();
+                //if (webResponse != null) webResponse.Dispose();
             }
         }
         return null;
     }
 
-    private static string GetRespStr(string url, Stream responseStream, StreamReader streamReader, WebResponse webResponse, int timeout, string encode)
+    private string GetRespStr(string url, Stream responseStream, StreamReader streamReader, int timeout, string encode)
     {
         HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
         webRequest.Method = "GET";
         webRequest.Timeout = timeout;
-        webResponse = webRequest.GetResponse();
-        responseStream = webResponse.GetResponseStream();
+        responseStream = webRequest.GetResponse().GetResponseStream();
         if (responseStream == null) { return ""; }
         streamReader = new StreamReader(responseStream, Encoding.GetEncoding(encode));
         return streamReader.ReadToEnd();
+    }
+
+    public void SetHttpDataByType()
+    {
+
     }
 }

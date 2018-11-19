@@ -18,9 +18,9 @@ namespace GamePlay
             }
         }
 
-        public override void Initialize()
+        public override void Initialize(GameMode fromMode)
         {
-            base.Initialize();
+            base.Initialize(fromMode);
 
         }
         public override void Update(float elapseSeconds, float realElapseSeconds)

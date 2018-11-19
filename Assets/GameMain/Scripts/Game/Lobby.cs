@@ -16,9 +16,14 @@ namespace GamePlay
             }
         }
 
-        public override void Initialize()
+        public override void Initialize(GameMode fromMode)
         {
-            base.Initialize();
+            base.Initialize(fromMode);
+            if (fromMode > GameMode.Lobby)
+            {
+                //游戏返回大厅
+                RoomManager.Instance.rData.Clear();
+            }
             GameEntry.UI.OpenUIForm(UIFormId.MainForm, this);
             GameEntry.UI.OpenUIForm(UIFormId.TopBarForm, this);
             if (GameEntry.UI.HasUIForm(UIFormId.CreateRoomForm))

@@ -60,4 +60,14 @@ public class RoomData
 		}
         return false;
 	}
+
+	public void Clear()
+	{
+		foreach (var player in roomPlayers)
+		{
+			player.Clear();
+		}
+		roomPlayers.Clear();
+		roomPlayers = null;
+	}
 }

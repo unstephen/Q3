@@ -14,7 +14,7 @@ public class Player
 	public ReactiveProperty<string> name;	
 	public ReactiveProperty<int> pos;	
 	public ReactiveProperty<int> clubId;	
-	private ReactiveProperty<uint> _money;
+	private ReactiveProperty<uint> money;
 
 	private PlayerStateController stateController;
 	
@@ -23,7 +23,7 @@ public class Player
 		id = new ReactiveProperty<int>(PlayerId);
 		clubId = new ReactiveProperty<int>(ClubId);
 		name = new ReactiveProperty<string>(PlayerName);
-		_money = new ReactiveProperty<uint>(Money);
+		money = new ReactiveProperty<uint>(Money);
 		pos = new ReactiveProperty<int>();
 		
 		stateController = new PlayerStateController();
@@ -45,5 +45,16 @@ public class Player
 	public void OnEnterRoom()
 	{
 		Log.Debug("Player OnEnterRoom name={0}",name);
+	}
+
+	public void Clear()
+	{
+		Log.Debug("Player Clear name={0}",name);
+		GameFrameworkEntry.GetModule<IFsmManager>().DestroyFsm(stateController.fsm);
+		stateController = null;
+		id.Dispose();
+		pos.Dispose();
+		clubId.Dispose();
+		money.Dispose();
 	}
 }

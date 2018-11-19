@@ -36,7 +36,8 @@ namespace GamePlay
                     GameEntry.UI.OpenUIForm(UIFormId.TableForm, main);
                     break;
             }
-         //   main.ChangeGame(mode);
+            //初始化房间
+            RoomManager.Instance.Init(10000,"testRoom",0);
         }
 
 #if UNITY_2017_3_OR_NEWER

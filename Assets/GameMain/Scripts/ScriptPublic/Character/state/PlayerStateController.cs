@@ -5,7 +5,7 @@ using GameFramework.Procedure;
 public class PlayerStateController
 {
     private IFsmManager m_FsmManager;
-    private IFsm<Player> m_PlayerFsm;
+    public IFsm<Player> fsm { private set; get; }
 
     public void Init(Player player,IFsmManager FSM,params PlayerStateBase[] states)
     {
@@ -21,13 +21,13 @@ public class PlayerStateController
 
         m_FsmManager = FSM;
 
-        m_PlayerFsm = m_FsmManager.CreateFsm(player.name.Value,player, states);
+        fsm = m_FsmManager.CreateFsm(player.name.Value,player, states);
         
     }
 
     public void Start<T>() where T : PlayerStateBase
     {
-        m_PlayerFsm.Start<T>();
+        fsm.Start<T>();
     }
 
     public void FireEvent()

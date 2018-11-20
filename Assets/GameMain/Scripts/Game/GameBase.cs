@@ -23,7 +23,7 @@ namespace GamePlay
 
         private Dictionary<Type, string> abilityNameDic = new Dictionary<Type, string>();
 
-        public virtual void Initialize()
+        public virtual void Initialize(GameMode fromMode)
         {
             RegAbilityName();
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);

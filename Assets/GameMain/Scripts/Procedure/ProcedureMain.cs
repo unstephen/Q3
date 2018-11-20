@@ -47,18 +47,20 @@ namespace GamePlay
 
         public void ChangeGame(GameMode mode)
         {
+            GameMode preMode = GameMode.Lobby;
             if (m_CurrentGame != null)
             {
+                preMode = m_CurrentGame.GameMode;
                 m_CurrentGame.Shutdown();
                 m_CurrentGame = null;
             }
             m_CurrentGame = m_Games[mode];
-            m_CurrentGame.Initialize();
-            //初始化房间
-            RoomManager.Instance.Init(10000,"testRoom",0);
+            m_CurrentGame.Initialize(preMode);
+
             
             if(mode>GameMode.Lobby)
             {
+
                 GameEntry.Sound.PlayMusic(3);
                 GameEntry.UI.OpenUIForm(UIFormId.CreateRoomForm, this);
             }
@@ -82,7 +84,7 @@ namespace GamePlay
             m_GotoMenu = false;
 
             m_CurrentGame = m_Games[GameMode.Lobby];
-            m_CurrentGame.Initialize();
+            m_CurrentGame.Initialize(GameMode.Lobby);
          
         }
 

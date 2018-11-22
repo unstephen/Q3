@@ -1,6 +1,7 @@
 ﻿using GamePlay;
 using LitJson;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -132,10 +133,10 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         return null;
     }
 
-    private string GetStreamReader(string Virtualpath, Stream responseStream, Stream requestStream, StreamReader streamReader , int timeout, string encode, string postData, string contentType)
+    private string GetStreamReader(string url, Stream responseStream, Stream requestStream, StreamReader streamReader , int timeout, string encode, string postData, string contentType)
     {
         byte[] data = Encoding.GetEncoding(encode).GetBytes(postData);
-        HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(GameConst.httpUrl);
+        HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
         webRequest.Method = "POST";
         webRequest.ContentType = contentType + ";" + encode;
         webRequest.ContentLength = data.Length;
@@ -212,35 +213,35 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="timeout">超时时间</param>
     /// <param name="encode">编码</param>
     /// <returns>返回单个实体</returns>
-    //public static T GetSingle<T>(string url, int timeout = 5000, string encode = "UTF-8")
-    //{
-    //    //HttpWebRequest对象
-    //    //HttpClient->dudu 调用预热处理
-    //    //Stream—>Model
+    public T GetSingle<T>(string url, int timeout = 5000, string encode = "UTF-8")
+    {
+        //HttpWebRequest对象
+        //HttpClient->dudu 调用预热处理
+        //Stream—>Model
 
-    //    if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(encode))
-    //    {
-    //        Stream responseStream = null;
-    //        StreamReader streamReader = null;
-    //        WebResponse webResponse = null;
-    //        try
-    //        {
-    //            string respStr = GetRespStr(url, responseStream, streamReader, webResponse, timeout, encode);
-    //            return JsonHelper.JsonDeserialize<T>(respStr);
-    //        }
-    //        catch (Exception ex)
-    //        {
+        if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(encode))
+        {
+            Stream responseStream = null;
+            StreamReader streamReader = null;
+            //WebResponse webResponse = null;
+            try
+            {
+                string respStr = GetRespStr(url, responseStream, streamReader, timeout, encode);
+                return JsonMapper.ToObject<T>(respStr);
+            }
+            catch (Exception ex)
+            {
 
-    //        }
-    //        finally
-    //        {
-    //            if (responseStream != null) responseStream.Dispose();
-    //            if (streamReader != null) streamReader.Dispose();
-    //            if (webResponse != null) webResponse.Dispose();
-    //        }
-    //    }
-    //    return default(T);
-    //}
+            }
+            finally
+            {
+                if (responseStream != null) responseStream.Dispose();
+                if (streamReader != null) streamReader.Dispose();
+                //if (webResponse != null) webResponse.Dispose();
+            }
+        }
+        return default(T);
+    }
 
     /// <summary>
     ///  Get http请求
@@ -285,7 +286,19 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         return streamReader.ReadToEnd();
     }
 
-    public void SetHttpDataByType()
+    public string CreateGetUrl(string url, List<string> paramList)
+    {
+        string temp = url;
+
+        for (int i = 0; i < paramList.Count; ++i)
+        {
+            temp += string.Format("{0}&", paramList[i]);
+        }
+
+        return temp;
+    }
+
+    public void SetHttpDataByType(string virtualPath)
     {
 
     }

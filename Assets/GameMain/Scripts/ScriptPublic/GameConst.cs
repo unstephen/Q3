@@ -7,7 +7,7 @@ public class GameConst {
     public const int cardMaxNum = 3;
     public const int pokerMax = 13;
 
-    public const string httpUrl = "http://www.baidu.com:8080";
+    public const string httpUrl = "http://47.92.73.235:8080";
 
     public string _mainPage = "/user/info";
     public string _shop = "/goods/list";

@@ -3,8 +3,10 @@ using LitJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
+using GameFramework;
 using UnityEngine;
 
 public class NetWorkManager : MonoSingleton<NetWorkManager>
@@ -214,7 +216,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="timeout">超时时间</param>
     /// <param name="encode">编码</param>
     /// <returns>返回单个实体</returns>
-    public T GetSingle<T>(string url, int timeout = 5000, string encode = "UTF-8")
+    public T GetSingle<T>(string url, int timeout = 5000, string encode = "UTF-8") where T : Recv_MsgBase,new()
     {
         //HttpWebRequest对象
         //HttpClient->dudu 调用预热处理
@@ -228,6 +230,13 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             try
             {
                 string respStr = GetRespStr(url, responseStream, streamReader, timeout, encode);
+               // string respStr = "{\"code\":0,\"errMsg\":\"\",\"data\":{\"user_id\":\"123\",\"access_token\":\"test_token\"}}";
+//                var respJson =  JsonMapper.ToObject(respStr);
+//                var test = respJson["data"].ToJson();
+//                var ret = JsonMapper.ToObject<T>(respJson["data"].ToJson());
+//                ret.code = Convert.ToInt32(respJson["code"]);
+//                ret.errMsg = respJson["errMsg"].ToString();
+//                return ret;
                 return JsonMapper.ToObject<T>(respStr);
             }
             catch (Exception ex)
@@ -306,7 +315,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         //string tempStr1 = Result.Replace("\*"， "#");
         //string tempStr = tempStr1.Replace("#", "\*");
 
-        return tempStr;
+        return Result;
     }
 
     public string CreateGetUrl(string url, List<string> paramList)
@@ -333,7 +342,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
 
     }
 
-    public T CreateGetMsg<T>(string vritualPath, List<string> getStrs)
+    public T CreateGetMsg<T>(string vritualPath, List<string> getStrs) where T : Recv_MsgBase,new()
     {
         string tempUrl = GameConst.httpUrl + vritualPath + "?";
 

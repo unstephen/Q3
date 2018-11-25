@@ -1,4 +1,5 @@
 ﻿using GameFramework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -18,7 +19,15 @@ namespace GamePlay
 
         public void OnStartButtonClick(params object[] args)
         {
-            m_ProcedureMenu.StartGame();
+            string type = "login_type=weixin";
+            string token = "access_token=test_token";
+            string openId = "openid=123";
+            Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
+
+            if (login != null && login.code == 0)
+            {
+                m_ProcedureMenu.StartGame();
+            }
         }
 
         public void OnQuitButtonClick(params object[] args)

@@ -8,19 +8,24 @@ using System.Collections.Generic;
 public class Recv_MsgBase
 {
     /// <summary>
-    /// 错误码
-    /// </summary>
-    public int state;
-    /// <summary>
     /// 消息编号
     /// </summary>
     public int code;
+
+    /// <summary>
+    /// 错误码
+    /// </summary>
+    public string errMsg;
 }
 
+public class Recv_Login_Data
+{
+    public string user_id;
+    public string access_token;
+}
 public class Recv_Login : Recv_MsgBase
 {
-    public uint userId;
-    public string token;
+    public Recv_Login_Data data;
 }
 
 /// <summary>

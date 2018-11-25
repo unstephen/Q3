@@ -2,28 +2,31 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
     public class MainForm : UGuiForm
     {
-
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
             GUILink link = GetComponent<GUILink>();
             link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
+            link.SetEvent("BtnShop", UIEventType.Click, OnShopClick);
 
-            string userId = "user_id=0";
-            string token = "access_token=test_token";
-            long time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
-            string timeStr = "timestamp=" + time.ToString();
+            RoleData role = GameManager.Instance.GetRoleData();
+            //string id = "user_id=" + role.id.Value;
+            //string token = "access_token=" + role.token.Value;
+            //long time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            //string timeStr = "timestamp=" + time.ToString();
 
-            Recv_Get_MainPage mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MainPage>(GameConst._mainPage, new List<string> { userId, token, timeStr });
+            Recv_Get_MainPage mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MainPage>(GameConst._mainPage, 
+                GameManager.Instance.GetSendInfoStringList<Send_Get_MainPage>(role.id.Value, role.token.Value));
             if (mainPage != null && mainPage.code == 0)
             {
-
+                role.SetRoleProperty(mainPage.data);
             }
         }
 
@@ -33,7 +36,10 @@ namespace GamePlay
             main.ChangeGame(GameMode.Sangong);
         }
 
+        public void OnShopClick(params object[] args)
+        {
 
+        }
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)

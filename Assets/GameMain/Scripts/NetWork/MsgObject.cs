@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// 接受的基础数据
@@ -31,11 +32,16 @@ public class Recv_Login : Recv_MsgBase
 /// <summary>
 /// 进入大厅
 /// </summary>
+public class Recv_MainPage_Data
+{
+    public string nick_name;
+    public string head_image_url;
+    public string account_balance; //账户余额
+}
+
 public class Recv_Get_MainPage : Recv_MsgBase
 {
-    public string name;
-    public string image_url;
-    public uint balance; //账户余额
+    public Recv_MainPage_Data data;
 }
 /// <summary>
 /// 商城
@@ -48,10 +54,15 @@ public struct GoodsData
     public float price;
 }
 
+public class Recv_Shop_Data
+{
+    public string totle;
+    public List<GoodsData> goodList;
+}
+
 public class Recv_Get_Shop : Recv_MsgBase
 {
-    public int goodsCount;
-    public List<GoodsData> goodsList;
+    public Recv_Shop_Data data;
 }
 /// <summary>
 /// 购买物品
@@ -126,19 +137,45 @@ public class Recv_Get_SearchHistory : Recv_MsgBase
 /// </summary>
 public class Send_MsgBase
 {
-    public int userId;
-    public string access_token;
-    public double linuxTimes;
+    public List<string> strList;
+
+    public virtual List<string> CreateSendInfo(params object[] args)
+    {
+        if (strList == null)
+        {
+            strList = new List<string>();
+        }
+        else
+        {
+            strList.Clear();
+        }
+
+        strList.Add("user_id=" + (string)args[0]);
+        strList.Add("access_token=" + (string)args[1]);
+
+        //每次都要重新获取时间戳
+        long time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+        string timeStr = "timestamp=" + time.ToString();
+        strList.Add(timeStr);
+
+        return strList;
+    }
 }
 
 public class Send_Get_MainPage : Send_MsgBase
 {
-    
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        return base.CreateSendInfo(args);
+    }
 }
 
 public class Send_Get_Shop : Send_MsgBase
 {
-
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        return base.CreateSendInfo(args);
+    }
 }
 
 public class Send_Post_PurchaseItem : Send_MsgBase

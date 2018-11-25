@@ -280,10 +280,32 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
         webRequest.Method = "GET";
         webRequest.Timeout = timeout;
-        responseStream = webRequest.GetResponse().GetResponseStream();
-        if (responseStream == null) { return ""; }
-        streamReader = new StreamReader(responseStream, Encoding.GetEncoding(encode));
-        return streamReader.ReadToEnd();
+        webRequest.ContentType = "application/json;charset=utf-8";
+        //这里是最开始的序列化代码
+        //responseStream = webRequest.GetResponse().GetResponseStream();
+        //if (responseStream == null) { return ""; }
+        //streamReader = new StreamReader(responseStream, Encoding.GetEncoding(encode));
+
+        //return streamReader.ReadToEnd();
+
+        string Result = string.Empty;
+        using (responseStream = webRequest.GetResponse().GetResponseStream())
+        {
+            using (StreamReader reader = new StreamReader(responseStream, Encoding.UTF8))
+            {
+                Result = reader.ReadToEnd().ToString();
+            }
+        }
+
+        //这里我本想处理一下反转义，但没有成功
+        string tempStr = System.Text.RegularExpressions.Regex.Unescape(Result);
+        ////第二种直接强行删除字符串中的“\”,但也没有成功
+        //string tempStr = Result.Replace("\\", string.Empty);
+        ////第三种方法就是先将\“一起替换成其他字符（例如￥、#等），然后在强制转换回来
+        //string tempStr1 = Result.Replace("\*"， "#");
+        //string tempStr = tempStr1.Replace("#", "\*");
+
+        return tempStr;
     }
 
     public string CreateGetUrl(string url, List<string> paramList)

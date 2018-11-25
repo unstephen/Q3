@@ -12,6 +12,17 @@ namespace GamePlay
             base.OnInit(userData);
             GUILink link = GetComponent<GUILink>();
             link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
+
+            string userId = "user_id=0";
+            string token = "access_token=test_token";
+            long time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            string timeStr = "timestamp=" + time.ToString();
+
+            Recv_Get_MainPage mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MainPage>(GameConst._mainPage, new List<string> { userId, token, timeStr });
+            if (mainPage != null && mainPage.code == 0)
+            {
+
+            }
         }
 
         public void OnStartSangong(params object[] args)

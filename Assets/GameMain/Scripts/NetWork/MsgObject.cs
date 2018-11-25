@@ -16,6 +16,13 @@ public class Recv_MsgBase
     /// </summary>
     public int code;
 }
+
+public class Recv_Login : Recv_MsgBase
+{
+    public uint userId;
+    public string token;
+}
+
 /// <summary>
 /// 进入大厅
 /// </summary>

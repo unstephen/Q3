@@ -314,14 +314,28 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
 
         for (int i = 0; i < paramList.Count; ++i)
         {
-            temp += string.Format("{0}&", paramList[i]);
+            if (i == paramList.Count - 1)
+            {
+                temp += string.Format("{0}", paramList[i]);
+            }
+            else
+            {
+                temp += string.Format("{0}&", paramList[i]);
+            }
         }
-
+        Debug.Log(temp);
         return temp;
     }
 
     public void SetHttpDataByType(string virtualPath)
     {
 
+    }
+
+    public T CreateGetMsg<T>(string vritualPath, List<string> getStrs)
+    {
+        string tempUrl = GameConst.httpUrl + vritualPath + "?";
+
+        return GetSingle<T>(CreateGetUrl(tempUrl, getStrs), 1000);
     }
 }

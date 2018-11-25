@@ -9,15 +9,16 @@ public class GameConst {
 
     public const string httpUrl = "http://47.92.73.235:8080";
 
-    public string _mainPage = "/user/info";
-    public string _shop = "/goods/list";
-    public string _purchaseItem = " /goods/pay";
-    public string _myClub = "/club/list";
-    public string _clubInfo = "/club/info";
-    public string _createClub = "/club/create";
-    public string _searchClub = "/club/search";
-    public string _applyClub = "/club/apply";
-    public string _handleRequest = "/apply/deal";
-    public string _history = "/history/overview";
-    public string _searchHistory = "/history/list";
+    public const string _login = "/login";
+    public const string _mainPage = "/user/info";
+    public const string _shop = "/goods/list";
+    public const string _purchaseItem = " /goods/pay";
+    public const string _myClub = "/club/list";
+    public const string _clubInfo = "/club/info";
+    public const string _createClub = "/club/create";
+    public const string _searchClub = "/club/search";
+    public const string _applyClub = "/club/apply";
+    public const string _handleRequest = "/apply/deal";
+    public const string _history = "/history/overview";
+    public const string _searchHistory = "/history/list";
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using UnityEngine;
 
 public class NetWorkManager : MonoSingleton<NetWorkManager>
 {

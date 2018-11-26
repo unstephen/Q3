@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
+using UniRx;
 
 namespace GamePlay
 {
@@ -48,8 +49,6 @@ namespace GamePlay
 #endif
         {
             base.OnOpen(userData);
-
-
         }
 
 #if UNITY_2017_3_OR_NEWER

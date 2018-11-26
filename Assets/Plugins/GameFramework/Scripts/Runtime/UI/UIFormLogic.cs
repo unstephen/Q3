@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using UnityEngine;
+using UniRx;
 
 namespace UnityGameFramework.Runtime
 {
@@ -15,6 +16,7 @@ namespace UnityGameFramework.Runtime
     public abstract class UIFormLogic : MonoBehaviour
     {
         private int m_OriginalLayer = 0;
+        protected CompositeDisposable disPosable = new CompositeDisposable();
 
         /// <summary>
         /// 获取界面。
@@ -82,6 +84,11 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnOpen(object userData)
         {
+            if (disPosable.Count > 0)
+            {
+                disPosable.Clear();
+            }
+
             gameObject.SetActive(true);
         }
 
@@ -91,6 +98,8 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnClose(object userData)
         {
+            disPosable.Clear();
+
             gameObject.SetLayerRecursively(m_OriginalLayer);
             gameObject.SetActive(false);
         }

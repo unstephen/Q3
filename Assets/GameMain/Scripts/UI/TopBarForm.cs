@@ -1,16 +1,25 @@
 ﻿using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
+using UnityEngine.UI;
+using UniRx;
 
 namespace GamePlay
 {
     public class TopBarForm : UGuiForm
     {
+        private Text textName;
+        private Text textId;
+        private Text textToken;
 
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
             GUILink link = GetComponent<GUILink>();
+
+            textName = link.Get<Text>("TextName");
+            textId = link.Get<Text>("TextID");
+            textToken = link.Get<Text>("TextTicket");
             //link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
         }
 
@@ -30,7 +39,10 @@ namespace GamePlay
         {
             base.OnOpen(userData);
 
-
+            RoleData role = GameManager.Instance.GetRoleData();
+            role.name.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textName).AddTo(disPosable);
+            role.id.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textId).AddTo(disPosable);
+            role.token.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textToken).AddTo(disPosable);
         }
 
 #if UNITY_2017_3_OR_NEWER

@@ -12,7 +12,7 @@ public class GameConst {
     public const string _login = "/login";
     public const string _mainPage = "/user/info";
     public const string _shop = "/goods/list";
-    public const string _purchaseItem = " /goods/pay";
+    public const string _order = " /goods/pay";
     public const string _myClub = "/club/list";
     public const string _clubInfo = "/club/info";
     public const string _createClub = "/club/create";

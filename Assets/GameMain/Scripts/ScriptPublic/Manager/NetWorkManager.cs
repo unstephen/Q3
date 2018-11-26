@@ -348,4 +348,32 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
 
         return GetSingle<T>(CreateGetUrl(tempUrl, getStrs), 1000);
     }
+
+    public string CreatePostString(List<string> postData)
+    {
+        StringBuilder buffer = new StringBuilder();
+
+        int i = 0;
+        foreach(string item in postData)
+        {
+            if (i > 0)
+            {
+                buffer.AppendFormat("&{0}", item);
+            }
+            else
+            {
+                buffer.AppendFormat("{0}", item);
+            }
+            i++;
+        }
+
+        return buffer.ToString();
+    }
+
+    public T CreatePostMsg<T>(string vritualPath, List<string> getStrs) where T : Recv_MsgBase
+    {
+        string tempUrl = GameConst.httpUrl + vritualPath + "?";
+
+        return PostAndRespSignle<T>(tempUrl, 1000, CreatePostString(getStrs));
+    }
 }

@@ -48,16 +48,16 @@ public class Recv_Get_MainPage : Recv_MsgBase
 /// </summary>
 public struct GoodsData
 {
-    public int goodsId;
-    public int goodsType;
-    public int num;
-    public float price;
+    public string goods_id;
+    public string type;
+    public string goods_name;
+    public string price;
 }
 
 public class Recv_Shop_Data
 {
-    public string totle;
-    public List<GoodsData> goodList;
+    public string total;
+    public List<GoodsData> list;
 }
 
 public class Recv_Get_Shop : Recv_MsgBase
@@ -75,6 +75,12 @@ public class Recv_Post_PurchaseItem : Recv_MsgBase
     public string randomStr;
     public string sign;
 }
+
+public class Recv_Post_Order : Recv_MsgBase
+{
+
+}
+
 /// <summary>
 /// 我的俱乐部
 /// </summary>
@@ -162,6 +168,14 @@ public class Send_MsgBase
     }
 }
 
+public class Send_Get_Login : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        return base.CreateSendInfo(args);
+    }
+}
+
 public class Send_Get_MainPage : Send_MsgBase
 {
     public override List<string> CreateSendInfo(params object[] args)
@@ -175,6 +189,22 @@ public class Send_Get_Shop : Send_MsgBase
     public override List<string> CreateSendInfo(params object[] args)
     {
         return base.CreateSendInfo(args);
+    }
+}
+
+/// <summary>
+/// 订单
+/// </summary>
+public class Send_Post_Order : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("goods_id=" + (string)args[2]);
+
+        return temp;
     }
 }
 

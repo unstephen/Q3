@@ -28,6 +28,8 @@ namespace GamePlay
 
             if (login != null && login.code == 0)
             {
+                GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
+
                 m_ProcedureMenu.StartGame();
             }
         }

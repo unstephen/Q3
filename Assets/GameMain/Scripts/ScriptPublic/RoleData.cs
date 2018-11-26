@@ -18,25 +18,33 @@ public struct GameRecord
 */
 public class RoleData
 {
-	public ReactiveProperty<int> id;
+	public ReactiveProperty<string> id;
+    public ReactiveProperty<string> token;
+
 	public ReactiveProperty<string> name;
-	
-	private ReactiveProperty<uint> _Money;	
+	private ReactiveProperty<int> _Money;	
 	private ReactiveProperty<int> _clubId;
 	
 	public ReactiveCollection<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
 	private ReactiveProperty<int> recoreLimite;
 	
-	public void InitData(int roleId, string roleName, uint money, int clubId)
+	public void InitData(string roleId, string token)
 	{
-		id = new ReactiveProperty<int>(roleId);
-		name = new ReactiveProperty<string>(roleName);
-		_Money = new ReactiveProperty<uint>(money);
-		_clubId = new ReactiveProperty<int>(clubId);
-		
-		recordList = new ReactiveCollection<GameRecord>();
+		id = new ReactiveProperty<string>(roleId);
+        this.token = new ReactiveProperty<string>(token);
+
+        recordList = new ReactiveCollection<GameRecord>();
 	}
 	
+    public void SetRoleProperty(Recv_MainPage_Data pageData)
+    {
+        if (pageData != null)
+        {
+            name = new ReactiveProperty<string>(pageData.nick_name);
+            //_Money = new ReactiveProperty<int>(pageData.account_balance);
+        }
+    }
+
 	public void AddRecord(string name, int score)
 	{
 		CheckAddRecord();

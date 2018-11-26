@@ -1113,10 +1113,6 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 1696120159945238}
     component: {fileID: 114361909255288000}
-  - Name: "Erro\uFF01\uFF01\uFF01Link\u4E22\u5931\u7269\u4EF6\uFF0C\u68C0\u67E5"
-    Tips: 
-    LinkObj: {fileID: 0}
-    component: {fileID: 0}
   - Name: BtnMajiang
     Tips: 
     LinkObj: {fileID: 1948493226230384}
@@ -1141,6 +1137,10 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 119724}
     component: {fileID: 114102741490085174}
+  - Name: BtnShop
+    Tips: 
+    LinkObj: {fileID: 1696120159945238}
+    component: {fileID: 114361909255288000}
 --- !u!114 &114187889050871140
 MonoBehaviour:
   m_ObjectHideFlags: 1

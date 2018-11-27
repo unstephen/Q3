@@ -39,7 +39,23 @@ namespace GamePlay
 
         public void OnShopClick(params object[] args)
         {
+            RoleData role = GameManager.Instance.GetRoleData();
 
+            //商店测试
+            //Recv_Get_Shop shopPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_Shop>(GameConst._shop,
+            //    GameManager.Instance.GetSendInfoStringList<Send_Get_Shop>(role.id.Value, role.token.Value));
+            //if (shopPage != null && shopPage.code == 0)
+            //{
+            //    Debug.Log("show skop page");
+            //}
+
+            //订单测试
+            Recv_Post_Order shopPage = NetWorkManager.Instance.CreatePostMsg<Recv_Post_Order>(GameConst._order,
+                GameManager.Instance.GetSendInfoStringList<Send_Post_Order>(role.id.Value, role.token.Value, "0"));
+            if (shopPage != null && shopPage.code == 0)
+            {
+                Debug.Log("show skop page");
+            }
         }
 
 #if UNITY_2017_3_OR_NEWER

@@ -3,45 +3,45 @@ using UnityEngine;
 
 namespace GamePlay
 {
-    public abstract class UGuiFormClone : UGuiForm
+    public abstract class UGuiComponentClone : UGuiComponent
     {
         private static Type catch_type = null;
 
-        private static UGuiForm catch_object = null;
+        private static UGuiComponent catch_object = null;
 
-        public UGuiFormClone()
+        public UGuiComponentClone()
         {
-            if (UGuiFormClone.catch_type != null && UGuiFormClone.catch_type == base.GetType())
+            if (UGuiComponentClone.catch_type != null && UGuiComponentClone.catch_type == base.GetType())
             {
-                UGuiFormClone.catch_object = this;
+                UGuiComponentClone.catch_object = this;
             }
         }
 
         private static void SetCatch(Type type)
         {
-            UGuiFormClone.catch_type = type;
+            UGuiComponentClone.catch_type = type;
         }
 
-        private static UGuiForm FetchCatch()
+        private static UGuiComponent FetchCatch()
         {
-            UGuiForm result = UGuiFormClone.catch_object;
-            UGuiFormClone.catch_type = null;
-            UGuiFormClone.catch_object = null;
+            UGuiComponent result = UGuiComponentClone.catch_object;
+            UGuiComponentClone.catch_type = null;
+            UGuiComponentClone.catch_object = null;
             return result;
         }
 
-        public UGuiForm Clone()
+        public UGuiComponent Clone()
         {
-            UGuiFormClone.SetCatch(base.GetType());
-            GameObject gameObject = UGuiFormClone.AddChild(base.gameObject.transform.parent.gameObject, base.gameObject);
-            UGuiForm result;
+            UGuiComponentClone.SetCatch(base.GetType());
+            GameObject gameObject = UGuiComponentClone.AddChild(base.gameObject.transform.parent.gameObject, base.gameObject);
+            UGuiComponent result;
             if (gameObject == null)
             {
                 result = null;
             }
             else
             {
-                UGuiForm UGuiForm = UGuiFormClone.FetchCatch();
+                UGuiComponent UGuiForm = UGuiComponentClone.FetchCatch();
                 if (UGuiForm != null)
                 {
                     UGuiForm.DoInitIfDont();
@@ -49,7 +49,7 @@ namespace GamePlay
                 }
                 else
                 {
-                    UGuiForm UGuiForm2 = gameObject.GetComponent(base.GetType()) as UGuiForm;
+                    UGuiComponent UGuiForm2 = gameObject.GetComponent(base.GetType()) as UGuiComponent;
                     if (UGuiForm2 != null)
                     {
                         Debug.Log("***** Clone GetComponent called");
@@ -58,7 +58,7 @@ namespace GamePlay
                     }
                     else
                     {
-                        UGuiForm2 = (gameObject.AddComponent(base.GetType()) as UGuiForm);
+                        UGuiForm2 = (gameObject.AddComponent(base.GetType()) as UGuiComponent);
                         if (UGuiForm2 != null)
                         {
                             UGuiForm2.DoInitIfDont();

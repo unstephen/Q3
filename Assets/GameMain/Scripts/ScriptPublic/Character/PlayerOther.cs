@@ -1,9 +1,12 @@
 using System;
 using UniRx;
 
-public class PlayerOther : Player
+namespace GamePlay
 {
+	public class PlayerOther : Player
+	{
 
-	
 
+
+	}
 }

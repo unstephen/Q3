@@ -7,7 +7,7 @@ using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
-    public abstract class UGuiForm : UIFormLogic
+    public abstract class UGuiForm : UGuiComponent
     {
         public const int DepthFactor = 100;
         private const float FadeTime = 0.3f;
@@ -213,109 +213,5 @@ namespace GamePlay
         {
         }
 
-        internal void DoInitIfDont()
-        {
-            if (!this.initialized)
-            {
-                this.OnInit(null);
-                this.SetEvent();
-                this.initialized = true;
-            }
-        }
-
-        public void SetActive(bool active)
-        {
-            if (base.gameObject.activeInHierarchy != active)
-            {
-                base.gameObject.SetActive(active);
-            }
-        }
-
-        public bool SetSelfActive(bool active)
-        {
-            bool result;
-            if (base.gameObject.activeSelf != active)
-            {
-                base.gameObject.SetActive(active);
-                this.DoActiveChange();
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
-        }
-
-        public virtual void DoActiveChange()
-        {
-        }
-
-        public static T AddComponent<T>(GameObject go, object userData) where T : UGuiForm
-        {
-            T t = go.AddComponent(typeof(T)) as T;
-            if (t != null)
-            {
-                t.DoInitIfDont();
-                t.OnOpen(userData);
-            }
-            return t;
-        }
-
-        public EventDelegate AddEvent(UIEventType ev, EventDelegate.Callback callback, float interval = 0f)
-        {
-            UIEventTrigger uIEventTrigger = base.gameObject.GetComponent(typeof(UIEventTrigger)) as UIEventTrigger;
-            if (uIEventTrigger == null)
-            {
-                uIEventTrigger = (base.gameObject.AddComponent(typeof(UIEventTrigger)) as UIEventTrigger);
-            }
-            List<EventDelegate> delegateList = GUILink.GetDelegateList(uIEventTrigger, ev);
-            EventDelegate result;
-            if (delegateList != null)
-            {
-                result = EventDelegate.Add(delegateList, callback, interval);
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
-        }
-
-        public EventDelegate SetEvent(UIEventType ev, EventDelegate.Callback callback, float interval = 0f)
-        {
-            UIEventTrigger uIEventTrigger = base.gameObject.GetComponent(typeof(UIEventTrigger)) as UIEventTrigger;
-            if (uIEventTrigger == null)
-            {
-                uIEventTrigger = (base.gameObject.AddComponent(typeof(UIEventTrigger)) as UIEventTrigger);
-            }
-            List<EventDelegate> delegateList = GUILink.GetDelegateList(uIEventTrigger, ev);
-            EventDelegate result;
-            if (delegateList != null)
-            {
-                result = EventDelegate.Set(delegateList, callback, interval);
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
-        }
-
-        public bool RemoveEvent(UIEventType ev, EventDelegate.Callback callback)
-        {
-            UIEventTrigger uIEventTrigger = base.gameObject.GetComponent(typeof(UIEventTrigger)) as UIEventTrigger;
-            bool result;
-            if (uIEventTrigger == null)
-            {
-                result = false;
-            }
-            else
-            {
-                List<EventDelegate> delegateList = GUILink.GetDelegateList(uIEventTrigger, ev);
-                result = (delegateList != null && EventDelegate.Remove(delegateList, callback));
-            }
-            return result;
-        }
     }
 }

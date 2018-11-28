@@ -41,7 +41,15 @@ namespace GamePlay
         }
 
 
+        public PlayerHeadInfo GetPlayerHeadUI(int pos)
+        {
+            if (pos >= 0 && pos < playerWigets.Count)
+            {
+                return playerWigets[pos];
+            }
 
+            return null;
+        }
 #if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
 #else
@@ -68,6 +76,7 @@ namespace GamePlay
     {
         private string _PlayerName;
         private Text textName;
+        public Transform cardPos;
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -75,6 +84,7 @@ namespace GamePlay
 
             textName = link.Get<Text>("TextName");
             textName.text = "";
+            cardPos = link.Get<Transform>("cardPos");
         }
 
         protected override void OnOpen(object userData)

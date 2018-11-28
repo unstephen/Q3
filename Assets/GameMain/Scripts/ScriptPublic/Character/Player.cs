@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
 using GameFramework;
 using GameFramework.Fsm;
+using GameFramework.Resource;
 using UniRx;
+using UnityEngine;
 using UnityGameFramework.Runtime;
+using Object = UnityEngine.Object;
 
 namespace GamePlay
 {
@@ -19,7 +23,7 @@ namespace GamePlay
 		private ReactiveProperty<uint> money;
 
 		private PlayerStateController stateController;
-
+		private PlayerHeadInfo headUI;
 		private TableForm _tableUI;
 		private TableForm tableUI
 		{
@@ -33,6 +37,7 @@ namespace GamePlay
 				return _tableUI;
 			}
 		}
+		public List<CardItem> handCards = new List<CardItem>(); 
 
 		public void InitData(int PlayerId, string PlayerName, uint Money, int ClubId = 0)
 		{
@@ -60,6 +65,19 @@ namespace GamePlay
 		public void SetPos(int index)
 		{
 			pos.Value = index;
+			headUI = tableUI.GetPlayerHeadUI(index);
+		}
+
+		public Vector3 GetCardAnchor()
+		{
+			return Camera.main.ScreenToWorldPoint(headUI.cardPos.position) ;
+		}
+
+		public virtual Vector3 GetOutCardPos(int index = 1, int count = 1)
+		{
+			if (count == 1)
+				return GetCardAnchor();
+			return GetCardAnchor()+ new Vector3(index* GameConst.OUT_CARD_SPAN, 0f, 0f );
 		}
 
 		public void OnEnterRoom()
@@ -82,8 +100,37 @@ namespace GamePlay
 
 		public void OnSeat()
 		{
+			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
+			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
+			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
 			Log.Debug("Player OnSeat name={0}", name);
 			tableUI.BtnSeat.interactable = false;
+		}
+		
+		public void GetCard( int id, Vector3 pos,Action<CardItem> callback, float scale=1 )
+		{
+			GameEntry.Resource.LoadAsset(AssetUtility.GetCardAsset(id.ToString()), new LoadAssetCallbacks(
+				(assetName, asset, duration, userData) =>
+				{
+					var tempCard = GameObject.Instantiate(asset as GameObject);
+					tempCard.transform.localScale = Vector3.one*scale;
+					var itemScript = tempCard.GetComponent<CardItem>( );
+					if( itemScript == null )
+						itemScript = tempCard.AddComponent<CardItem>( );
+					itemScript.Init( id );
+#if UNITY_EDITOR
+					itemScript.name = id.ToString( );
+#endif
+					tempCard.transform.position = pos;
+					callback(itemScript);
+					Log.Info("Load Card '{0}' OK.", id);
+				},
+
+				(assetName, status, errorMessage, userData) =>
+				{
+					Log.Error("Can not load card '{0}' from '{1}' with error message '{2}'.", id, assetName, errorMessage);
+				}));
+		
 		}
 	}
 }

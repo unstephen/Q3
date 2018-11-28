@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using GamePlay;
+using UnityGameFramework.Runtime;
 
 public class GUILink : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class GUILink : MonoBehaviour
             return result;
         }
 
-        public T AddComponent<T>() where T : UGuiForm
+        public T AddComponent<T>() where T : UGuiComponent
         {
             T result;
             if (!this.LinkObj)
@@ -80,7 +81,7 @@ public class GUILink : MonoBehaviour
             return result;
         }
 
-        public T GetComponent<T>() where T : UGuiForm
+        public T GetComponent<T>() where T : UGuiComponent
         {
             T result;
             if (!this.LinkObj)
@@ -98,7 +99,7 @@ public class GUILink : MonoBehaviour
             return result;
         }
 
-        public void RemoveComponent<T>() where T : UGuiForm
+        public void RemoveComponent<T>() where T : UGuiComponent
         {
             if (this.LinkObj)
             {
@@ -209,7 +210,7 @@ public class GUILink : MonoBehaviour
         }
     }
 
-    public T AddComponent<T>(string obj_name) where T : UGuiForm
+    public T AddComponent<T>(string obj_name) where T : UGuiComponent
     {
         GUILink.UILink uILink = this.GetUILink(obj_name);
         T result;
@@ -224,7 +225,7 @@ public class GUILink : MonoBehaviour
         return result;
     }
 
-    public T GetComponent<T>(string obj_name) where T : UGuiForm
+    public T GetComponent<T>(string obj_name) where T : UGuiComponent
     {
         GUILink.UILink uILink = this.GetUILink(obj_name);
         T result;

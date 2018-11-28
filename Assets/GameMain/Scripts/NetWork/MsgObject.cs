@@ -156,8 +156,8 @@ public class Send_MsgBase
             strList.Clear();
         }
 
-        strList.Add("user_id=" + (string)args[0]);
-        strList.Add("access_token=" + (string)args[1]);
+        strList.Add("user_id=" + args[0]);
+        strList.Add("access_token=" + args[1]);
 
         //每次都要重新获取时间戳
         long time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;

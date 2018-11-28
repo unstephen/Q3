@@ -2,19 +2,36 @@ using System;
 using UniRx;
 using UnityEngine;
 
+namespace GamePlay
+{
+	
 /*
 牌局逻辑处理类
 */
-public class RoomManager : MonoSingleton<RoomManager>
-{
-	public RoomData rData;
-	
-	public void Init(int id, string name, int clubId)
+	public class RoomManager : MonoSingleton<RoomManager>
 	{
-		if (rData == null)
+		public RoomData rData;
+	
+		public void Init(int id, string name, int clubId)
 		{
-			rData = new RoomData();
+			if (rData == null)
+			{
+				rData = new RoomData();
+			}
+			rData.InitData(id, name, clubId);
 		}
-		rData.InitData(id, name, clubId);
+
+		public ReactiveProperty<PlayerSelf> Self
+		{
+			get
+			{
+				if (rData != null)
+				{
+					return rData.playerSelf;
+				}
+
+				return null;
+			}
+		}
 	}
 }

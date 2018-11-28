@@ -18,7 +18,7 @@ public struct GameRecord
 */
 public class RoleData
 {
-	public ReactiveProperty<string> id;
+	public ReactiveProperty<int> id;
     public ReactiveProperty<string> token;
 
 	public ReactiveProperty<string> name;
@@ -30,7 +30,7 @@ public class RoleData
 	
 	public void InitData(string roleId, string token)
 	{
-		id = new ReactiveProperty<string>(roleId);
+		id = new ReactiveProperty<int>(Convert.ToInt32(roleId));
         this.token = new ReactiveProperty<string>(token);
 
         recordList = new ReactiveCollection<GameRecord>();

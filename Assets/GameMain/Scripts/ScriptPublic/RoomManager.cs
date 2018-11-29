@@ -33,5 +33,26 @@ namespace GamePlay
 				return null;
 			}
 		}
+
+		/// <summary>
+		/// 开始发牌
+		/// </summary>
+		public void StartDealCard()
+		{
+			Self.Value.state = EPlayerState.Deal;
+			foreach (var other in rData.roomPlayers)
+			{
+				other.state = EPlayerState.Deal;
+			}
+			//测试几秒后开牌
+			Observable.TimerFrame(30).Subscribe(x =>
+			{
+				Self.Value.ShowCard();
+				foreach (var other in rData.roomPlayers)
+				{
+					other.ShowCard();
+				}
+			});
+		}
 	}
 }

@@ -6,9 +6,12 @@ namespace GamePlay
 	
 	public class PlayerSelf : Player
 	{
-
-	
-
+		public override void OnSeat()
+		{
+			base.OnSeat();
+			
+			tableUI.BtnSeat.interactable = false;
+		}
 	}
 }
 

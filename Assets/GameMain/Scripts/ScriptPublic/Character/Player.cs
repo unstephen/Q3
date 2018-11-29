@@ -11,6 +11,14 @@ using Object = UnityEngine.Object;
 namespace GamePlay
 {
 
+	public enum EPlayerState
+	{
+		None,
+		/// <summary>
+		/// 发牌
+		/// </summary>
+		Deal,
+	}
 /*
 记录牌局内的玩家数据
 */
@@ -20,12 +28,12 @@ namespace GamePlay
 		public ReactiveProperty<string> name;
 		public ReactiveProperty<int> pos;
 		public ReactiveProperty<int> clubId;
-		private ReactiveProperty<uint> money;
+		protected ReactiveProperty<uint> money;
 
-		private PlayerStateController stateController;
-		private PlayerHeadInfo headUI;
-		private TableForm _tableUI;
-		private TableForm tableUI
+		protected PlayerStateController stateController;
+		protected PlayerHeadInfo headUI;
+		protected TableForm _tableUI;
+		protected TableForm tableUI
 		{
 			get
 			{
@@ -37,6 +45,8 @@ namespace GamePlay
 				return _tableUI;
 			}
 		}
+
+		public EPlayerState state { get; set; }
 		public List<CardItem> handCards = new List<CardItem>(); 
 
 		public void InitData(int PlayerId, string PlayerName, uint Money, int ClubId = 0)
@@ -46,14 +56,15 @@ namespace GamePlay
 			name = new ReactiveProperty<string>(PlayerName);
 			money = new ReactiveProperty<uint>(Money);
 			pos = new ReactiveProperty<int>(-1);
-		
+			state = EPlayerState.None;
 
 			stateController = new PlayerStateController();
 			//初始化玩家状态机
 			stateController.Init(this, GameFrameworkEntry.GetModule<IFsmManager>(),
 				new PlayerStateInit(),
 				new PlayerStateEnterRoom(),
-				new PlayerStateSeat()
+				new PlayerStateSeat(),
+				new PlayerStateDeal()
 			);
 			stateController.Start<PlayerStateInit>();
 		}
@@ -95,16 +106,16 @@ namespace GamePlay
 			pos.Dispose();
 			clubId.Dispose();
 			money.Dispose();
+			foreach (var card in handCards)
+			{
+				Object.Destroy(card.gameObject);
+			}
 		}
 
 
-		public void OnSeat()
+		public virtual void OnSeat()
 		{
-			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
-			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
-			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
-			Log.Debug("Player OnSeat name={0}", name);
-			tableUI.BtnSeat.interactable = false;
+			
 		}
 		
 		public void GetCard( int id, Vector3 pos,Action<CardItem> callback, float scale=1 )
@@ -131,6 +142,22 @@ namespace GamePlay
 					Log.Error("Can not load card '{0}' from '{1}' with error message '{2}'.", id, assetName, errorMessage);
 				}));
 		
+		}
+
+		public void OnDeal()
+		{
+			Log.Info("开始发牌给{0}", name);
+			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
+			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
+			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
+		}
+
+		public void ShowCard()
+		{
+			foreach (var card in handCards)
+			{
+				card.SetFrontActive(true);
+			}
 		}
 	}
 }

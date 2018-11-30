@@ -10,9 +10,9 @@ namespace GamePlay
     public class TableForm : UGuiForm
     {
         ProcedureMain main;
-        List<PlayerHeadInfo> playerWigets = new List<PlayerHeadInfo>();
+        public List<PlayerHeadInfo> playerWigets = new List<PlayerHeadInfo>();
         private const int PlayerMax = 6;
-        public Button BtnSeat;
+        public Button BtnSeat,BtnStartGame;
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -24,15 +24,25 @@ namespace GamePlay
             }
 
             BtnSeat = link.Get<Button>("BtnSeat");
+            BtnStartGame = link.Get<Button>("BtnStartGame");
             link.SetEvent("Quit", UIEventType.Click, OnClickExit);
             link.SetEvent("BtnSeat", UIEventType.Click, OnClickSeat);
             link.SetEvent("BtnStartGame", UIEventType.Click, OnClickStartGame);
-          
+            
+            List<Vector3> tempUITrans = new List<Vector3>();
+            var cam = Camera.main;
+            foreach (var w in playerWigets)
+            {
+                tempUITrans.Add(cam.ScreenToWorldPoint(w.cardPos.position));
+            }
+            CardManager.Instance.InitCardPos(tempUITrans);
         }
 
         private void OnClickStartGame(object[] args)
         {
-            RoomManager.Instance.StartDealCard();
+            BtnSeat.gameObject.SetActive(false);
+            BtnStartGame.gameObject.SetActive(false);
+            CardManager.Instance.DoDealCards();
         }
 
         private void TestSetPlayerData()
@@ -76,7 +86,13 @@ namespace GamePlay
         {
             base.OnOpen(userData);
             TestSetPlayerData();
+            ResetWiget();
+        }
 
+        private void ResetWiget()
+        {
+            BtnSeat.gameObject.SetActive(true);
+            BtnStartGame.gameObject.SetActive(true);
         }
 
 #if UNITY_2017_3_OR_NEWER

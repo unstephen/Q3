@@ -48,6 +48,7 @@ namespace GamePlay
 
 		public EPlayerState state { get; set; }
 		public List<CardItem> handCards = new List<CardItem>(); 
+		
 
 		public void InitData(int PlayerId, string PlayerName, uint Money, int ClubId = 0)
 		{
@@ -64,7 +65,8 @@ namespace GamePlay
 				new PlayerStateInit(),
 				new PlayerStateEnterRoom(),
 				new PlayerStateSeat(),
-				new PlayerStateDeal()
+				new PlayerStateDeal(),
+				new PlayerStatePlaying()
 			);
 			stateController.Start<PlayerStateInit>();
 		}
@@ -91,6 +93,10 @@ namespace GamePlay
 			return GetCardAnchor()+ new Vector3(index* GameConst.OUT_CARD_SPAN, 0f, 0f );
 		}
 
+		public virtual void OnShowCard()
+		{
+			
+		}
 		public void OnEnterRoom()
 		{
 			Log.Debug("Player OnEnterRoom name={0}", name);
@@ -147,12 +153,30 @@ namespace GamePlay
 		public void OnDeal()
 		{
 			Log.Info("开始发牌给{0}", name);
-			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
-			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
-			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
+//			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
+//			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
+//			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
 		}
 
-		public void ShowCard()
+		public void GetCard(int id)
+		{
+			Log.Info("开始发牌{0}给{1}",id, name);
+			GetCard(id,GetOutCardPos(handCards.Count,3),(x)=>
+			{
+				x.gameObject.SetActive(false);
+				handCards.Add(x);
+			});
+		}
+/// <summary>
+/// 显示某个卡
+/// </summary>
+		public void ShowLastCard(int index)
+		{
+			Log.Info("ShowLastCard {0}=,count={1}",index,handCards.Count);
+			handCards[index].gameObject.SetActive(true);
+		}
+
+		protected void ShowCard()
 		{
 			foreach (var card in handCards)
 			{

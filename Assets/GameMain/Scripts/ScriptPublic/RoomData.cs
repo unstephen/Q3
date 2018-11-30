@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 
@@ -14,7 +15,22 @@ namespace GamePlay
 		public ReactiveProperty<string> name;	
 		public ReactiveCollection<PlayerOther> roomPlayers;
 		public ReactiveProperty<PlayerSelf> playerSelf;
-	
+
+		public List<Player> allPlayers
+		{
+			get
+			{
+				List<Player> ret = new List<Player>();
+				ret.Add(playerSelf.Value);
+				foreach (var other in roomPlayers)
+				{
+					ret.Add(other);
+				}
+
+				return ret;
+			}
+		}
+
 		int _clubId;
 	
 		public void InitData(int roomId, string roomName, int clubId = 0)

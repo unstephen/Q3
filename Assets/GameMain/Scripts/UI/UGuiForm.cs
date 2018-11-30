@@ -52,6 +52,14 @@ namespace GamePlay
             {
                 StartCoroutine(CloseCo(FadeTime));
             }
+
+//            var childWights = gameObject.GetComponentsInChildren<UGuiComponent>();
+//            foreach (var child in childWights)
+//            {
+//                if(child == this)
+//                    continue;
+//                child.HideUI();
+//            }
         }
 
         public void PlayUISound(int uiSoundId)
@@ -118,6 +126,14 @@ namespace GamePlay
             m_CanvasGroup.alpha = 0f;
             StopAllCoroutines();
             StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
+            
+//            var childWights = gameObject.GetComponentsInChildren<UGuiComponent>();
+//            foreach (var child in childWights)
+//            {
+//                if(child == this)
+//                    continue;
+//                child.OpenUI();
+//            }
         }
 
 #if UNITY_2017_3_OR_NEWER
@@ -127,6 +143,7 @@ namespace GamePlay
 #endif
         {
             base.OnClose(userData);
+           
         }
 
 #if UNITY_2017_3_OR_NEWER

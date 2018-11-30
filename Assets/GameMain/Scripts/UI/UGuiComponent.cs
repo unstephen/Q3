@@ -130,6 +130,11 @@ namespace GamePlay
             }
         }
 
+        public void HideUI()
+        {
+            OnClose(null);
+        }
+
         public bool SetSelfActive(bool active)
         {
             bool result;
@@ -211,6 +216,11 @@ namespace GamePlay
                 result = (delegateList != null && EventDelegate.Remove(delegateList, callback));
             }
             return result;
+        }
+
+        public void OpenUI()
+        {
+            OnOpen(null);
         }
     }
 }

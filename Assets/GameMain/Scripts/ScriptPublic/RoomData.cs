@@ -75,6 +75,7 @@ namespace GamePlay
 			{
 				player.Clear();
 			}
+			playerSelf.Value.Clear();
 			roomPlayers.Clear();
 			roomPlayers = null;
 		}

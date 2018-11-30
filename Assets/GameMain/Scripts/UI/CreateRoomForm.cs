@@ -26,6 +26,8 @@ namespace GamePlay
         public void OnCreateRoom(params object[] args)
         {
             var mode = main.CurGameMode();
+            //初始化房间
+            RoomManager.Instance.Init(10000,"testRoom",0);
             switch (main.CurGameMode())
             {
                 case GameMode.Majiang:
@@ -36,8 +38,7 @@ namespace GamePlay
                     GameEntry.UI.OpenUIForm(UIFormId.TableForm, main);
                     break;
             }
-            //初始化房间
-            RoomManager.Instance.Init(10000,"testRoom",0);
+           
         }
 
 #if UNITY_2017_3_OR_NEWER

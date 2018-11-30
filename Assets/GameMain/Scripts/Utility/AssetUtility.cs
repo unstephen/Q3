@@ -51,5 +51,10 @@
         {
             return string.Format("Assets/GameMain/UI/UISounds/{0}.wav", assetName);
         }
+
+        public static string GetCardAsset(string assetName)
+        {
+            return string.Format("Assets/Arts/Resources/Prefabs/{0}.prefab", assetName);
+        }
     }
 }

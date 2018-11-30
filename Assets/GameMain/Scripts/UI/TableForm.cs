@@ -26,12 +26,30 @@ namespace GamePlay
             BtnSeat = link.Get<Button>("BtnSeat");
             link.SetEvent("Quit", UIEventType.Click, OnClickExit);
             link.SetEvent("BtnSeat", UIEventType.Click, OnClickSeat);
+            link.SetEvent("BtnStartGame", UIEventType.Click, OnClickStartGame);
+          
         }
 
+        private void OnClickStartGame(object[] args)
+        {
+            RoomManager.Instance.StartDealCard();
+        }
+
+        private void TestSetPlayerData()
+        {
+            for (int i = 1; i <= RoomManager.Instance.rData.roomPlayers.Count; i++)
+            {
+                playerWigets[i].SetPlayerData(RoomManager.Instance.rData.roomPlayers[i-1]);
+            }
+        }
         private void OnClickSeat(object[] args)
         {
-            playerWigets[0].SetPlayerData(GameManager.Instance.GetRoleData());
+            playerWigets[0].SetPlayerData(RoomManager.Instance.Self.Value);
             RoomManager.Instance.Self.Value.SetPos(0);
+            for (int i = 1; i <= RoomManager.Instance.rData.roomPlayers.Count; i++)
+            {
+                RoomManager.Instance.rData.roomPlayers[i-1].SetPos(i);
+            }
         }
 
         public void OnClickExit(params object[] args)
@@ -41,7 +59,15 @@ namespace GamePlay
         }
 
 
+        public PlayerHeadInfo GetPlayerHeadUI(int pos)
+        {
+            if (pos >= 0 && pos < playerWigets.Count)
+            {
+                return playerWigets[pos];
+            }
 
+            return null;
+        }
 #if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
 #else
@@ -49,7 +75,7 @@ namespace GamePlay
 #endif
         {
             base.OnOpen(userData);
-
+            TestSetPlayerData();
 
         }
 
@@ -61,6 +87,12 @@ namespace GamePlay
         {
 
             base.OnClose(userData);
+            BtnSeat.interactable = true;
+            foreach (var wight in playerWigets)
+            {
+                wight.Reset();
+            }
+            
         }
     }
     
@@ -68,6 +100,7 @@ namespace GamePlay
     {
         private string _PlayerName;
         private Text textName;
+        public Transform cardPos;
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -75,6 +108,7 @@ namespace GamePlay
 
             textName = link.Get<Text>("TextName");
             textName.text = "";
+            cardPos = link.Get<Transform>("cardPos");
         }
 
         protected override void OnOpen(object userData)
@@ -82,7 +116,7 @@ namespace GamePlay
             base.OnOpen(userData);
         }
 
-        public void SetPlayerData(RoleData role)
+        public void SetPlayerData(Player role)
         {
             disPosable.Clear();
             _PlayerName = name;
@@ -94,6 +128,12 @@ namespace GamePlay
         protected override void OnClose(object userData)
         {
             base.OnClose(userData);
+            Log.Debug("PlayerHeadInfo 关闭");
+        }
+
+        public void Reset()
+        {
+            textName.text = "";
         }
     }
 }

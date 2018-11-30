@@ -10,9 +10,8 @@ using UnityGameFramework.Runtime;
 public class CardItem:MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     , IComparable<CardItem>
     , IPointerUpHandler, IPointerEnterHandler, IPointerClickHandler {
-    public GameObject front;
     public GameObject back;
-    public GameObject landlordSign;
+   // public GameObject landlordSign;
     public int CardID {
         get;
         private set;
@@ -49,7 +48,6 @@ public class CardItem:MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     }
 
     public void SetFrontActive( bool active ) {
-        front.SetActive( active );
         back.SetActive( !active );
     }
 
@@ -66,7 +64,7 @@ public class CardItem:MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     }
 
     public void SetLandlordState( bool state ) {
-        landlordSign.SetActive( state );
+       // landlordSign.SetActive( state );
     }
 
     public void Init( int id ) {
@@ -84,6 +82,11 @@ public class CardItem:MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void Select( ) {
         Vector3 tar = new Vector3( transform.localPosition.x, OriginY + Raise );
         transform.DOLocalMove( tar, 0.1f, true );
+    }
+
+    private void OnDestroy()
+    {
+        Log.Info("CardItem Destroy");
     }
 
     public void OnBeginDrag( PointerEventData eventData ) {

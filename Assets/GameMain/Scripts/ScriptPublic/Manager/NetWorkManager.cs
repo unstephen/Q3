@@ -374,6 +374,6 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     {
         string tempUrl = GameConst.httpUrl + vritualPath + "?";
 
-        return PostAndRespSignle<T>(tempUrl, 1000, CreatePostString(getStrs));
+        return PostAndRespSignle<T>(CreateGetUrl(tempUrl, getStrs), 1000);
     }
 }

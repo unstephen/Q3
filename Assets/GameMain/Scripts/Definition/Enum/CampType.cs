@@ -56,8 +56,6 @@
         ShuffleCards,
         //发牌
         DealCards,
-        //叫牌
-        Bid,
         //出牌
         Playing
     }

@@ -12,6 +12,11 @@ namespace GamePlay
 			
 			tableUI.BtnSeat.interactable = false;
 		}
+		public override void OnShowCard()
+		{
+		   ShowCard();
+		
+		}
 	}
 }
 

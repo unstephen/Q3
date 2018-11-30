@@ -28,6 +28,8 @@ namespace GamePlay
             var mode = main.CurGameMode();
             //初始化房间
             RoomManager.Instance.Init(10000,"testRoom",0);
+            //初始化扑克管理器
+            var cardManager = CardManager.Instance;
             switch (main.CurGameMode())
             {
                 case GameMode.Majiang:

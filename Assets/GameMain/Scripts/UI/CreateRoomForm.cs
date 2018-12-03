@@ -38,6 +38,7 @@ namespace GamePlay
                     break;
                 case GameMode.Sangong:
                     GameEntry.UI.OpenUIForm(UIFormId.TableForm, main);
+                    Close(true);
                     break;
             }
            

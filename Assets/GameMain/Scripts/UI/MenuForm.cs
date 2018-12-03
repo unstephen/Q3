@@ -32,6 +32,8 @@ namespace GamePlay
 
                 m_ProcedureMenu.StartGame();
             }
+
+            NetWorkManager.Instance.CreateChanel();
         }
 
         public void OnQuitButtonClick(params object[] args)

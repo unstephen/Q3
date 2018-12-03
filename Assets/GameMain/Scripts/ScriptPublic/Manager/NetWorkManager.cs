@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using GameFramework;
+using GameFramework.Network;
 using UnityEngine;
 
 public class NetWorkManager : MonoSingleton<NetWorkManager>
@@ -375,5 +376,64 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         string tempUrl = GameConst.httpUrl + vritualPath + "?";
 
         return PostAndRespSignle<T>(tempUrl, 1000, CreatePostString(getStrs));
+    }
+
+    public INetworkChannel channel;
+
+    public void CreateChanel()
+    {
+        if (channel == null)
+        {
+            var helper = new Q3NetworkHelper();
+            helper.PacketHeaderLength = 4;
+            channel = GameEntry.Network.CreateNetworkChannel("q3", helper);
+         
+        }
+        IPAddress ipAddress = IPAddress.Parse(GameConst.ipadress); 
+        channel.Connect(ipAddress,GameConst.port);
+        channel.ReceiveBufferSize = 65536;
+    }
+
+    public class Q3NetworkHelper : INetworkChannelHelper
+    {
+        public void Initialize(INetworkChannel networkChannel)
+        {
+        }
+
+        public void Shutdown()
+        {
+           
+        }
+
+        public bool SendHeartBeat()
+        {
+            return true;
+        }
+
+        public bool Serialize<T>(T packet, Stream destination) where T : Packet
+        {
+            return true;
+        }
+
+        public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
+        {
+            var streamReader = new StreamReader(source, Encoding.GetEncoding("UTF-8"));
+            Q3PacketHeader header = new Q3PacketHeader();
+            header.PacketLength = streamReader.Read();
+            customErrorData = null;
+            return header;
+        }
+
+        public Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int PacketHeaderLength { get; set; }
+    }
+
+    public class Q3PacketHeader : IPacketHeader
+    {
+        public int PacketLength { get; set; }
     }
 }

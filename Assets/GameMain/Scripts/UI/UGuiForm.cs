@@ -1,6 +1,7 @@
 ﻿using GameFramework;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -43,13 +44,15 @@ namespace GamePlay
         public void Close(bool ignoreFade)
         {
             StopAllCoroutines();
-
+          
+            
             if (ignoreFade)
             {
                 GameEntry.UI.CloseUIForm(this);
             }
             else
             {
+                
                 StartCoroutine(CloseCo(FadeTime));
             }
 
@@ -125,8 +128,7 @@ namespace GamePlay
 
             m_CanvasGroup.alpha = 0f;
             StopAllCoroutines();
-            StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
-            
+            m_CanvasGroup.DOFade(1, FadeTime);
 //            var childWights = gameObject.GetComponentsInChildren<UGuiComponent>();
 //            foreach (var child in childWights)
 //            {
@@ -162,7 +164,9 @@ namespace GamePlay
 #endif
         {
             base.OnResume();
-            
+
+            m_CanvasGroup.DOFade(0, 0);
+            m_CanvasGroup.DOFade(1, FadeTime);
          //   m_CanvasGroup.alpha = 0f;
          //   StopAllCoroutines();
          //   StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));

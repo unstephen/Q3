@@ -218,7 +218,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key)
         {
-            return m_LocalizationManager.GetString(key);
+            return key;
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, object arg0)
         {
-            return m_LocalizationManager.GetString(key, arg0);
+            return key;
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, object arg0, object arg1)
         {
-            return m_LocalizationManager.GetString(key, arg0, arg1);
+            return key;
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, object arg0, object arg1, object arg2)
         {
-            return m_LocalizationManager.GetString(key, arg0, arg1, arg2);
+            return key;
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, params object[] args)
         {
-            return m_LocalizationManager.GetString(key, args);
+            return key;
         }
 
         /// <summary>

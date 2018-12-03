@@ -67,18 +67,24 @@ public class Recv_Get_Shop : Recv_MsgBase
 /// <summary>
 /// 购买物品
 /// </summary>
-public class Recv_Post_PurchaseItem : Recv_MsgBase
+public struct Recv_Order_Data
 {
-    public int appId;
-    public int merchantId;
-    public int orderId;
-    public string randomStr;
+    public string appid;
+    public string partnerid;
+    public string prepayid;
+    public string noncestr;
     public string sign;
 }
 
 public class Recv_Post_Order : Recv_MsgBase
 {
+    Recv_Order_Data data;
+}
 
+public class Recv_Get_CheckPrder : Recv_MsgBase
+{
+    public int result_code;
+    public string result_msg;
 }
 
 /// <summary>

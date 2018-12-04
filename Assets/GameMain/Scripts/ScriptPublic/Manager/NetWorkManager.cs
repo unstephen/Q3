@@ -6,9 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using GameFramework;
 using GameFramework.Network;
 using UnityEngine;
+using UnityGameFramework.Runtime;
+using WebSocketSharp;
+using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
+using GameEntry = GamePlay.GameEntry;
 
 public class NetWorkManager : MonoSingleton<NetWorkManager>
 {
@@ -17,7 +22,8 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     public override void Init()
     {
         base.Init();
-
+        connected = false;
+        wsConnected = true;
         //实例化jsonhelper
         jsonHelper = new LitJsonHelper();
     }
@@ -217,7 +223,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     /// <param name="timeout">超时时间</param>
     /// <param name="encode">编码</param>
     /// <returns>返回单个实体</returns>
-    public T GetSingle<T>(string url, int timeout = 5000, string encode = "UTF-8") where T : Recv_MsgBase,new()
+    public T GetSingle<T>(string url, int timeout = 5000, string encode = "UTF-8") where T : Http_MsgBase,new()
     {
         //HttpWebRequest对象
         //HttpClient->dudu 调用预热处理
@@ -343,7 +349,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
 
     }
 
-    public T CreateGetMsg<T>(string vritualPath, List<string> getStrs) where T : Recv_MsgBase,new()
+    public T CreateGetMsg<T>(string vritualPath, List<string> getStrs) where T : Http_MsgBase,new()
     {
         string tempUrl = GameConst.httpUrl + vritualPath + "?";
 
@@ -371,69 +377,204 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         return buffer.ToString();
     }
 
-    public T CreatePostMsg<T>(string vritualPath, List<string> getStrs) where T : Recv_MsgBase
+    public T CreatePostMsg<T>(string vritualPath, List<string> getStrs) where T : Http_MsgBase
     {
         string tempUrl = GameConst.httpUrl + vritualPath + "?";
 
         return PostAndRespSignle<T>(CreateGetUrl(tempUrl, getStrs), 1000);
     }
-
-    public INetworkChannel channel;
-
-    public void CreateChanel()
+#region WebSocket
+    public int reconnectDelay = 5;
+    private volatile bool connected;
+    //游戏服socket
+    public WebSocket gamews;
+    private object eventQueueLock;
+    private Queue<Response> eventQueue;
+    
+    //游戏服
+    public volatile bool gwsConncted;
+    private volatile bool wsConnected;
+    
+    private Thread socketThread;
+    private Thread pingThread;
+    private Thread gameSocketThread;
+    private WebSocket ws;
+    //重连
+    private Action reconnectHandler;
+    public Action mainReconnectHandler;
+    
+    public void CreateGameSocket(string uri,Action recall=null)
     {
-        if (channel == null)
-        {
-            var helper = new Q3NetworkHelper();
-            helper.PacketHeaderLength = 4;
-            channel = GameEntry.Network.CreateNetworkChannel("q3", helper);
-         
-        }
-        IPAddress ipAddress = IPAddress.Parse(GameConst.ipadress); 
-        channel.Connect(ipAddress,GameConst.port);
-        channel.ReceiveBufferSize = 65536;
-    }
-
-    public class Q3NetworkHelper : INetworkChannelHelper
-    {
-        public void Initialize(INetworkChannel networkChannel)
-        {
-        }
-
-        public void Shutdown()
-        {
+        if (gamews!=null)
+            gamews.Close( );    
+        gamews = new WebSocket(uri, "default-protocol");
+        reconnectHandler=recall;
+        gamews.OnOpen += OnGameOpen;
+        gamews.OnMessage += HandleMessage;
+        gamews.OnError += OnError;
+        gamews.OnClose += OnGameClose;
+        GameConnect();
            
-        }
-
-        public bool SendHeartBeat()
-        {
-            return true;
-        }
-
-        public bool Serialize<T>(T packet, Stream destination) where T : Packet
-        {
-            return true;
-        }
-
-        public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
-        {
-            var streamReader = new StreamReader(source, Encoding.GetEncoding("UTF-8"));
-            Q3PacketHeader header = new Q3PacketHeader();
-            header.PacketLength = streamReader.Read();
-            customErrorData = null;
-            return header;
-        }
-
-        public Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int PacketHeaderLength { get; set; }
     }
 
-    public class Q3PacketHeader : IPacketHeader
+    private void GameConnect()
+    {           
+        gwsConncted = true;
+        if( gameSocketThread != null )
+            gameSocketThread.Abort( );
+        gameSocketThread = new Thread(RunGameSocketThread);
+        gameSocketThread.Start(gamews);
+    }
+    
+    private void RunGameSocketThread(object obj)
     {
-        public int PacketLength { get; set; }
+        WebSocket webSocket = (WebSocket)obj;
+        while (gwsConncted)
+        {
+            if (webSocket.IsConnected)
+            {
+                Thread.Sleep(reconnectDelay);
+            }
+            else
+            {
+                webSocket.Connect();
+            }
+        }
+           
+        webSocket.Close();
     }
+    
+    
+    private void HandleMessage(object sender, MessageEventArgs message)
+    {
+        Log.Info( "Recieve " + message.Data + "---------------" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") );
+        Response resp = new Response(message.Data);
+
+        try
+        {
+            GameManager.Instance.ParseMessage(resp.code, resp.args);
+            lock (eventQueueLock)
+            {
+                eventQueue.Enqueue(resp);   
+            }
+        }
+        catch (Exception exce)
+        {
+            Debug.LogError(exce.ToString());
+
+        }
+    }
+    
+    private bool IsGameSocketOpened;
+    private void OnGameOpen(object sender, EventArgs e)
+    {
+        Log.Info( "---------OnGameSocketConnected" );
+        IsGameSocketOpened = true;
+    }
+    
+    private void OnError(object sender, ErrorEventArgs e)
+    {
+        Debug.LogError(e.Message.ToString());
+    }
+    
+    private void OnGameClose(object sender, CloseEventArgs e)
+    {
+        Debug.Log("Socket closed code "+e.Code+" "+e.Reason);  
+    }
+    public void OnDestroy()
+    {
+        Unload( );            
+    }
+
+    public void OnApplicationQuit()
+    {
+        Close();
+    }
+    
+    public void Unload()
+    {
+        CloseGameSocket();
+        Close();
+        if( gameSocketThread != null )
+            gameSocketThread.Abort( );
+        if( socketThread != null )
+            socketThread.Abort( );
+        if( pingThread != null )
+            pingThread.Abort( );
+    }
+    
+    public void CloseGameSocket()
+    {
+        Log.Info( "------------------CloseGameSocket" );
+        gwsConncted=false;
+        IsGameSocketOpened = false;
+    }
+    
+    public void Close()
+    {
+        Log.Info( "------------------Close" );
+        connected = false;
+        //IsMainReconnected = false;
+    }
+
+    #endregion
+//    public INetworkChannel channel;
+//
+//    public void CreateChanel()
+//    {
+//        if (channel == null)
+//        {
+//            var helper = new Q3NetworkHelper();
+//            helper.PacketHeaderLength = 4;
+//            channel = GameEntry.Network.CreateNetworkChannel("q3", helper);
+//         
+//        }
+//        IPAddress ipAddress = IPAddress.Parse(GameConst.ipadress); 
+//        channel.Connect(ipAddress,GameConst.port);
+//        channel.ReceiveBufferSize = 65536;
+//    }
+//
+//    public class Q3NetworkHelper : INetworkChannelHelper
+//    {
+//        public void Initialize(INetworkChannel networkChannel)
+//        {
+//            Log.Info("Q3NetworkHelper Initialize");
+//        }
+//
+//        public void Shutdown()
+//        {
+//            Log.Info("Q3NetworkHelper Shutdown");
+//        }
+//
+//        public bool SendHeartBeat()
+//        {
+//            return true;
+//        }
+//
+//        public bool Serialize<T>(T packet, Stream destination) where T : Packet
+//        {
+//            return true;
+//        }
+//
+//        public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
+//        {
+//            var streamReader = new StreamReader(source, Encoding.GetEncoding("UTF-8"));
+//            Q3PacketHeader header = new Q3PacketHeader();
+//            header.PacketLength = streamReader.Read();
+//            customErrorData = null;
+//            return header;
+//        }
+//
+//        public Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
+//        {
+//            throw new NotImplementedException();
+//        }
+//
+//        public int PacketHeaderLength { get; set; }
+//    }
+//
+//    public class Q3PacketHeader : IPacketHeader
+//    {
+//        public int PacketLength { get; set; }
+//    }
 }

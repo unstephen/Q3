@@ -32,6 +32,13 @@ namespace GamePlay
 
                 m_ProcedureMenu.StartGame();
             }
+            NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
+            //NetWorkManager.Instance.CreateChanel();
+        }
+
+        private void OnSocketConnect()
+        {
+            Log.Info("连接websocket");
         }
 
         public void OnQuitButtonClick(params object[] args)

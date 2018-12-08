@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
@@ -87,6 +88,10 @@ namespace GamePlay
 
 		public void Clear()
 		{
+			Log.Info("room清楚玩家");
+			if(roomPlayers==null)
+				return;
+			
 			foreach (var player in roomPlayers)
 			{
 				player.Clear();

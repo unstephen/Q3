@@ -35,8 +35,8 @@ namespace GamePlay
         public override void Shutdown()
         {
             base.Shutdown();
-            GameEntry.UI.GetUIForm(UIFormId.MainForm).Close();
-            GameEntry.UI.GetUIForm(UIFormId.TopBarForm).Close();
+            GameEntry.UI.GetUIForm(UIFormId.MainForm).Close(true);
+            GameEntry.UI.GetUIForm(UIFormId.TopBarForm).Close(true);
         }
 
         public override void Update(float elapseSeconds, float realElapseSeconds)

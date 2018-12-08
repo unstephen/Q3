@@ -6,7 +6,7 @@ using System;
 /// <summary>
 /// 接受的基础数据
 /// </summary>
-public class Recv_MsgBase
+public class Http_MsgBase
 {
     /// <summary>
     /// 消息编号
@@ -19,12 +19,17 @@ public class Recv_MsgBase
     public string errMsg;
 }
 
+public class WS_MsgBase
+{
+    public int state;
+}
+
 public class Recv_Login_Data
 {
     public string user_id;
     public string access_token;
 }
-public class Recv_Login : Recv_MsgBase
+public class Recv_Login : Http_MsgBase
 {
     public Recv_Login_Data data;
 }
@@ -39,7 +44,7 @@ public class Recv_MainPage_Data
     public string account_balance; //账户余额
 }
 
-public class Recv_Get_MainPage : Recv_MsgBase
+public class Recv_Get_MainPage : Http_MsgBase
 {
     public Recv_MainPage_Data data;
 }
@@ -60,7 +65,7 @@ public class Recv_Shop_Data
     public List<GoodsData> list;
 }
 
-public class Recv_Get_Shop : Recv_MsgBase
+public class Recv_Get_Shop : Http_MsgBase
 {
     public Recv_Shop_Data data;
 }
@@ -76,12 +81,12 @@ public struct Recv_Order_Data
     public string sign;
 }
 
-public class Recv_Post_Order : Recv_MsgBase
+public class Recv_Post_Order : Http_MsgBase
 {
     Recv_Order_Data data;
 }
 
-public class Recv_Get_CheckPrder : Recv_MsgBase
+public class Recv_Get_CheckPrder : Http_MsgBase
 {
     public int result_code;
     public string result_msg;
@@ -90,56 +95,56 @@ public class Recv_Get_CheckPrder : Recv_MsgBase
 /// <summary>
 /// 我的俱乐部
 /// </summary>
-public class Recv_Get_MyClub : Recv_MsgBase
+public class Recv_Get_MyClub : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 俱乐部详情
 /// </summary>
-public class Recv_Get_ClubInfo : Recv_MsgBase
+public class Recv_Get_ClubInfo : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 创建俱乐部
 /// </summary>
-public class Recv_Post_CreatClub : Recv_MsgBase
+public class Recv_Post_CreatClub : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 搜索俱乐部
 /// </summary>
-public class Recv_Get_SearchClub : Recv_MsgBase
+public class Recv_Get_SearchClub : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 申请俱乐部
 /// </summary>
-public class Recv_Post_ApplyClub : Recv_MsgBase
+public class Recv_Post_ApplyClub : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 处理俱乐部申请
 /// </summary>
-public class Recv_Post_HandleRequest : Recv_MsgBase
+public class Recv_Post_HandleRequest : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 历史战绩（总览）
 /// </summary>
-public class Recv_Get_History : Recv_MsgBase
+public class Recv_Get_History : Http_MsgBase
 {
 
 }
 /// <summary>
 /// 查询历史战绩
 /// </summary>
-public class Recv_Get_SearchHistory : Recv_MsgBase
+public class Recv_Get_SearchHistory : Http_MsgBase
 {
 
 }

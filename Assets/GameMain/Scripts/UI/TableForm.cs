@@ -64,7 +64,7 @@ namespace GamePlay
 
         public void OnClickExit(params object[] args)
         {
-            Close();
+            Close(true);
             main.ChangeGame(GameMode.Lobby);
         }
 

@@ -125,26 +125,31 @@ namespace UnityGameFramework.Runtime
 
         private void OnNetworkConnected(object sender, GameFramework.Network.NetworkConnectedEventArgs e)
         {
+            Log.Warning("OnNetworkConnected ="+e.UserData);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkConnectedEventArgs>().Fill(e));
         }
 
         private void OnNetworkClosed(object sender, GameFramework.Network.NetworkClosedEventArgs e)
         {
+            Log.Warning("OnNetworkClosed ="+e.NetworkChannel);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkClosedEventArgs>().Fill(e));
         }
 
         private void OnNetworkMissHeartBeat(object sender, GameFramework.Network.NetworkMissHeartBeatEventArgs e)
         {
+            Log.Warning("OnNetworkMissHeartBeat ="+e.NetworkChannel);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkMissHeartBeatEventArgs>().Fill(e));
         }
 
         private void OnNetworkError(object sender, GameFramework.Network.NetworkErrorEventArgs e)
         {
+            Log.Warning(e.ErrorMessage);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkErrorEventArgs>().Fill(e));
         }
 
         private void OnNetworkCustomError(object sender, GameFramework.Network.NetworkCustomErrorEventArgs e)
         {
+            Log.Warning("OnNetworkCustomError ="+e.CustomErrorData);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkCustomErrorEventArgs>().Fill(e));
         }
     }

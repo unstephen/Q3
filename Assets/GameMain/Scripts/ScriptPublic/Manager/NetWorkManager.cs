@@ -5,15 +5,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using GameFramework;
 using GameFramework.Network;
+using ProtoBuf;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 using WebSocketSharp;
 using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 using GameEntry = GamePlay.GameEntry;
+using NetworkErrorEventArgs = GameFramework.Network.NetworkErrorEventArgs;
 
 public class NetWorkManager : MonoSingleton<NetWorkManager>
 {
@@ -22,8 +25,8 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
     public override void Init()
     {
         base.Init();
-        connected = false;
-        wsConnected = true;
+//        connected = false;
+//        wsConnected = true;
         //实例化jsonhelper
         jsonHelper = new LitJsonHelper();
     }
@@ -384,197 +387,252 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         return PostAndRespSignle<T>(CreateGetUrl(tempUrl, getStrs), 1000);
     }
 #region WebSocket
-    public int reconnectDelay = 5;
-    private volatile bool connected;
-    //游戏服socket
-    public WebSocket gamews;
-    private object eventQueueLock;
-    private Queue<Response> eventQueue;
-    
-    //游戏服
-    public volatile bool gwsConncted;
-    private volatile bool wsConnected;
-    
-    private Thread socketThread;
-    private Thread pingThread;
-    private Thread gameSocketThread;
-    private WebSocket ws;
-    //重连
-    private Action reconnectHandler;
-    public Action mainReconnectHandler;
-    
-    public void CreateGameSocket(string uri,Action recall=null)
-    {
-        if (gamews!=null)
-            gamews.Close( );    
-        gamews = new WebSocket(uri, "default-protocol");
-        reconnectHandler=recall;
-        gamews.OnOpen += OnGameOpen;
-        gamews.OnMessage += HandleMessage;
-        gamews.OnError += OnError;
-        gamews.OnClose += OnGameClose;
-        GameConnect();
-           
-    }
-
-    private void GameConnect()
-    {           
-        gwsConncted = true;
-        if( gameSocketThread != null )
-            gameSocketThread.Abort( );
-        gameSocketThread = new Thread(RunGameSocketThread);
-        gameSocketThread.Start(gamews);
-    }
-    
-    private void RunGameSocketThread(object obj)
-    {
-        WebSocket webSocket = (WebSocket)obj;
-        while (gwsConncted)
-        {
-            if (webSocket.IsConnected)
-            {
-                Thread.Sleep(reconnectDelay);
-            }
-            else
-            {
-                webSocket.Connect();
-            }
-        }
-           
-        webSocket.Close();
-    }
-    
-    
-    private void HandleMessage(object sender, MessageEventArgs message)
-    {
-        Log.Info( "Recieve " + message.Data + "---------------" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") );
-        Response resp = new Response(message.Data);
-
-        try
-        {
-            GameManager.Instance.ParseMessage(resp.code, resp.args);
-            lock (eventQueueLock)
-            {
-                eventQueue.Enqueue(resp);   
-            }
-        }
-        catch (Exception exce)
-        {
-            Debug.LogError(exce.ToString());
-
-        }
-    }
-    
-    private bool IsGameSocketOpened;
-    private void OnGameOpen(object sender, EventArgs e)
-    {
-        Log.Info( "---------OnGameSocketConnected" );
-        IsGameSocketOpened = true;
-    }
-    
-    private void OnError(object sender, ErrorEventArgs e)
-    {
-        Debug.LogError(e.Message.ToString());
-    }
-    
-    private void OnGameClose(object sender, CloseEventArgs e)
-    {
-        Debug.Log("Socket closed code "+e.Code+" "+e.Reason);  
-    }
-    public void OnDestroy()
-    {
-        Unload( );            
-    }
-
-    public void OnApplicationQuit()
-    {
-        Close();
-    }
-    
-    public void Unload()
-    {
-        CloseGameSocket();
-        Close();
-        if( gameSocketThread != null )
-            gameSocketThread.Abort( );
-        if( socketThread != null )
-            socketThread.Abort( );
-        if( pingThread != null )
-            pingThread.Abort( );
-    }
-    
-    public void CloseGameSocket()
-    {
-        Log.Info( "------------------CloseGameSocket" );
-        gwsConncted=false;
-        IsGameSocketOpened = false;
-    }
-    
-    public void Close()
-    {
-        Log.Info( "------------------Close" );
-        connected = false;
-        //IsMainReconnected = false;
-    }
+//    public int reconnectDelay = 5;
+//    private volatile bool connected;
+//    //游戏服socket
+//    public WebSocket gamews;
+//    private object eventQueueLock;
+//    private Queue<Response> eventQueue;
+//    
+//    //游戏服
+//    public volatile bool gwsConncted;
+//    private volatile bool wsConnected;
+//    
+//    private Thread socketThread;
+//    private Thread pingThread;
+//    private Thread gameSocketThread;
+//    private WebSocket ws;
+//    //重连
+//    private Action reconnectHandler;
+//    public Action mainReconnectHandler;
+//    
+//    public void CreateGameSocket(string uri,Action recall=null)
+//    {
+//        if (gamews!=null)
+//            gamews.Close( );    
+//        gamews = new WebSocket(uri, "default-protocol");
+//        reconnectHandler=recall;
+//        gamews.OnOpen += OnGameOpen;
+//        gamews.OnMessage += HandleMessage;
+//        gamews.OnError += OnError;
+//        gamews.OnClose += OnGameClose;
+//        GameConnect();
+//           
+//    }
+//
+//    private void GameConnect()
+//    {           
+//        gwsConncted = true;
+//        if( gameSocketThread != null )
+//            gameSocketThread.Abort( );
+//        gameSocketThread = new Thread(RunGameSocketThread);
+//        gameSocketThread.Start(gamews);
+//    }
+//    
+//    private void RunGameSocketThread(object obj)
+//    {
+//        WebSocket webSocket = (WebSocket)obj;
+//        while (gwsConncted)
+//        {
+//            if (webSocket.IsConnected)
+//            {
+//                Thread.Sleep(reconnectDelay);
+//            }
+//            else
+//            {
+//                webSocket.Connect();
+//            }
+//        }
+//           
+//        webSocket.Close();
+//    }
+//    
+//    
+//    private void HandleMessage(object sender, MessageEventArgs message)
+//    {
+//        Log.Info( "Recieve " + message.Data + "---------------" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") );
+//        Response resp = new Response(message.Data);
+//
+//        try
+//        {
+//            GameManager.Instance.ParseMessage(resp.code, resp.args);
+//            lock (eventQueueLock)
+//            {
+//                eventQueue.Enqueue(resp);   
+//            }
+//        }
+//        catch (Exception exce)
+//        {
+//            Debug.LogError(exce.ToString());
+//
+//        }
+//    }
+//    
+//    private bool IsGameSocketOpened;
+//    private void OnGameOpen(object sender, EventArgs e)
+//    {
+//        Log.Info( "---------OnGameSocketConnected" );
+//        IsGameSocketOpened = true;
+//    }
+//    
+//    private void OnError(object sender, ErrorEventArgs e)
+//    {
+//        Debug.LogError(e.Message.ToString());
+//    }
+//    
+//    private void OnGameClose(object sender, CloseEventArgs e)
+//    {
+//        Debug.Log("Socket closed code "+e.Code+" "+e.Reason);  
+//    }
+//    public void OnDestroy()
+//    {
+//        Unload( );            
+//    }
+//
+//    public void OnApplicationQuit()
+//    {
+//        Close();
+//    }
+//    
+//    public void Unload()
+//    {
+//        CloseGameSocket();
+//        Close();
+//        if( gameSocketThread != null )
+//            gameSocketThread.Abort( );
+//        if( socketThread != null )
+//            socketThread.Abort( );
+//        if( pingThread != null )
+//            pingThread.Abort( );
+//    }
+//    
+//    public void CloseGameSocket()
+//    {
+//        Log.Info( "------------------CloseGameSocket" );
+//        gwsConncted=false;
+//        IsGameSocketOpened = false;
+//    }
+//    
+//    public void Close()
+//    {
+//        Log.Info( "------------------Close" );
+//        connected = false;
+//        //IsMainReconnected = false;
+//    }
 
     #endregion
-//    public INetworkChannel channel;
-//
-//    public void CreateChanel()
-//    {
-//        if (channel == null)
-//        {
-//            var helper = new Q3NetworkHelper();
-//            helper.PacketHeaderLength = 4;
-//            channel = GameEntry.Network.CreateNetworkChannel("q3", helper);
-//         
-//        }
-//        IPAddress ipAddress = IPAddress.Parse(GameConst.ipadress); 
-//        channel.Connect(ipAddress,GameConst.port);
-//        channel.ReceiveBufferSize = 65536;
-//    }
-//
-//    public class Q3NetworkHelper : INetworkChannelHelper
-//    {
-//        public void Initialize(INetworkChannel networkChannel)
-//        {
-//            Log.Info("Q3NetworkHelper Initialize");
-//        }
-//
-//        public void Shutdown()
-//        {
-//            Log.Info("Q3NetworkHelper Shutdown");
-//        }
-//
-//        public bool SendHeartBeat()
-//        {
-//            return true;
-//        }
-//
-//        public bool Serialize<T>(T packet, Stream destination) where T : Packet
-//        {
-//            return true;
-//        }
-//
-//        public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
-//        {
-//            var streamReader = new StreamReader(source, Encoding.GetEncoding("UTF-8"));
-//            Q3PacketHeader header = new Q3PacketHeader();
-//            header.PacketLength = streamReader.Read();
-//            customErrorData = null;
-//            return header;
-//        }
-//
-//        public Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
-//        {
-//            throw new NotImplementedException();
-//        }
-//
-//        public int PacketHeaderLength { get; set; }
-//    }
-//
-//    public class Q3PacketHeader : IPacketHeader
-//    {
-//        public int PacketLength { get; set; }
-//    }
+    public INetworkChannel channel;
+
+    public void CreateChanel()
+    {
+        if (channel == null)
+        {
+            var helper = new Q3NetworkHelper();
+            helper.PacketHeaderLength = 4;
+            channel = GameEntry.Network.CreateNetworkChannel("q3", helper);
+         
+        }
+        IPAddress ipAddress = IPAddress.Parse(GameConst.ipadress); 
+        channel.Connect(ipAddress,GameConst.tcp_port);
+        channel.ReceiveBufferSize = 65536;
+        channel.SendBufferSize = 65536;
+        channel.HeartBeatInterval = 3600 * 24;
+    }
+    /// <summary>
+    /// Q3 TCP的发送消息函数
+    /// </summary>
+    /// <param name="id">协议id,参看Protocal.cs</param>
+    /// <param name="args">若干参数，参看MsgParse来Push参数</param>
+    public void Send(byte id,params object[] args)
+    {
+        Q3Packet msg = new Q3Packet();
+        byte[] buffer = new byte[0];
+        MsgParse.PushByte(id,ref buffer);
+        foreach (var arg in args)
+        {
+            if (arg is byte)
+            {
+                MsgParse.PushByte(id,ref buffer);
+            }
+            else if (arg is string)
+            {
+                MsgParse.PushString((string)arg,ref buffer);
+            }
+            else if (arg is int)
+            {
+                MsgParse.PushInt((int)arg,ref buffer);
+            }
+        }
+       
+        msg.SetArgs(buffer);
+        channel.Send(msg);
+    }
+
+    public class Q3NetworkHelper : INetworkChannelHelper
+    {
+        public void Initialize(INetworkChannel networkChannel)
+        {
+            networkChannel.RegisterHandler(new RecvHandler());
+        }
+
+        public void Shutdown()
+        {
+            Log.Info("Q3NetworkHelper Shutdown");
+        }
+
+        public bool SendHeartBeat()
+        {
+            return false;
+        }
+
+        public bool Serialize<T>(T packet, Stream destination) where T : GameFramework.Network.Packet
+        {
+           
+            var c2SPacket = (object) packet as Q3Packet;
+            var dataArray = c2SPacket.args;
+            byte[] sendArray = new byte[2+dataArray.Length];
+            var sizeArray = BitConverter.GetBytes((short)dataArray.Length);
+            sendArray[0] = sizeArray[0];
+            sendArray[1] = sizeArray[1];
+            Buffer.BlockCopy(dataArray,0,sendArray,2,dataArray.Length);
+            destination.Write(c2SPacket.args, 0, c2SPacket.args.Length);
+            return true;
+        }
+
+        public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
+        {
+            var streamReader = new StreamReader(source, Encoding.GetEncoding("UTF-8"));
+            Q3PacketHeader header = new Q3PacketHeader();
+            char[] buffer = new char[2];
+            streamReader.Read(buffer,0,2);
+            header.PacketLength = Convert.ToInt32(buffer.ToString());
+            customErrorData = null;
+            return header;
+        }
+
+        public GameFramework.Network.Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
+        {
+            byte[] bytes = new byte[source.Length-2]; 
+            source.Read(bytes, 2, bytes.Length); 
+            
+            var ret = new Q3Packet();
+            ret.SetArgs(bytes);
+            customErrorData = null;
+            return ret;
+        }
+
+        public int PacketHeaderLength { get; set; }
+    }
+
+    public class Q3PacketHeader : IPacketHeader, IReference
+    {
+        public int PacketLength { get; set; }
+        public void Clear()
+        {
+            PacketLength = 0;
+        }
+    }
+
+ 
+ 
 }

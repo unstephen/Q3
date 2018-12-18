@@ -11,6 +11,7 @@ namespace GamePlay
         private bool m_StartGame = false;
         private MenuForm m_MenuForm = null;
         private bool m_needSendLogin = true;
+        private IDisposable loginDisposable;
 
         public override bool UseNativeDialog
         {
@@ -41,10 +42,11 @@ namespace GamePlay
         {
             if (m_needSendLogin)
             {
-                Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(x =>
+                Observable.Timer(TimeSpan.FromSeconds(0.2f)).Subscribe(x =>
                 {
                     var role = GameManager.Instance.GetRoleData();
                     NetWorkManager.Instance.Send(Protocal.Login, role.id.Value.ToString(), role.token.Value);
+                    loginDisposable = GameManager.Instance.GetRoleData().pId.ObserveEveryValueChanged(p => p).Subscribe(s => StartGame());
                 });
                 
                 m_needSendLogin = false;
@@ -56,7 +58,10 @@ namespace GamePlay
             base.OnLeave(procedureOwner, isShutdown);
 
             GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
-
+            if (loginDisposable != null)
+            {
+                loginDisposable.Dispose();
+            }
             if (m_MenuForm != null)
             {
                 m_MenuForm.Close(isShutdown);
@@ -67,7 +72,7 @@ namespace GamePlay
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-
+           
             if (m_StartGame)
             {
                 procedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, GameEntry.Config.GetInt("Scene.Main"));

@@ -41,7 +41,7 @@ namespace GamePlay
         {
             if (m_needSendLogin)
             {
-                Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(x =>
+                Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(x =>
                 {
                     var role = GameManager.Instance.GetRoleData();
                     NetWorkManager.Instance.Send(Protocal.Login, role.id.Value.ToString(), role.token.Value);

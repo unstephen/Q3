@@ -211,7 +211,9 @@ public class RecvHandler : IPacketHandler
     /// <summary>
 /// 不用接口的id，廢棄
 /// </summary>
-    public int Id { get; private set; }
+    public int Id {
+        get { return 1; }
+    }
 
 }
 

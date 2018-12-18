@@ -528,7 +528,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         if (channel == null)
         {
             var helper = new Q3NetworkHelper();
-            helper.PacketHeaderLength = 4;
+            helper.PacketHeaderLength = 2;
             channel = GameEntry.Network.CreateNetworkChannel("q3", helper);
          
         }
@@ -595,25 +595,24 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             sendArray[0] = sizeArray[0];
             sendArray[1] = sizeArray[1];
             Buffer.BlockCopy(dataArray,0,sendArray,2,dataArray.Length);
-            destination.Write(c2SPacket.args, 0, c2SPacket.args.Length);
+            destination.Write(sendArray, 0, sendArray.Length);
             return true;
         }
 
         public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
         {
-            var streamReader = new StreamReader(source, Encoding.GetEncoding("UTF-8"));
             Q3PacketHeader header = new Q3PacketHeader();
-            char[] buffer = new char[2];
-            streamReader.Read(buffer,0,2);
-            header.PacketLength = Convert.ToInt32(buffer.ToString());
+            byte[] buffer = new byte[2];
+            source.Read(buffer,0,2);
+            header.PacketLength = BitConverter.ToInt16(buffer,0);
             customErrorData = null;
             return header;
         }
 
         public GameFramework.Network.Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
         {
-            byte[] bytes = new byte[source.Length-2]; 
-            source.Read(bytes, 2, bytes.Length); 
+            byte[] bytes = new byte[packetHeader.PacketLength]; 
+            source.Read(bytes, 0, packetHeader.PacketLength); 
             
             var ret = new Q3Packet();
             ret.SetArgs(bytes);

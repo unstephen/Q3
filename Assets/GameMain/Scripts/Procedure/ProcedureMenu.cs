@@ -1,4 +1,6 @@
-﻿using GameFramework.Event;
+﻿using System;
+using GameFramework.Event;
+using UniRx;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -8,6 +10,7 @@ namespace GamePlay
     {
         private bool m_StartGame = false;
         private MenuForm m_MenuForm = null;
+        private bool m_needSendLogin = true;
 
         public override bool UseNativeDialog
         {
@@ -27,9 +30,25 @@ namespace GamePlay
             base.OnEnter(procedureOwner);
 
             GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            GameEntry.Event.Subscribe(NetworkConnectedEventArgs.EventId, OnConnected);
+            
 
             m_StartGame = false;
             GameEntry.UI.OpenUIForm(UIFormId.MenuForm, this);
+        }
+
+        private void OnConnected(object sender, GameEventArgs e)
+        {
+            if (m_needSendLogin)
+            {
+                Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(x =>
+                {
+                    var role = GameManager.Instance.GetRoleData();
+                    NetWorkManager.Instance.Send(Protocal.Login, role.id.Value.ToString(), role.token.Value);
+                });
+                
+                m_needSendLogin = false;
+            }
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

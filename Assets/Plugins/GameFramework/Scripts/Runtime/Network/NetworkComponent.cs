@@ -130,6 +130,7 @@ namespace UnityGameFramework.Runtime
 
         private void OnNetworkClosed(object sender, GameFramework.Network.NetworkClosedEventArgs e)
         {
+            Log.Warning("OnNetworkClosed");
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkClosedEventArgs>().Fill(e));
         }
 
@@ -140,11 +141,13 @@ namespace UnityGameFramework.Runtime
 
         private void OnNetworkError(object sender, GameFramework.Network.NetworkErrorEventArgs e)
         {
+            Log.Warning(e.ErrorMessage);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkErrorEventArgs>().Fill(e));
         }
 
         private void OnNetworkCustomError(object sender, GameFramework.Network.NetworkCustomErrorEventArgs e)
         {
+            Log.Warning("OnNetworkCustomError ="+e.CustomErrorData);
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkCustomErrorEventArgs>().Fill(e));
         }
     }

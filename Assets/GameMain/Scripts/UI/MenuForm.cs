@@ -30,17 +30,18 @@ namespace GamePlay
             {
                 GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
 
-                m_ProcedureMenu.StartGame();
+           
+                
+               
             }
-            NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
-            //NetWorkManager.Instance.CreateChanel();
+            //NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
+            if (login != null)
+            {
+                NetWorkManager.Instance.CreateChanel();
+            }
         }
-
-        private void OnSocketConnect()
-        {
-            Log.Info("连接websocket");
-        }
-
+        
+ 
         public void OnQuitButtonClick(params object[] args)
         {
             Log.Debug("quit{0}",111111);

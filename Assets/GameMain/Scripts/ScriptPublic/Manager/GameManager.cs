@@ -6,6 +6,8 @@ public class GameManager : MonoSingleton<GameManager>
     RoleData roleData;
     Send_MsgBase sendBaseData;
 
+    public List<GoodsData> goodsList;
+
     public void InitRoleData(string id, string token)
     {
         GetRoleData().InitData(id, token);
@@ -33,6 +35,18 @@ public class GameManager : MonoSingleton<GameManager>
         return temp.CreateSendInfo(args);
     }
     
+    public void SetGoosList()
+    {
+        if (goodsList == null)
+        {
+            goodsList = new List<GoodsData>();
+        }
+        else
+        {
+            goodsList.Clear();
+        }
+    }
+
     #region Network
        /// <summary>
     /// 链接错误

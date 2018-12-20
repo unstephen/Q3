@@ -42,5 +42,9 @@
         /// 游戏桌
         /// </summary>
         TopBarForm = 106,
+        /// <summary>
+        /// 商店
+        /// </summary>
+        ShopForm = 107,
     }
 }

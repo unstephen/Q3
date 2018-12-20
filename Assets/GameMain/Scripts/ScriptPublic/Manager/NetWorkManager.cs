@@ -534,8 +534,8 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         }
         IPAddress ipAddress = IPAddress.Parse(GameConst.ipadress); 
         channel.Connect(ipAddress,GameConst.tcp_port);
-        channel.ReceiveBufferSize = 65536;
-        channel.SendBufferSize = 65536;
+        channel.ReceiveBufferSize = 1024;
+        channel.SendBufferSize = 1024;
         channel.HeartBeatInterval = 3600 * 24;
     }
     /// <summary>
@@ -552,7 +552,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         {
             if (arg is byte)
             {
-                MsgParse.PushByte(id,ref buffer);
+                MsgParse.PushByte((byte)arg,ref buffer);
             }
             else if (arg is string)
             {
@@ -592,10 +592,13 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             var dataArray = c2SPacket.args;
             byte[] sendArray = new byte[2+dataArray.Length];
             var sizeArray = BitConverter.GetBytes((short)dataArray.Length);
+            MsgParse.ReverseBytes(sizeArray);
             sendArray[0] = sizeArray[0];
             sendArray[1] = sizeArray[1];
+            
             Buffer.BlockCopy(dataArray,0,sendArray,2,dataArray.Length);
             destination.Write(sendArray, 0, sendArray.Length);
+            Log.Debug("发送消息长度={0}",sendArray.Length);
             return true;
         }
 
@@ -604,6 +607,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             Q3PacketHeader header = new Q3PacketHeader();
             byte[] buffer = new byte[2];
             source.Read(buffer,0,2);
+            MsgParse.ReverseBytes(buffer);
             header.PacketLength = BitConverter.ToInt16(buffer,0);
             customErrorData = null;
             return header;

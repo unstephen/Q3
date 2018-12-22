@@ -1,6 +1,7 @@
 public class Protocal
 {
     public const byte Login = 1;     //连接服务器
+    public const byte SITIN = 12; //坐下
     public const byte RecvLogin = 35;     //登陸
     public const byte Error = 250; //錯誤
 

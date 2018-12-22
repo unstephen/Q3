@@ -49,6 +49,19 @@ public class Recv_Get_MainPage : Http_MsgBase
     public Recv_MainPage_Data data;
 }
 /// <summary>
+/// 创建房间
+/// </summary>
+public class Recv_CreateRoom_Data
+{
+    public int GID;
+    public int room_id;
+}
+
+public class Recv_CreateRoom : Http_MsgBase
+{
+    public Recv_CreateRoom_Data data;
+}
+/// <summary>
 /// 商城
 /// </summary>
 public struct GoodsData
@@ -207,6 +220,28 @@ public class Recv_Get_SearchHistory : Http_MsgBase
 
 }
 
+public class Recv_SearchRoom_Data
+{
+    public int room_id;
+    public string room_name;
+    public string create_user;
+    public int countdown;
+}
+public class Recv_SearchRoom : Http_MsgBase
+{
+    public Recv_SearchRoom_Data data;
+}
+
+public class Recv_JoinRoom_Data
+{
+    public int room_id;
+    public int GID;
+}
+public class Recv_JoinRoom : Http_MsgBase
+{
+    public Recv_JoinRoom_Data data;
+}
+
 /// <summary>
 /// 发送的基础数据
 /// </summary>
@@ -261,6 +296,8 @@ public class Send_Get_Shop : Send_MsgBase
     }
 }
 
+
+
 /// <summary>
 /// 订单
 /// </summary>
@@ -298,22 +335,36 @@ public class Send_Get_MyClub : Send_MsgBase
     }
 }
 
+
 public class Send_Get_ClubInfo : Send_MsgBase
+{
+ public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+        temp.Add("club_id=" + (string)args[2]);
+        return temp;
+    }
+}
+
+/// <summary>
+/// 搜索房间
+/// </summary>
+public class Send_Search_Room : Send_MsgBase
 {
     public override List<string> CreateSendInfo(params object[] args)
     {
         List<string> temp = new List<string>();
         temp = base.CreateSendInfo(args);
-
-        temp.Add("club_id=" + (string)args[2]);
-
+        temp.Add("room_id=" + (string)args[2]);
         return temp;
     }
 }
 
+
 public class Send_Post_CreateClub : Send_MsgBase
 {
-    public override List<string> CreateSendInfo(params object[] args)
+public override List<string> CreateSendInfo(params object[] args)
     {
         List<string> temp = new List<string>();
         temp = base.CreateSendInfo(args);
@@ -321,6 +372,43 @@ public class Send_Post_CreateClub : Send_MsgBase
         temp.Add("club_name=" + (string)args[2]);
         temp.Add("club_description=" + (string)args[3]);
         temp.Add("allow_by_search=" + (string)args[4]);
+
+        return temp;
+    }
+}
+/// <summary>
+/// 加入房间
+/// </summary>
+public class Send_Join_Room : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("room_id=" + (string)args[2]);
+        temp.Add("password=" + (string)args[3]);
+
+        return temp;
+    }
+}
+/// <summary>
+/// 创建房间
+/// </summary>
+public class Send_Create_Room : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("club_id=" + (string)args[2]);
+        temp.Add("room_name=" + (string)args[3]);
+        temp.Add("password=" + (string)args[4]);
+        temp.Add("base_score=" + (string)args[5]);
+        temp.Add("geme_type=" + (string)args[6]);
+        temp.Add("room_seat_number=" + (string)args[7]);
+        temp.Add("game_duration=" + (string)args[8]);
 
         return temp;
     }

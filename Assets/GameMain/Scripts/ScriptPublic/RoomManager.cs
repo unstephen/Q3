@@ -12,13 +12,13 @@ namespace GamePlay
 	{
 		public RoomData rData;
 	
-		public void Init(int id, string name, int clubId)
+		public void Init(int GID,int id, string name, int clubId)
 		{
 			if (rData == null)
 			{
 				rData = new RoomData();
 			}
-			rData.InitData(id, name, clubId);
+			rData.InitData(GID,id, name, clubId);
 		}
 
 		public ReactiveProperty<PlayerSelf> Self

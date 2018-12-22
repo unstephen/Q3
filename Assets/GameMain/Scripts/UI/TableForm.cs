@@ -54,6 +54,8 @@ namespace GamePlay
         }
         private void OnClickSeat(object[] args)
         {
+            //发送坐下
+            NetWorkManager.Instance.Send(Protocal.SITIN,RoomManager.Instance.rData.id.Value);
             playerWigets[0].SetPlayerData(RoomManager.Instance.Self.Value);
             RoomManager.Instance.Self.Value.SetPos(0);
             for (int i = 1; i <= RoomManager.Instance.rData.roomPlayers.Count; i++)

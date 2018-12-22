@@ -57,15 +57,16 @@ namespace GamePlay
             //if (shopPage != null && shopPage.code == 0)
             //{
             //    Debug.Log("show skop page");
+            //    GameEntry.UI.OpenUIForm(UIFormId.ShopForm, this);
             //}
-
+            GameEntry.UI.OpenUIForm(UIFormId.ShopForm, this);
             //订单测试
-            Recv_Post_Order shopPage = NetWorkManager.Instance.CreatePostMsg<Recv_Post_Order>(GameConst._order,
-                GameManager.Instance.GetSendInfoStringList<Send_Post_Order>(role.id.Value, role.token.Value, "0"));
-            if (shopPage != null && shopPage.code == 0)
-            {
-                Debug.Log("show skop page");
-            }
+            //Recv_Post_Order shopPage = NetWorkManager.Instance.CreatePostMsg<Recv_Post_Order>(GameConst._order,
+            //    GameManager.Instance.GetSendInfoStringList<Send_Post_Order>(role.id.Value, role.token.Value, "0"));
+            //if (shopPage != null && shopPage.code == 0)
+            //{
+            //    Debug.Log("show skop page");
+            //}
         }
 
 #if UNITY_2017_3_OR_NEWER

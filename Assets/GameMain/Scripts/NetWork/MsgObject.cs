@@ -68,13 +68,13 @@ public struct GoodsData
 {
     public string goods_id;
     public string type;
-    public string goods_name;
-    public string price;
+    public int number;
+    public double price;
 }
 
-public class Recv_Shop_Data
+public struct Recv_Shop_Data
 {
-    public string total;
+    public int total;
     public List<GoodsData> list;
 }
 
@@ -83,7 +83,7 @@ public class Recv_Get_Shop : Http_MsgBase
     public Recv_Shop_Data data;
 }
 /// <summary>
-/// 购买物品
+/// 订单
 /// </summary>
 public struct Recv_Order_Data
 {
@@ -99,25 +99,83 @@ public class Recv_Post_Order : Http_MsgBase
     Recv_Order_Data data;
 }
 
-public class Recv_Get_CheckPrder : Http_MsgBase
+public struct Recv_CheckOrder_Data
 {
     public int result_code;
     public string result_msg;
 }
 
+public class Recv_Get_CheckOrder : Http_MsgBase
+{
+    Recv_CheckOrder_Data data;
+}
+
 /// <summary>
 /// 我的俱乐部
 /// </summary>
+public struct ClubData
+{
+    public string club_id;
+    public string club_name;
+    public string vip_level;
+    public string member_number;
+    public string ongoing_games;
+}
+
+public struct Recv_Get_MyClub_Data
+{
+    public int total;
+    public List<ClubData> list;
+}
+
 public class Recv_Get_MyClub : Http_MsgBase
 {
-
+    public Recv_Get_MyClub_Data data;
 }
 /// <summary>
 /// 俱乐部详情
 /// </summary>
+public struct RunGameData
+{
+    public string room_id;
+    public string room_name;
+    public int base_score;
+    public int player_number;
+    public int room_seat_number;
+}
+
+public struct ManagerData
+{
+    public string user_id;
+    public string nick_name;
+    public string head_image_url;
+}
+
+public struct ApplicantsData
+{
+    public string apply_id;
+    public string user_id;
+    public string nick_name;
+    public string head_image_url;
+}
+
+public struct Recv_Get_ClubInfo_Data
+{
+    public string club_id;
+    public string club_name;
+    public string club_description;
+    public bool allow_by_search;
+    public int vip_level;
+    public int member_number;
+    public int ongoing_game_number;
+    public List<RunGameData> ongoing_games;
+    public List<ManagerData> managers;
+    public List<ApplicantsData> applicants;
+}
+
 public class Recv_Get_ClubInfo : Http_MsgBase
 {
-
+    Recv_Get_ClubInfo_Data data;
 }
 /// <summary>
 /// 创建俱乐部
@@ -256,9 +314,37 @@ public class Send_Post_Order : Send_MsgBase
     }
 }
 
-public class Send_Post_PurchaseItem : Send_MsgBase
+public class Send_Get_Checkorder : Send_MsgBase
 {
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
 
+        temp.Add("prepay_id=" + (string)args[2]);
+
+        return temp;
+    }
+}
+
+public class Send_Get_MyClub : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        return base.CreateSendInfo(args);
+    }
+}
+
+
+public class Send_Get_ClubInfo : Send_MsgBase
+{
+ public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+        temp.Add("club_id=" + (string)args[2]);
+        return temp;
+    }
 }
 
 /// <summary>
@@ -270,8 +356,22 @@ public class Send_Search_Room : Send_MsgBase
     {
         List<string> temp = new List<string>();
         temp = base.CreateSendInfo(args);
-
         temp.Add("room_id=" + (string)args[2]);
+        return temp;
+    }
+}
+
+
+public class Send_Post_CreateClub : Send_MsgBase
+{
+public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("club_name=" + (string)args[2]);
+        temp.Add("club_description=" + (string)args[3]);
+        temp.Add("allow_by_search=" + (string)args[4]);
 
         return temp;
     }
@@ -309,7 +409,6 @@ public class Send_Create_Room : Send_MsgBase
         temp.Add("geme_type=" + (string)args[6]);
         temp.Add("room_seat_number=" + (string)args[7]);
         temp.Add("game_duration=" + (string)args[8]);
-
 
         return temp;
     }

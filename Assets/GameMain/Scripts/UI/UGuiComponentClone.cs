@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GamePlay
 {
-    public abstract class UGuiComponentClone : UGuiComponent
+    public class UGuiComponentClone : UGuiComponent
     {
         private static Type catch_type = null;
 

@@ -20,6 +20,7 @@ public class RoleData
 {
 	public ReactiveProperty<int> id;
 	public ReactiveProperty<int> pId = new ReactiveProperty<int>();
+
     public ReactiveProperty<string> token;
 
 	public ReactiveProperty<string> name;

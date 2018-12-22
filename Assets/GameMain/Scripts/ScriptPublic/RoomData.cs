@@ -12,6 +12,7 @@ namespace GamePlay
 */
 	public class RoomData
 	{
+		public ReactiveProperty<int> gId;
 		public ReactiveProperty<int> id;
 		public ReactiveProperty<string> name;	
 		public ReactiveCollection<PlayerOther> roomPlayers;
@@ -34,9 +35,10 @@ namespace GamePlay
 
 		int _clubId;
 	
-		public void InitData(int roomId, string roomName, int clubId = 0)
+		public void InitData(int gId,int roomId, string roomName, int clubId = 0)
 		{
 			id = new ReactiveProperty<int>(roomId);
+			this.gId = new ReactiveProperty<int>(gId);
 			name = new ReactiveProperty<string>(roomName);
 			_clubId = clubId;
 		

@@ -8,7 +8,7 @@ using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
-    public abstract class UGuiForm : UGuiComponent
+    public class UGuiForm : UGuiComponent
     {
         public const int DepthFactor = 100;
         private const float FadeTime = 0.3f;

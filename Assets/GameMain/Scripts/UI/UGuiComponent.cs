@@ -7,7 +7,7 @@ using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
-    public abstract class UGuiComponent : UIFormLogic
+    public class UGuiComponent : UIFormLogic
     {
 
         public bool initialized

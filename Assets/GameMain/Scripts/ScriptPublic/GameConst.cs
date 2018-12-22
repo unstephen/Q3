@@ -23,5 +23,8 @@ public class GameConst {
     public const string _handleRequest = "/apply/deal";
     public const string _history = "/history/overview";
     public const string _searchHistory = "/history/list";
+    public const string _searchRoom = "/room/search";
+    public const string _joinRoom = "/room/join";
+    public const string _createRoom = "/room/create";
     public const float OUT_CARD_SPAN = 0.9f;
 }

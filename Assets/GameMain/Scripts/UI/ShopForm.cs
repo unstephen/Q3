@@ -28,13 +28,13 @@ namespace GamePlay
         {
             List<GoodsData> goods = GameManager.Instance.goodsList;
 
-            string jsonStr = File.ReadAllText("shopJson.txt");
-            Recv_Get_Shop shopData = JsonMapper.ToObject<Recv_Get_Shop>(jsonStr);
-            Debug.Log(jsonStr);
-            if (shopData != null)
+            //string jsonStr = File.ReadAllText("shopJson.txt");
+            //Recv_Get_Shop shopData = JsonMapper.ToObject<Recv_Get_Shop>(jsonStr);
+            //Debug.Log(jsonStr);
+            if (goods != null)
             {
                 int index = 0;
-                foreach (var item in shopData.data.list)
+                foreach (var item in goods)
                 {
                     GoodItem tempItem = goodsItem.Clone() as GoodItem;
                     if (tempItem)

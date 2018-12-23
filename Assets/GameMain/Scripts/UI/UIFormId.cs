@@ -46,5 +46,9 @@
         /// 商店
         /// </summary>
         ShopForm = 107,
+        /// <summary>
+        /// 俱樂部
+        /// </summary>
+        ClubForm = 108,
     }
 }

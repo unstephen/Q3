@@ -20,8 +20,10 @@ namespace GamePlay
 
         public void OnStartButtonClick(params object[] args)
         {    
+
+
             string type = "login_type=weixin";
-            string token = "access_token=test_token";
+            string token = "access_token=wxe8355f09eacfc7dd";
             string openId = "openid=123";
                 
             Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
@@ -29,10 +31,6 @@ namespace GamePlay
             if (login != null && login.code == 0)
             {
                 GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
-
-           
-                
-               
             }
             //NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
             if (login != null)

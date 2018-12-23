@@ -35,7 +35,7 @@ public class GameManager : MonoSingleton<GameManager>
         return temp.CreateSendInfo(args);
     }
     
-    public void SetGoosList()
+    public void SetGoosList(Recv_Shop_Data data)
     {
         if (goodsList == null)
         {
@@ -44,6 +44,14 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             goodsList.Clear();
+        }
+
+        if (data.list != null)
+        {
+            foreach (var item in data.list)
+            {
+                goodsList.Add(item);
+            }
         }
     }
 

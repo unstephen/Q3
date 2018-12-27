@@ -11,6 +11,8 @@ namespace GamePlay
     public class MainForm : UGuiForm
     {
         private SubMainKeyBoard subMainKeyBoard;
+
+        private RoleData role;
         
         protected override void OnInit(object userData)
         {
@@ -20,9 +22,10 @@ namespace GamePlay
             link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
             link.SetEvent("BtnShop", UIEventType.Click, OnShopClick);
             link.SetEvent("BtnJoinRoom", UIEventType.Click, OnJoinRoom);
+            link.SetEvent("BtnClub", UIEventType.Click, OnOpenClub);
 
 
-            RoleData role = GameManager.Instance.GetRoleData();
+            role = GameManager.Instance.GetRoleData();
             //string id = "user_id=" + role.id.Value;
             //string token = "access_token=" + role.token.Value;
             //long time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
@@ -41,6 +44,18 @@ namespace GamePlay
             subMainKeyBoard.OpenUI();
         }
 
+        private void OnOpenClub(object[] args)
+        {
+            Recv_Get_MyClub myClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MyClub>(GameConst._mainPage,
+    GameManager.Instance.GetSendInfoStringList<Send_Get_MyClub>(role.id.Value, role.token.Value));
+            if (myClub != null && myClub.code == 0)
+            {
+                role.AddMyClubListData(myClub.data);
+
+                GameEntry.UI.OpenUIForm(UIFormId.ClubForm, this);
+            }
+        }
+
         public void OnStartSangong(params object[] args)
         {
             var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
@@ -49,17 +64,15 @@ namespace GamePlay
 
         public void OnShopClick(params object[] args)
         {
-            RoleData role = GameManager.Instance.GetRoleData();
-
             //商店测试
-            //Recv_Get_Shop shopPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_Shop>(GameConst._shop,
-            //    GameManager.Instance.GetSendInfoStringList<Send_Get_Shop>(role.id.Value, role.token.Value));
-            //if (shopPage != null && shopPage.code == 0)
-            //{
-            //    Debug.Log("show skop page");
-            //    GameEntry.UI.OpenUIForm(UIFormId.ShopForm, this);
-            //}
-            GameEntry.UI.OpenUIForm(UIFormId.ShopForm, this);
+            Recv_Get_Shop shopPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_Shop>(GameConst._shop,
+                GameManager.Instance.GetSendInfoStringList<Send_Get_Shop>(role.id.Value, role.token.Value));
+            if (shopPage != null && shopPage.code == 0)
+            {
+                GameManager.Instance.SetGoosList(shopPage.data);
+                GameEntry.UI.OpenUIForm(UIFormId.ShopForm, this);
+            }
+
             //订单测试
             //Recv_Post_Order shopPage = NetWorkManager.Instance.CreatePostMsg<Recv_Post_Order>(GameConst._order,
             //    GameManager.Instance.GetSendInfoStringList<Send_Post_Order>(role.id.Value, role.token.Value, "0"));

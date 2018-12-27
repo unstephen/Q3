@@ -27,4 +27,6 @@ public class GameConst {
     public const string _joinRoom = "/room/join";
     public const string _createRoom = "/room/create";
     public const float OUT_CARD_SPAN = 0.9f;
+
+    public const string weixinUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 }

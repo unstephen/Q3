@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class GoodItem : UGuiComponentClone
 {
-    Text name;
+    Text idstr;
     Text price;
     Image icon;
-    Text num;
+    Text name;
     public int index;
 
     protected override void OnInit(object userData)
@@ -16,8 +16,8 @@ public class GoodItem : UGuiComponentClone
 
         GUILink link = this.gameObject.GetComponent<GUILink>();
 
-        name = link.Get<Text>("Name");
-        num = link.Get<Text>("Num");
+        idstr = link.Get<Text>("Name");
+        name = link.Get<Text>("Num");
         icon = link.Get<Image>("Image");
         price = link.Get<Text>("Price");
 
@@ -28,8 +28,8 @@ public class GoodItem : UGuiComponentClone
     {
         this.index = index;
 
-        name.text = data.goods_id;
-        num.text = data.number.ToString();
+        idstr.text = data.goods_id;
+        name.text = data.goods_name.ToString();
         price.text = data.price.ToString();
     }
 
@@ -39,7 +39,7 @@ public class GoodItem : UGuiComponentClone
         {
             Mode = 2,
             Title = "购买商品",
-            Message = "是否花费" + price.text + "够买" + name.text + "?",
+            Message = "是否花费" + price.text + "够买" + idstr.text + "?",
             ConfirmText = "确定",
             OnClickConfirm = delegate (object userData) { DoMessegeBox(true); },
             CancelText = "取消",

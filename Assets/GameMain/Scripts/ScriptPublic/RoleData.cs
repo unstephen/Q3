@@ -25,8 +25,10 @@ public class RoleData
 
 	public ReactiveProperty<string> name;
 	private ReactiveProperty<int> _Money;	
-	private ReactiveProperty<int> _clubId;
-	
+	public ReactiveProperty<int> curClubId; // 当前查看的clubid
+
+    public List<ClubData> myClubList;
+
 	public ReactiveCollection<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
 	private ReactiveProperty<int> recoreLimite;
 	
@@ -36,14 +38,21 @@ public class RoleData
         this.token = new ReactiveProperty<string>(token);
 
         recordList = new ReactiveCollection<GameRecord>();
+        myClubList = new List<ClubData>();
 	}
 	
+    public void InitBaseData(int clubId)
+    {
+        curClubId.SetValueAndForceNotify(clubId);
+    }
+
     public void SetRoleProperty(Recv_MainPage_Data pageData)
     {
         if (pageData != null)
         {
             name = new ReactiveProperty<string>(pageData.nick_name);
-            //_Money = new ReactiveProperty<int>(pageData.account_balance);
+            _Money = new ReactiveProperty<int>(int.Parse(pageData.account_balance));
+            curClubId = new ReactiveProperty<int>(1);
         }
     }
 
@@ -69,4 +78,28 @@ public class RoleData
 	{
 		return recordList[index];
 	}
+
+    public void AddMyClubListData(Recv_Get_MyClub_Data data)
+    {
+        if (myClubList == null)
+        {
+            myClubList = new List<ClubData>();
+        }
+        else
+        {
+            myClubList.Clear();
+        }
+        if (data.list == null)
+        {
+            curClubId.SetValueAndForceNotify(0);
+        }
+        else
+        {
+            foreach (var item in data.list)
+            {
+                myClubList.Add(item);
+            }
+            curClubId.SetValueAndForceNotify(myClubList.Count > 0 ? int.Parse(myClubList[0].club_id) : 0);
+        }
+    }
 }

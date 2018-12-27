@@ -68,8 +68,8 @@ public struct GoodsData
 {
     public string goods_id;
     public string type;
-    public int number;
-    public double price;
+    public string goods_name;
+    public string price;
 }
 
 public struct Recv_Shop_Data
@@ -180,16 +180,44 @@ public class Recv_Get_ClubInfo : Http_MsgBase
 /// <summary>
 /// 创建俱乐部
 /// </summary>
+
+public struct Recv_Post_CreatClub_Data
+{
+    public string club_id;
+    public string club_name;
+    public string club_description;
+    public bool allow_by_search;
+    public int vip_level;
+    public int member_number;
+    public int ongoing_game_number;
+    public List<ManagerData> managers;
+}
 public class Recv_Post_CreatClub : Http_MsgBase
 {
-
+    public Recv_Post_CreatClub_Data data;
 }
+
 /// <summary>
 /// 搜索俱乐部
 /// </summary>
+public struct SearchClubData
+{
+    public int total;
+    public int page;
+    public int page_size;
+    List<SearchClubBaseData> list;
+}
+
+public struct SearchClubBaseData
+{
+    public string club_id;
+    public string club_name;
+    public string create_user_name;
+}
+
 public class Recv_Get_SearchClub : Http_MsgBase
 {
-
+    public SearchClubData data;
 }
 /// <summary>
 /// 申请俱乐部
@@ -208,16 +236,46 @@ public class Recv_Post_HandleRequest : Http_MsgBase
 /// <summary>
 /// 历史战绩（总览）
 /// </summary>
+public struct HistoryAllBaseData
+{
+    public string type;
+    public int games_count;
+    public int profit;
+}
+
+public struct HistoryAll
+{
+    public List<HistoryAllBaseData> list;
+}
+
 public class Recv_Get_History : Http_MsgBase
 {
-
+    public HistoryAll data;
 }
 /// <summary>
 /// 查询历史战绩
 /// </summary>
+public struct HistorySingleBaseData
+{
+    public string room_id;
+    public string room_name;
+    public string club_name;
+    public int base_score;
+    public string room_type;
+}
+
+public struct HistorySingle
+{
+    public int total;
+    public int page;
+    public int page_size;
+    public string message;
+    public List<HistorySingleBaseData> list;
+}
+
 public class Recv_Get_SearchHistory : Http_MsgBase
 {
-
+    HistorySingle data;
 }
 
 public class Recv_SearchRoom_Data
@@ -364,14 +422,14 @@ public class Send_Search_Room : Send_MsgBase
 
 public class Send_Post_CreateClub : Send_MsgBase
 {
-public override List<string> CreateSendInfo(params object[] args)
+    public override List<string> CreateSendInfo(params object[] args)
     {
         List<string> temp = new List<string>();
         temp = base.CreateSendInfo(args);
 
-        temp.Add("club_name=" + (string)args[2]);
-        temp.Add("club_description=" + (string)args[3]);
-        temp.Add("allow_by_search=" + (string)args[4]);
+        temp.Add("club_name=" + args[2]);
+        temp.Add("club_description=" + args[3]);
+        temp.Add("allow_by_search=" + args[4]);
 
         return temp;
     }
@@ -409,6 +467,70 @@ public class Send_Create_Room : Send_MsgBase
         temp.Add("geme_type=" + (string)args[6]);
         temp.Add("room_seat_number=" + (string)args[7]);
         temp.Add("game_duration=" + (string)args[8]);
+
+        return temp;
+    }
+}
+
+public class Send_SearchClub : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("query=" + args[2]);
+        temp.Add("page=" + (string)args[3]);
+        temp.Add("page_size=" + (string)args[4]);
+
+        return temp;
+    }
+}
+
+public class Send_RequestClub : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("club_id=" + (string)args[2]);
+
+        return temp;
+    }
+}
+
+public class Send_AgreenClub : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("apply_id=" + args[2]);
+        temp.Add("action=" + args[3]); // refuse/accept
+
+        return temp;
+    }
+}
+
+public class Send_SearchHistoryAll : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        return base.CreateSendInfo(args);
+    }
+}
+
+public class Send_SearchHistory : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("page=" + (string)args[2]);
+        temp.Add("page_size=" + args[3]);
 
         return temp;
     }

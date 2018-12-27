@@ -406,7 +406,7 @@ public class Send_Create_Room : Send_MsgBase
         temp.Add("room_name=" + (string)args[3]);
         temp.Add("password=" + (string)args[4]);
         temp.Add("base_score=" + (string)args[5]);
-        temp.Add("geme_type=" + (string)args[6]);
+        temp.Add("game_type=" + (string)args[6]);
         temp.Add("room_seat_number=" + (string)args[7]);
         temp.Add("game_duration=" + (string)args[8]);
 

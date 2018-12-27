@@ -29,16 +29,13 @@ namespace GamePlay
             if (login != null && login.code == 0)
             {
                 GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
-
-           
-                
-               
+                m_ProcedureMenu.StartGame();
             }
             //NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
-            if (login != null)
-            {
-                NetWorkManager.Instance.CreateChanel();
-            }
+//            if (login != null)
+//            {
+//                NetWorkManager.Instance.CreateChanel();
+//            }
         }
         
  

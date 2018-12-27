@@ -26,7 +26,7 @@ public class MsgParse
     public static void PushInt(int number,ref byte[] curArray)
     {
         byte[] intArray = BitConverter.GetBytes(number);
-        MsgParse.ReverseBytes(intArray);
+        MsgParse.ReverseBytes(ref intArray);
         byte[] combimeArray = new byte[curArray.Length+4];
         Buffer.BlockCopy(curArray,0,combimeArray,0,curArray.Length);
         Buffer.BlockCopy(intArray,0,combimeArray,curArray.Length,4);
@@ -43,7 +43,7 @@ public class MsgParse
         return b;
     }
     //翻转byte数组
-    public static void ReverseBytes(byte[] bytes)
+    public static void ReverseBytes(ref byte[] bytes)
     {
         byte tmp;
         int len = bytes.Length;
@@ -57,7 +57,7 @@ public class MsgParse
     }
 
 //规定转换起始位置和长度
-    public static void ReverseBytes(byte[] bytes, int start, int len)
+    public static void ReverseBytes(ref byte[] bytes, int start, int len)
     {
         int end = start + len - 1;
         byte tmp;
@@ -111,7 +111,7 @@ public class MsgParse
     {
         byte[] intArray = new byte[4];
         Buffer.BlockCopy(data,0,intArray,0,4);
-        MsgParse.ReverseBytes(intArray);
+        MsgParse.ReverseBytes(ref intArray);
         byte[] newData = new byte[data.Length-4];
         Buffer.BlockCopy(data,4,newData,0,data.Length-4);
         data = newData;

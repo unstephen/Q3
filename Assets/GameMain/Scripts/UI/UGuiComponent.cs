@@ -218,9 +218,9 @@ namespace GamePlay
             return result;
         }
 
-        public void OpenUI()
+        public void OpenUI(object userData = null)
         {
-            OnOpen(null);
+            OnOpen(userData);
         }
     }
 }

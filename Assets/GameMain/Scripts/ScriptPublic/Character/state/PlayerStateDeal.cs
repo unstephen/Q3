@@ -17,8 +17,8 @@ namespace GamePlay
         protected override void OnEnter(GameFramework.Fsm.IFsm<Player> fsm)
         {
             base.OnEnter(fsm);
-            Log.Debug("PlayerStateDeal Enter name={0}",fsm.Owner.name);
             fsm.Owner.OnDeal();
+            Log.Debug("进入发牌");
         }
 
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)

@@ -51,7 +51,7 @@ namespace GamePlay
             string score = "1";
             if (ToggleScore[0].isOn)
             {
-                score = "5";
+                score = "1";
             }
             else if(ToggleScore[1].isOn)
             {
@@ -79,11 +79,11 @@ namespace GamePlay
             string playerCount = "6";
             if (TogglePlayer[0].isOn)
             {
-                gemeType = "6";
+                playerCount = "6";
             }
             else if(TogglePlayer[1].isOn)
             {
-                gemeType = "10";
+                playerCount = "10";
             }
             //游戏时长
             string time = "6";
@@ -102,7 +102,8 @@ namespace GamePlay
                 GameManager.Instance.GetSendInfoStringList<Send_Create_Room>(userId,token,clubId.ToString(),InputRoomName.text,InputRoomPsd.text,
                     score,gemeType,playerCount,time));
             if (createRoom != null && createRoom.code == 0)
-            {
+            { 
+                NetWorkManager.Instance.CreateChanel();
                 DoCreateRoom(createRoom.data.GID,createRoom.data.room_id);
             }
         }

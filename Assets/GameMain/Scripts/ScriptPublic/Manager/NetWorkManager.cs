@@ -247,11 +247,15 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
 //                ret.code = Convert.ToInt32(respJson["code"]);
 //                ret.errMsg = respJson["errMsg"].ToString();
 //                return ret;
+                if (respStr.StartsWith("<br"))
+                {
+                    throw new ArgumentNullException (respStr);;
+                }
                 return JsonMapper.ToObject<T>(respStr);
             }
             catch (Exception ex)
             {
-
+                Log.Error("http返回錯誤："+ex);
             }
             finally
             {
@@ -566,6 +570,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
        
         msg.SetArgs(buffer);
         channel.Send(msg);
+        Log.Debug("->>>>>>>>>>>>{0}",id);
     }
 
     public class Q3NetworkHelper : INetworkChannelHelper
@@ -592,34 +597,50 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
             var dataArray = c2SPacket.args;
             byte[] sendArray = new byte[2+dataArray.Length];
             var sizeArray = BitConverter.GetBytes((short)dataArray.Length);
-            MsgParse.ReverseBytes(sizeArray);
+            MsgParse.ReverseBytes(ref sizeArray);
             sendArray[0] = sizeArray[0];
             sendArray[1] = sizeArray[1];
             
             Buffer.BlockCopy(dataArray,0,sendArray,2,dataArray.Length);
             destination.Write(sendArray, 0, sendArray.Length);
-            Log.Debug("发送消息长度={0}",sendArray.Length);
             return true;
         }
 
         public IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData)
         {
             Q3PacketHeader header = new Q3PacketHeader();
-            byte[] buffer = new byte[2];
-            source.Read(buffer,0,2);
-            MsgParse.ReverseBytes(buffer);
-            header.PacketLength = BitConverter.ToInt16(buffer,0);
+            try
+            {
+                byte[] buffer = new byte[2];
+                source.Read(buffer, 0, 2);
+                MsgParse.ReverseBytes(ref buffer);
+                header.PacketLength = BitConverter.ToInt16(buffer, 0);
+                
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+            }
             customErrorData = null;
             return header;
         }
 
         public GameFramework.Network.Packet DeserializePacket(IPacketHeader packetHeader, Stream source, out object customErrorData)
         {
-            byte[] bytes = new byte[packetHeader.PacketLength]; 
-            source.Read(bytes, 0, packetHeader.PacketLength); 
-            
             var ret = new Q3Packet();
-            ret.SetArgs(bytes);
+            try
+            {
+                byte[] bytes = new byte[packetHeader.PacketLength];
+                source.Read(bytes, 0, packetHeader.PacketLength);
+
+
+                ret.SetArgs(bytes);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+            }
+
             customErrorData = null;
             return ret;
         }

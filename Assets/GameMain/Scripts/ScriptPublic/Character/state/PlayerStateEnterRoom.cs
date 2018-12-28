@@ -18,14 +18,15 @@ namespace GamePlay
             base.OnEnter(fsm);
             Log.Debug("PlayerStateEnterRoom Enter name={0}",fsm.Owner.name);
             fsm.Owner.OnEnterRoom();
+            fsm.Owner.state = EPlayerState.Watch;
         }
 
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (fsm.Owner.pos.Value > -1)
+            if (fsm.Owner.state == EPlayerState.SeatPre)
             {
-                ChangeState<PlayerStateSeat>(fsm);
+                ChangeState<PlayerStateSeatPre>(fsm);
             }
         }
 

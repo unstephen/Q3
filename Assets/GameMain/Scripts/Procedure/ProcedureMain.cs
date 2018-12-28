@@ -1,5 +1,7 @@
-﻿using GameFramework.Event;
+﻿using System;
+using GameFramework.Event;
 using System.Collections.Generic;
+using UniRx;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -15,6 +17,8 @@ namespace GamePlay
         private float m_GotoMenuDelaySeconds = 0f;
         private CreateRoomForm m_CreateRoomForm = null;
         public GameBase CurrentGame { get { return m_CurrentGame; } }
+        private bool m_needSendLogin = true;
+        private IDisposable loginDisposable;
 
         public override bool UseNativeDialog
         {
@@ -85,7 +89,21 @@ namespace GamePlay
 
             m_CurrentGame = m_Games[GameMode.Lobby];
             m_CurrentGame.Initialize(GameMode.Lobby);
+            GameEntry.Event.Subscribe(NetworkConnectedEventArgs.EventId, OnConnected);
          
+        }
+        
+        private void OnConnected(object sender, GameEventArgs e)
+        {
+            if (m_needSendLogin)
+            {
+              
+                var role = GameManager.Instance.GetRoleData();
+                NetWorkManager.Instance.Send(Protocal.Login, role.id.Value.ToString(), role.token.Value);
+               // loginDisposable = GameManager.Instance.GetRoleData().pId.ObserveEveryValueChanged(p => p).Subscribe(s => StartGame());
+                
+                m_needSendLogin = false;
+            }
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

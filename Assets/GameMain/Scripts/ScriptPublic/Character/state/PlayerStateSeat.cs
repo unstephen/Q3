@@ -24,9 +24,13 @@ namespace GamePlay
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (fsm.Owner.state == EPlayerState.Deal)
+            if (fsm.Owner.state == EPlayerState.GamePrepare)
             {
-                ChangeState<PlayerStateDeal>(fsm);
+                ChangeState<PlayerStateGameReady>(fsm);
+            }
+            else if (fsm.Owner.state == EPlayerState.Watch)
+            {
+                ChangeState<PlayerStateEnterRoom>(fsm);
             }
         }
 

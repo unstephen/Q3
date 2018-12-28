@@ -10,8 +10,7 @@ namespace GamePlay
     {
         private bool m_StartGame = false;
         private MenuForm m_MenuForm = null;
-        private bool m_needSendLogin = true;
-        private IDisposable loginDisposable;
+  
 
         public override bool UseNativeDialog
         {
@@ -31,37 +30,20 @@ namespace GamePlay
             base.OnEnter(procedureOwner);
 
             GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
-            GameEntry.Event.Subscribe(NetworkConnectedEventArgs.EventId, OnConnected);
+           
             
 
             m_StartGame = false;
             GameEntry.UI.OpenUIForm(UIFormId.MenuForm, this);
         }
 
-        private void OnConnected(object sender, GameEventArgs e)
-        {
-            if (m_needSendLogin)
-            {
-                Observable.Timer(TimeSpan.FromSeconds(0.2f)).Subscribe(x =>
-                {
-                    var role = GameManager.Instance.GetRoleData();
-                    NetWorkManager.Instance.Send(Protocal.Login, role.id.Value.ToString(), role.token.Value);
-                    loginDisposable = GameManager.Instance.GetRoleData().pId.ObserveEveryValueChanged(p => p).Subscribe(s => StartGame());
-                });
-                
-                m_needSendLogin = false;
-            }
-        }
+       
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
 
             GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
-            if (loginDisposable != null)
-            {
-                loginDisposable.Dispose();
-            }
             if (m_MenuForm != null)
             {
                 m_MenuForm.Close(isShutdown);

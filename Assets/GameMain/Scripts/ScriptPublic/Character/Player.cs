@@ -15,20 +15,55 @@ namespace GamePlay
 	{
 		None,
 		/// <summary>
+		/// 才进房间
+		/// </summary>
+		Watch,
+		/// <summary>
+		/// 坐下中
+		/// </summary>
+		SeatPre,
+		/// <summary>
+		/// 坐下
+		/// </summary>
+		Seat,
+		/// <summary>
+		/// 准备
+		/// </summary>
+		GamePrepare,
+		/// <summary>
 		/// 发牌
 		/// </summary>
 		Deal,
+		/// <summary>
+		/// 庄家
+		/// </summary>
+		Banker,
+		/// <summary>
+		/// 下注
+		/// </summary>
+		Bet,
+		/// <summary>
+		/// 当局结束
+		/// </summary>
+		End,
+		/// <summary>
+		/// 结算
+		/// </summary>
+		Settle,
 	}
 /*
 记录牌局内的玩家数据
 */
 	public class Player
 	{
-		public ReactiveProperty<int> id;
-		public ReactiveProperty<string> name;
-		public ReactiveProperty<int> pos;
-		public ReactiveProperty<int> clubId;
-		protected ReactiveProperty<uint> money;
+		public ReactiveProperty<int> id = new ReactiveProperty<int>();
+		public ReactiveProperty<string> name = new ReactiveProperty<string>();
+		public ReactiveProperty<string> userLoc = new ReactiveProperty<string>();
+		public ReactiveProperty<byte> pos = new ReactiveProperty<byte>(255);
+		public ReactiveProperty<int> score = new ReactiveProperty<int>();
+		public ReactiveProperty<int> balance = new ReactiveProperty<int>();
+		public ReactiveProperty<int> clubId = new ReactiveProperty<int>();
+		public ReactiveProperty<int> bet = new ReactiveProperty<int>();
 
 		protected PlayerStateController stateController;
 		protected PlayerHeadInfo headUI;
@@ -50,13 +85,8 @@ namespace GamePlay
 		public List<CardItem> handCards = new List<CardItem>(); 
 		
 
-		public void InitData(int PlayerId, string PlayerName, uint Money, int ClubId = 0)
+		public void InitData()
 		{
-			id = new ReactiveProperty<int>(PlayerId);
-			clubId = new ReactiveProperty<int>(ClubId);
-			name = new ReactiveProperty<string>(PlayerName);
-			money = new ReactiveProperty<uint>(Money);
-			pos = new ReactiveProperty<int>(-1);
 			state = EPlayerState.None;
 
 			stateController = new PlayerStateController();
@@ -64,9 +94,15 @@ namespace GamePlay
 			stateController.Init(this, GameFrameworkEntry.GetModule<IFsmManager>(),
 				new PlayerStateInit(),
 				new PlayerStateEnterRoom(),
+				new PlayerStateSeatPre(),
 				new PlayerStateSeat(),
+				new PlayerStateGameReady(),
 				new PlayerStateDeal(),
-				new PlayerStatePlaying()
+				new PlayerStatePlaying(),
+				new PlayerStateBanker(),
+				new PlayerStateBet(),
+				new PlayerStateEnd(),
+				new PlayerStateSettle()
 			);
 			stateController.Start<PlayerStateInit>();
 		}
@@ -75,7 +111,7 @@ namespace GamePlay
 		/// 设置玩家座位号
 		/// </summary>
 		/// <param name="index"></param>
-		public void SetPos(int index)
+		public void SetPos(byte index)
 		{
 			pos.Value = index;
 			headUI = tableUI.GetPlayerHeadUI(index);
@@ -97,7 +133,7 @@ namespace GamePlay
 		{
 			
 		}
-		public void OnEnterRoom()
+		public virtual void OnEnterRoom()
 		{
 			Log.Debug("Player OnEnterRoom name={0}", name);
 		}
@@ -111,7 +147,6 @@ namespace GamePlay
 			id.Dispose();
 			pos.Dispose();
 			clubId.Dispose();
-			money.Dispose();
 			foreach (var card in handCards)
 			{
 				Object.Destroy(card.gameObject);
@@ -150,7 +185,7 @@ namespace GamePlay
 		
 		}
 
-		public void OnDeal()
+		public virtual void OnDeal()
 		{
 			Log.Info("开始发牌给{0}", name);
 //			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
@@ -182,6 +217,39 @@ namespace GamePlay
 			{
 				card.SetFrontActive(true);
 			}
+		}
+
+		public virtual void OnSeatPre()
+		{
+			
+			
+		}
+        /// <summary>
+        /// 等待游戲開始
+        /// </summary>
+		public virtual void OnGameReady()
+		{
+			
+		}
+        //抢庄
+		public virtual void OnBid()
+		{
+		
+		}
+        //下注
+		public virtual void OnBet()
+		{
+			
+		}
+        //结算
+		public virtual void OnSettle()
+		{
+			
+		}
+        //本局结束
+		public virtual void OnEnd()
+		{
+			
 		}
 	}
 }

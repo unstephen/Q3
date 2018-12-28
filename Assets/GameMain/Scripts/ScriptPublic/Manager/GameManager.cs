@@ -27,6 +27,11 @@ public class GameManager : MonoSingleton<GameManager>
 
         return roleData;
     }
+    
+    public bool IsSelf(int pid)
+    {
+        return roleData.pId.Value == pid;
+    }
 
     public List<string> GetSendInfoStringList<T>(params object[] args) where T : Send_MsgBase, new()
     {

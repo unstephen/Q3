@@ -23,11 +23,11 @@ namespace GamePlay
             base.OnEnter(procedureOwner);
 
             m_InitResourcesComplete = false;
-
+            GameEntry.Resource.InitResources(OnInitResourcesComplete);
             GameEntry.Event.Subscribe(WebRequestSuccessEventArgs.EventId, OnWebRequestSuccess);
             GameEntry.Event.Subscribe(WebRequestFailureEventArgs.EventId, OnWebRequestFailure);
 
-            RequestVersion();
+           // RequestVersion();
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

@@ -159,8 +159,8 @@ namespace GamePlay
                
                 inputText.Value = -1;
                 roomId = -1;
-               
-                Recv_SearchRoom searchRoom = NetWorkManager.Instance.CreateGetMsg<Recv_SearchRoom>(GameConst._searchRoom, GameManager.Instance.GetSendInfoStringList<Send_Search_Room>(inputText.Value.ToString()));
+                var role = GameManager.Instance.GetRoleData();
+                Recv_SearchRoom searchRoom = NetWorkManager.Instance.CreateGetMsg<Recv_SearchRoom>(GameConst._searchRoom, GameManager.Instance.GetSendInfoStringList<Send_Search_Room>(role.id.Value, role.token.Value,inputText.Value.ToString()));
 
                 if (searchRoom != null)
                 {

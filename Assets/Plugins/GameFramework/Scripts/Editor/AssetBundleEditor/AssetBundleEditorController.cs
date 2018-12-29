@@ -34,7 +34,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         public AssetBundleEditorController()
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<AssetBundleEditorConfigPathAttribute>() ?? Utility.Path.GetCombinePath(Application.dataPath, "GameFramework/Configs/AssetBundleEditor.xml");
+            m_ConfigurationPath = Type.GetConfigurationPath<AssetBundleEditorConfigPathAttribute>() ?? Utility.Path.GetCombinePath(Application.dataPath, "GameMain/Configs/AssetBundleEditor.xml");
 
             m_AssetBundleCollection = new AssetBundleCollection();
 

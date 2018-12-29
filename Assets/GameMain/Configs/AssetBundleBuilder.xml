@@ -2,12 +2,8 @@
 <UnityGameFramework>
   <AssetBundleBuilder>
     <Settings>
-      <InternalResourceVersion>0</InternalResourceVersion>
-      <WindowsSelected>True</WindowsSelected>
-      <MacOSXSelected>False</MacOSXSelected>
-      <IOSSelected>False</IOSSelected>
-      <AndroidSelected>False</AndroidSelected>
-      <WindowsStoreSelected>False</WindowsStoreSelected>
+      <InternalResourceVersion>13</InternalResourceVersion>
+      <Platforms>2</Platforms>
       <ZipSelected>True</ZipSelected>
       <RecordScatteredDependencyAssetsSelected>False</RecordScatteredDependencyAssetsSelected>
       <UncompressedAssetBundleSelected>False</UncompressedAssetBundleSelected>
@@ -17,8 +13,9 @@
       <IgnoreTypeTreeChangesSelected>False</IgnoreTypeTreeChangesSelected>
       <AppendHashToAssetBundleNameSelected>False</AppendHashToAssetBundleNameSelected>
       <ChunkBasedCompressionSelected>True</ChunkBasedCompressionSelected>
-      <BuildEventHandlerTypeName>GamePlay.Editor.GamePlayBuildEventHandler</BuildEventHandlerTypeName>
-      <OutputDirectory></OutputDirectory>
+      <BuildEventHandlerTypeName>
+      </BuildEventHandlerTypeName>
+      <OutputDirectory>G:/work/project/ab</OutputDirectory>
     </Settings>
   </AssetBundleBuilder>
 </UnityGameFramework>

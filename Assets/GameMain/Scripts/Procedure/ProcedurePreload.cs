@@ -107,18 +107,22 @@ namespace GamePlay
         private void LoadFont(string fontName)
         {
             m_LoadedFlag.Add(string.Format("Font.{0}", fontName), false);
-            GameEntry.Resource.LoadAsset(AssetUtility.GetFontAsset(fontName), Constant.AssetPriority.FontAsset, new LoadAssetCallbacks(
-                (assetName, asset, duration, userData) =>
-                {
-                    m_LoadedFlag[string.Format("Font.{0}", fontName)] = true;
-                    UGuiForm.SetMainFont((Font)asset);
-                    Log.Info("Load font '{0}' OK.", fontName);
-                },
-
-                (assetName, status, errorMessage, userData) =>
-                {
-                    Log.Error("Can not load font '{0}' from '{1}' with error message '{2}'.", fontName, assetName, errorMessage);
-                }));
+            var font = Resources.Load<Font>("MainFont");
+            m_LoadedFlag[string.Format("Font.{0}", fontName)] = true;
+            UGuiForm.SetMainFont(font);
+            Log.Info("Load font '{0}' OK.", fontName);
+//            GameEntry.Resource.LoadAsset(AssetUtility.GetFontAsset(fontName), Constant.AssetPriority.FontAsset, new LoadAssetCallbacks(
+//                (assetName, asset, duration, userData) =>
+//                {
+//                    m_LoadedFlag[string.Format("Font.{0}", fontName)] = true;
+//                    UGuiForm.SetMainFont((Font)asset);
+//                    Log.Info("Load font '{0}' OK.", fontName);
+//                },
+//
+//                (assetName, status, errorMessage, userData) =>
+//                {
+//                    Log.Error("Can not load font '{0}' from '{1}' with error message '{2}'.", fontName, assetName, errorMessage);
+//                }));
         }
 
         private void OnLoadConfigSuccess(object sender, GameEventArgs e)

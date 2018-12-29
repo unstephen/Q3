@@ -28,27 +28,27 @@ namespace GamePlay
 
         public void OnStartButtonClick(params object[] args)
         {
-            WeChat wx = gameObject.AddComponent<WeChat>();
-            if (wx == null)
-                return;
+//            WeChat wx = gameObject.AddComponent<WeChat>();
+//            if (wx == null)
+//                return;
+//
+//            wx.WechatLogin();
 
-            wx.WechatLogin();
-
-            //string type = "login_type=weixin";
-            //string token = "access_token=wxe8355f09eacfc7dd";
-            //string openId = "openid=123";
+            string type = "login_type=weixin";
+            string token = "access_token=wxe8355f09eacfc7dd";
+            string openId = "openid=123";
                 
-            //Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
+            Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
 
-            //if (login != null && login.code == 0)
-            //{
-            //    GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
-            //}
-            ////NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
-            //if (login != null)
-            //{
-            //    NetWorkManager.Instance.CreateChanel();
-            //}
+            if (login != null && login.code == 0)
+            {
+                GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
+            }
+            //NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
+            if (login != null)
+            {
+                m_ProcedureMenu.StartGame();
+            }
         }
         
  

@@ -333,12 +333,15 @@ public class RecvHandler : IPacketHandler
         int pId = MsgParse.PopInt(ref args);
         
         byte pos = MsgParse.PopByte(ref args);
+        int score = MsgParse.PopInt(ref args);
         //通过PID获取玩家的基本信息
         NetWorkManager.Instance.Send(Protocal.PLAYER_INFO,pId);
         if (pId == GameManager.Instance.GetRoleData().pId.Value)
         {
             RoomManager.Instance.Self.Value.SetPos(pos);
             RoomManager.Instance.Self.Value.state = EPlayerState.Seat;
+            RoomManager.Instance.Self.Value.score.Value = score;
+
         }
         else
         {
@@ -349,6 +352,7 @@ public class RecvHandler : IPacketHandler
                 player.id.Value = pId;
                 player.SetPos(pos);
                 player.state = EPlayerState.Seat;
+                player.score.Value = score;
                 RoomManager.Instance.rData.roomPlayers.Add(player);
             }
         }

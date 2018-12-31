@@ -17,15 +17,16 @@ namespace GamePlay
         protected override void OnEnter(GameFramework.Fsm.IFsm<Player> fsm)
         {
             base.OnEnter(fsm);
-            Log.Debug("PlayerStatePlaying Enter name={0}",fsm.Owner.name);
-            fsm.Owner.OnShowCard();
+            Log.Debug("进入发牌表现");
+            CardManager.Instance.DoDealCards();
         }
 
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (fsm.Owner.state == EPlayerState.Banker)
+            if (CardManager.Instance.cardManagerState == CardManagerStates.Playing)
             {
+                fsm.Owner.state = EPlayerState.Banker;
                 ChangeState<PlayerStateBanker>(fsm);
             }
         }

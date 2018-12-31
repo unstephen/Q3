@@ -16,7 +16,9 @@ namespace GamePlay
         protected override void OnEnter(GameFramework.Fsm.IFsm<Player> fsm)
         {
             base.OnEnter(fsm);
+            fsm.Owner.OnShowCard();
             fsm.Owner.OnBid();
+            
             Log.Debug("进入抢庄");
         }
 

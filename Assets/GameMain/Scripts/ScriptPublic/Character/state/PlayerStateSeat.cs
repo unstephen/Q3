@@ -32,6 +32,10 @@ namespace GamePlay
             {
                 ChangeState<PlayerStateEnterRoom>(fsm);
             }
+            else if (fsm.Owner.state == EPlayerState.End)
+            {
+                ChangeState<PlayerStateEnd>(fsm);
+            }
         }
 
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)

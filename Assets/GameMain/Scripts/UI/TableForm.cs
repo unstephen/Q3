@@ -22,7 +22,7 @@ namespace GamePlay
         private Text TextBet;
         private Text TextTime;
         private Text TextRoomId;
-        private GameObject BL_lose, BL_win;
+        private GameObject BL_lose, BL_win,PanelSettle;
         
         protected override void OnInit(object userData)
         {
@@ -47,6 +47,7 @@ namespace GamePlay
             TextRoomId = link.Get<Text>("TextRoomId");
             BL_lose = link.Get("BL_lose");
             BL_win = link.Get("BL_win");
+            PanelSettle = link.Get("PanelSettle");
             
             
             link.SetEvent("Quit", UIEventType.Click, OnClickExit);
@@ -56,6 +57,19 @@ namespace GamePlay
             link.SetEvent("BtnLeaveSeat", UIEventType.Click, OnClickLeaveSeat);
             link.SetEvent("BtnBanker0", UIEventType.Click, OnClickBid);
             link.SetEvent("BtnBet", UIEventType.Click, OnClickBet);
+            link.SetEvent("BtnSettleOK", UIEventType.Click, OnClickSettleOK);
+            //GM按钮，模拟服务器回消息回调
+            link.SetEvent("GMNotifyStart", UIEventType.Click, GMNotifyStart);
+            link.SetEvent("GMAddPlayer", UIEventType.Click, GMAddPlayer);
+            link.SetEvent("GMNotifyWin", UIEventType.Click, GMNotifyWin);
+            link.SetEvent("GMNotifyEnd", UIEventType.Click, GMNotifyEnd);
+            link.SetEvent("GMNotifyBetRet", UIEventType.Click, GMNotifyBetRet);
+            link.SetEvent("GMNotifyBet", UIEventType.Click, GMNotifyBet);
+            link.SetEvent("GMNotifyBidRet", UIEventType.Click, GMNotifyBidRet);
+            link.SetEvent("GMNotifyBid", UIEventType.Click, GMNotifyBid);
+            link.SetEvent("GMNotifyPrivate", UIEventType.Click, GMNotifyPrivate);
+            link.SetEvent("GMNotifyDraw", UIEventType.Click, GMNotifyDraw);
+            link.SetEvent("GMNotifyJoin", UIEventType.Click, GMNotifyJoin);
             
             
             
@@ -69,15 +83,138 @@ namespace GamePlay
             CardManager.Instance.InitCardPos(tempUITrans);
         }
 
+        private void OnClickSettleOK(object[] args)
+        {
+            PanelSettle.SetActive(false);
+            foreach (var player in RoomManager.Instance.rData.allPlayers)
+            {
+                player.state = EPlayerState.Seat;
+            }
+        }
+
+        private void GMNotifyJoin(object[] args)
+        {
+            RoomManager.Instance.Self.Value.SetPos(0);
+            RoomManager.Instance.Self.Value.state = EPlayerState.Seat;
+            RoomManager.Instance.Self.Value.score.Value = 55555;
+
+        }
+
+        private void GMNotifyDraw(object[] args)
+        {
+            RoomManager.Instance.Self.Value.handCardsData.Add(1);
+            RoomManager.Instance.Self.Value.handCardsData.Add(2);
+            RoomManager.Instance.Self.Value.handCardsData.Add(3);
+            Log.Debug("给自己发牌数据");
+        }
+
+        private void GMNotifyPrivate(object[] args)
+        {
+            var player = RoomManager.Instance.GetPlayerByPos(5);
+            if (player != null)
+            {
+                player.handCardsData.Add(4);
+                player.handCardsData.Add(5);
+                player.handCardsData.Add(6);
+            }
+            Log.Debug("给他人发牌数据");
+        }
+
+        private void GMNotifyBid(object[] args)
+        {
+            foreach (var player in RoomManager.Instance.rData.allPlayers)
+            {
+                player.state = EPlayerState.Playing;
+            }
+        }
+
+        private void GMNotifyBidRet(object[] args)
+        {
+            RoomManager.Instance.rData.bid.Value = RoomManager.Instance.Self.Value.id.Value;
+        }
+
+        private void GMNotifyBetRet(object[] args)
+        {
+            Log.Debug("NOTIFY_BET<<<<<");
+            //所有人状态变为发牌
+            foreach (var player in RoomManager.Instance.rData.allPlayers)
+            {
+                if (player != null)
+                {
+                    player.bet.Value = 222;
+                    Log.Debug("{0}下注{1}",player.name.Value,222);
+                }
+            }
+        }
+
+        private void GMNotifyEnd(object[] args)
+        {
+            Log.Debug("NOTIFY_END<<<<<");
+            foreach (var player in RoomManager.Instance.rData.allPlayers)
+            {
+                player.state = EPlayerState.End;
+            }
+        }
+
+        private void GMNotifyWin(object[] args)
+        {
+            Log.Debug("NOTIFY_WIN<<<<<");
+            int amount = 66666;
+            var player = RoomManager.Instance.Self.Value;
+            if (player != null)
+            {
+                player.score.Value += amount;
+                player.SetData<VarBool>(Constant.PlayerData.Settle,amount>0);
+                player.state = EPlayerState.Settle;
+            }
+        }
+
+        private void GMAddPlayer(object[] args)
+        {
+            Log.Debug("NOTIFY_JOIN<<<<<");
+            int pId = 88;
+        
+            byte pos = 5;
+            int score = 20000;
+            //通过PID获取玩家的基本信息
+            NetWorkManager.Instance.Send(Protocal.PLAYER_INFO,pId);
+            
+            {
+                var player = RoomManager.Instance.rData.GetPlayer(pId) as PlayerOther;
+                if (player == null)
+                {
+                    player = new PlayerOther();
+                    player.id.Value = pId;
+                    player.name.Value = "测试1";
+                    player.SetPos(pos);
+                    player.state = EPlayerState.Seat;
+                    player.score.Value = score;
+                    RoomManager.Instance.rData.roomPlayers.Add(player);
+                }
+            }
+        }
+
+        private void GMNotifyStart(object[] args)
+        {
+            Log.Debug("NOTIFY_START<<<<<");
+            //所有人状态变为发牌
+            foreach (var player in RoomManager.Instance.rData.allPlayers)
+            {
+                player.state = EPlayerState.Deal;
+            }
+        }
+
         public void DoShowWinEffect()
         {
+            PanelSettle.SetActive(true);
             BL_win.SetActive(true);
-            BL_win.transform.DOScale(2, 1).SetEase(Ease.InFlash).OnComplete(()=>BL_win.SetActive(false));
+            BL_win.transform.DOScale(2, 1).SetEase(Ease.InFlash);
         }
         public void DoShowLoseEffect()
         {
+            PanelSettle.SetActive(true);
             BL_lose.SetActive(true);
-            BL_lose.transform.DOScale(2, 1).SetEase(Ease.InFlash).OnComplete(()=>BL_lose.SetActive(false));
+            BL_lose.transform.DOScale(2, 1).SetEase(Ease.InFlash);
         }
 
         private void OnClickBet(object[] args)
@@ -112,11 +249,12 @@ namespace GamePlay
             }
             else
             {
-                for (int i = 0; i < playerWigets.Count; i++)
+                for (int i = 1; i < playerWigets.Count; i++)
                 {
                     if (playerWigets[i].pId == 0)
                     {
                         playerWigets[i].SetPlayerData(player);
+                        break;
                     }
                 }
             }
@@ -172,13 +310,14 @@ namespace GamePlay
             SliderBet.OnValueChangedAsObservable().SubscribeToText(TextBet).AddTo(disPosable);
             //下注积分不能超过带入当前截止带入的剩余积分。
             RoomManager.Instance.Self.Value.score.Subscribe(x => SliderBet.maxValue = x).AddTo(disPosable);
-            RoomManager.Instance.rData.name.SubscribeToText(TextRoomId).AddTo(disPosable);
+            RoomManager.Instance.rData.id.SubscribeToText(TextRoomId).AddTo(disPosable);
             
             ResetWiget();
         }
 
         private void RegRxForPlayer(Player player)
         {
+            Log.Debug("RegRxForPlayer");
             SetPlayerData(player);
         }
 
@@ -226,6 +365,15 @@ namespace GamePlay
             //发送抢庄
             NetWorkManager.Instance.Send(Protocal.BID,RoomManager.Instance.rData.gId.Value,GameManager.Instance.GetRoleData().pId.Value);
         }
+
+        private void GMNotifyBet(object[] args)
+        {
+            Log.Debug("NOTIFY_BET<<<<<");
+            foreach (var player in RoomManager.Instance.rData.allPlayers)
+            {
+                player.state = EPlayerState.Bet;
+            }
+        }
     }
     
     public class PlayerHeadInfo : UGuiComponent
@@ -234,6 +382,7 @@ namespace GamePlay
         private Text textName;
         private Text textScore;
         public Transform cardPos;
+        private Image bidIcon;
         public int pId;
         protected override void OnInit(object userData)
         {
@@ -243,6 +392,7 @@ namespace GamePlay
             textName = link.Get<Text>("TextName");
             textScore = link.Get<Text>("TextScore");
             cardPos = link.Get<Transform>("cardPos");
+            bidIcon = link.Get<Image>("bid");
             textName.text = "";
             textScore.text = "";
         }
@@ -260,6 +410,12 @@ namespace GamePlay
           
             role.name.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textName).AddTo(disPosable);
             role.score.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textScore).AddTo(disPosable);
+            RoomManager.Instance.rData.bid.ObserveEveryValueChanged(x => x.Value).Select(x => x == role.id.Value)
+                .Subscribe(
+                    x =>
+                    {
+                        bidIcon.gameObject.SetActive(x);
+                    }).AddTo(disPosable);
         }
 
         protected override void OnClose(object userData)
@@ -272,6 +428,11 @@ namespace GamePlay
             textName.text = "";
             textScore.text = "";
             pId = 0;
+        }
+
+        public void OnGameEnd()
+        {
+            bidIcon.gameObject.SetActive(false);
         }
     }
     public class PanelSelectScore : UGuiComponent

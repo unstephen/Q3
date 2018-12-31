@@ -112,6 +112,7 @@ public class RecvHandler : IPacketHandler
         byte pos = MsgParse.PopByte(ref args);
         byte state =  MsgParse.PopByte(ref args);
         int pId = MsgParse.PopInt(ref args);
+        Log.Debug("设置座位状态pos={0},pid={1}",pos,pId);
         RoomManager.Instance.rData.roomSeats[pos].pid = pId;
         RoomManager.Instance.rData.roomSeats[pos].state = state;
         RoomManager.Instance.rData.roomSeats[pos].pos = pos;
@@ -160,6 +161,7 @@ public class RecvHandler : IPacketHandler
         role.pId.Value = PID;
         Log.Debug("login success,pid = {0}",PID);
         NetWorkManager.Instance.Send(Protocal.WATCH,RoomManager.Instance.rData.gId.Value);
+        NetWorkManager.Instance.Send(Protocal.SEAT_QUERY,RoomManager.Instance.rData.gId.Value); 
     }
     
     private void RecvNotifyCall(byte[] args)
@@ -199,7 +201,15 @@ public class RecvHandler : IPacketHandler
 
     private void RecvNotifyEnd(byte[] args)
     {
+        int gId = MsgParse.PopInt(ref args);
+        if (gId != RoomManager.Instance.rData.gId.Value)
+            return;
         
+        
+        foreach (var player in RoomManager.Instance.rData.allPlayers)
+        {
+            player.state = EPlayerState.End;
+        }
     }
 
     private void RecvNotifyWin(byte[] args)
@@ -213,6 +223,8 @@ public class RecvHandler : IPacketHandler
         var player = RoomManager.Instance.rData.GetPlayer(pId);
         if (player != null)
         {
+            player.score.Value += amount;
+            player.SetData<VarBool>(Constant.PlayerData.Settle,amount>0);
             player.state = EPlayerState.Settle;
         }
     }
@@ -274,7 +286,7 @@ public class RecvHandler : IPacketHandler
         {
             if (stage == 1)
             {
-                player.state = EPlayerState.Banker;
+                player.state = EPlayerState.Playing;
             } 
             else if (stage == 2)
             {
@@ -341,6 +353,7 @@ public class RecvHandler : IPacketHandler
             RoomManager.Instance.Self.Value.SetPos(pos);
             RoomManager.Instance.Self.Value.state = EPlayerState.Seat;
             RoomManager.Instance.Self.Value.score.Value = score;
+          
 
         }
         else
@@ -353,7 +366,7 @@ public class RecvHandler : IPacketHandler
                 player.SetPos(pos);
                 player.state = EPlayerState.Seat;
                 player.score.Value = score;
-                RoomManager.Instance.rData.roomPlayers.Add(player);
+                RoomManager.Instance.rData.roomPlayers[pos] = player;
             }
         }
     }

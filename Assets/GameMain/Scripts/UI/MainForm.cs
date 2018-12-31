@@ -152,14 +152,14 @@ namespace GamePlay
 
         private void ClickOk(object[] args)
         {
-            var rData = GameManager.Instance.GetRoleData();
+            var role = GameManager.Instance.GetRoleData();
             if (bInputId.Value)
             {
                 //search
                
-                inputText.Value = -1;
+               
                 roomId = -1;
-                var role = GameManager.Instance.GetRoleData();
+              
                 Recv_SearchRoom searchRoom = NetWorkManager.Instance.CreateGetMsg<Recv_SearchRoom>(GameConst._searchRoom, GameManager.Instance.GetSendInfoStringList<Send_Search_Room>(role.id.Value, role.token.Value,inputText.Value.ToString()));
 
                 if (searchRoom != null)
@@ -176,23 +176,27 @@ namespace GamePlay
                         Log.Debug("搜索房间{0}失败",searchRoom.data.room_id);
                     }
                 }
+                inputText.Value = -1;
             }
             else
             {
                 //Join
-                Recv_JoinRoom joinRoom = NetWorkManager.Instance.CreateGetMsg<Recv_JoinRoom>(GameConst._joinRoom, GameManager.Instance.GetSendInfoStringList<Send_Join_Room>(roomId.ToString(),inputText.Value.ToString()));
+                Recv_JoinRoom joinRoom = NetWorkManager.Instance.CreateGetMsg<Recv_JoinRoom>(GameConst._joinRoom, GameManager.Instance.GetSendInfoStringList<Send_Join_Room>(role.id.Value, role.token.Value,roomId.ToString(),inputText.Value.ToString()));
 
                 if (joinRoom != null)
                 {
                     if (joinRoom.code == 0)
                     {
+                        NetWorkManager.Instance.CreateChanel();
                         bInputId.Value = false;
-                        RoomManager.Instance.rData.id.Value = joinRoom.data.room_id;
-                        RoomManager.Instance.rData.gId.Value = joinRoom.data.GID;
-                        Log.Debug("加入房间{0}成功，GID={1}",joinRoom.data.room_id,joinRoom.data.GID);
-                        
+                        var rm = RoomManager.Instance;
                         //初始化房间
-                        RoomManager.Instance.Init(joinRoom.data.GID,joinRoom.data.room_id,room_name,0);
+                        rm.Init(joinRoom.data.GID,joinRoom.data.room_id,room_name,0);
+                     
+                        Log.Debug("加入房间{0}成功，GID={1}",joinRoom.data.room_id,joinRoom.data.GID);
+//                        rm.rData.id.Value = joinRoom.data.room_id;
+//                        rm.rData.gId.Value = joinRoom.data.GID;
+                      
                         //初始化扑克管理器
                         var cardManager = CardManager.Instance;
                         var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;

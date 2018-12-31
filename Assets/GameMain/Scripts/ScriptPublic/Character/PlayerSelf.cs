@@ -1,5 +1,6 @@
 using System;
 using UniRx;
+using UnityGameFramework.Runtime;
 
 namespace GamePlay
 {
@@ -40,7 +41,27 @@ namespace GamePlay
 		public override void OnDeal()
 		{
 			base.OnDeal();
+			tableUI.BtnSeat.gameObject.SetActive(false);
+			tableUI.BtnStartGame.gameObject.SetActive(false);
+			tableUI.BtnCancelReady.gameObject.SetActive(false);
+			tableUI.BtnLeaveSeat.gameObject.SetActive(false);
+			tableUI.BetPanel.SetActive(false);
+			tableUI.BtnBanker0.gameObject.SetActive(false);
+	
 		}
+		
+		public override void OnStart()
+		{
+			base.OnDeal();
+			tableUI.BtnSeat.gameObject.SetActive(false);
+			tableUI.BtnStartGame.gameObject.SetActive(false);
+			tableUI.BtnCancelReady.gameObject.SetActive(false);
+			tableUI.BtnLeaveSeat.gameObject.SetActive(false);
+			tableUI.BetPanel.SetActive(false);
+			tableUI.BtnBanker0.gameObject.SetActive(false);
+		}
+		
+		
 
 		public override void OnSeatPre()
 		{
@@ -85,11 +106,27 @@ namespace GamePlay
 		public override void OnSettle()
 		{
 			base.OnSettle();
+			
+			
+			if (GetData<VarBool>(Constant.PlayerData.Settle))
+			{
+				tableUI.DoShowWinEffect();
+			}
+			else
+			{
+				tableUI.DoShowLoseEffect();
+			}
 		}
 
 		public override void OnEnd()
 		{
 			base.OnEnd();
+			tableUI.BtnSeat.gameObject.SetActive(false);
+			tableUI.BtnStartGame.gameObject.SetActive(false);
+			tableUI.BtnCancelReady.gameObject.SetActive(false);
+			tableUI.BtnLeaveSeat.gameObject.SetActive(false);
+			tableUI.BetPanel.SetActive(false);
+			tableUI.BtnBanker0.gameObject.SetActive(false);
 		}
 	}
 }

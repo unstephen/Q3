@@ -27,7 +27,7 @@ namespace GamePlay
             {
                 ChangeState<PlayerStateSeat>(fsm);
             }
-            else if (fsm.Owner.state == EPlayerState.Seat)
+            else if (fsm.Owner.state == EPlayerState.Watch)
             {
                 ChangeState<PlayerStateEnterRoom>(fsm);
             }

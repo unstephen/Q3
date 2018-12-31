@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 
@@ -49,6 +50,34 @@ namespace GamePlay
 //					other.ShowCard();
 //				}
 //			});
+		}
+
+		public Player GetPlayerByPos(byte pos)
+		{
+			Player ret = null;
+			foreach (var player in rData.allPlayers)
+			{
+				if (player.pos.Value == pos)
+				{
+					ret = player;
+					break;
+				}
+			}
+
+			return ret;
+		}
+		public int GetReadyPlayerCount()
+		{
+			int ret = 0;
+			foreach (var player in rData.allPlayers)
+			{
+				if (player.pos.Value > 0)
+				{
+					ret++;
+				}
+			}
+
+			return ret;
 		}
 	}
 }

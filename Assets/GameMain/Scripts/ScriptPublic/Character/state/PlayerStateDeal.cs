@@ -24,7 +24,7 @@ namespace GamePlay
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (CardManager.Instance.cardManagerState == CardManagerStates.Playing)
+            if (fsm.Owner.state == EPlayerState.Playing)
             {
                 ChangeState<PlayerStatePlaying>(fsm);
             }

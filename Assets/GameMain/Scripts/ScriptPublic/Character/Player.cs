@@ -31,9 +31,13 @@ namespace GamePlay
 		/// </summary>
 		GamePrepare,
 		/// <summary>
-		/// 发牌
+		/// 发牌设置
 		/// </summary>
 		Deal,
+		/// <summary>
+		/// 发牌表现
+		/// </summary>
+		Playing,
 		/// <summary>
 		/// 庄家
 		/// </summary>
@@ -59,14 +63,21 @@ namespace GamePlay
 		public ReactiveProperty<int> id = new ReactiveProperty<int>();
 		public ReactiveProperty<string> name = new ReactiveProperty<string>();
 		public ReactiveProperty<string> userLoc = new ReactiveProperty<string>();
+		/// <summary>
+		/// 服务器给的逻辑位置，和服务器通信用
+		/// </summary>
 		public ReactiveProperty<byte> pos = new ReactiveProperty<byte>(255);
+		/// <summary>
+		/// 客户端UI的表现位置
+		/// </summary>
+		public ReactiveProperty<byte> uiPos = new ReactiveProperty<byte>(255);
 		public ReactiveProperty<int> score = new ReactiveProperty<int>();
 		public ReactiveProperty<int> balance = new ReactiveProperty<int>();
 		public ReactiveProperty<int> clubId = new ReactiveProperty<int>();
 		public ReactiveProperty<int> bet = new ReactiveProperty<int>();
 
 		protected PlayerStateController stateController;
-		protected PlayerHeadInfo headUI;
+		public PlayerHeadInfo headUI;
 		protected TableForm _tableUI;
 		protected TableForm tableUI
 		{
@@ -82,14 +93,24 @@ namespace GamePlay
 		}
 
 		public EPlayerState state { get; set; }
-		public List<CardItem> handCards = new List<CardItem>(); 
-		
+		public List<CardItem> handCards = new List<CardItem>();
+		public List<int> handCardsData = new List<int>();
 
+
+		public void SetData<TData>(string name, TData data) where TData : Variable
+		{
+			stateController.fsm.SetData<TData>(name,data);
+		}
+		public TData GetData<TData>(string name) where TData : Variable
+		{
+			return stateController.fsm.GetData<TData>(name);
+		}
 		public void InitData()
 		{
 			state = EPlayerState.None;
 
 			stateController = new PlayerStateController();
+			
 			//初始化玩家状态机
 			stateController.Init(this, GameFrameworkEntry.GetModule<IFsmManager>(),
 				new PlayerStateInit(),
@@ -97,6 +118,7 @@ namespace GamePlay
 				new PlayerStateSeatPre(),
 				new PlayerStateSeat(),
 				new PlayerStateGameReady(),
+				new PlayerStateStart(),
 				new PlayerStateDeal(),
 				new PlayerStatePlaying(),
 				new PlayerStateBanker(),
@@ -114,7 +136,17 @@ namespace GamePlay
 		public void SetPos(byte index)
 		{
 			pos.Value = index;
-			headUI = tableUI.GetPlayerHeadUI(index);
+			RoomManager.Instance.rData.SetPos(id.Value, index, 1);
+		
+			for (int i=0; i<tableUI.playerWigets.Count; i++)
+			{
+				if (tableUI.playerWigets[i].pId <= 0)
+				{
+					uiPos.Value = (byte)i;
+					break;
+				}
+			}
+			headUI = tableUI.GetPlayerHeadUI(uiPos.Value);
 		}
 
 		public Vector3 GetCardAnchor()
@@ -187,10 +219,22 @@ namespace GamePlay
 
 		public virtual void OnDeal()
 		{
+			//发牌
+		//	DoDealToPlayer();
+		}
+		
+		public virtual void OnStart()
+		{
+			
+		}
+		
+		
+		public void DoDealToPlayer()
+		{
 			Log.Info("开始发牌给{0}", name);
-//			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
-//			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
-//			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
+			GetCard(3,GetOutCardPos(),(x)=>handCards.Add(x));
+			GetCard(4,GetOutCardPos(1,3),(x)=>handCards.Add(x));
+			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
 		}
 
 		public void GetCard(int id)
@@ -244,7 +288,10 @@ namespace GamePlay
         //结算
 		public virtual void OnSettle()
 		{
-			
+			//UI显示重置
+			headUI.OnGameEnd();
+			//桌面的牌飞到桌子中间
+			CardManager.Instance.OnGameEnd();
 		}
         //本局结束
 		public virtual void OnEnd()

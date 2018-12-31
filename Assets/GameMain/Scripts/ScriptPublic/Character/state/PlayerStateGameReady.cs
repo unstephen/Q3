@@ -37,7 +37,7 @@ namespace GamePlay
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)
         {
             base.OnLeave(fsm, isShutdown);
-            NetWorkManager.Instance.Send(Protocal.READY_CANCEL,RoomManager.Instance.rData.gId.Value);
+         
         }
 
         protected override void OnDestroy(GameFramework.Fsm.IFsm<Player> fsm)

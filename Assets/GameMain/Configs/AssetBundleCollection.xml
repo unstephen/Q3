@@ -8,10 +8,6 @@
       <AssetBundle Name="Localization/Dictionaries" Variant="ko-kr" LoadType="0" Packed="True" />
       <AssetBundle Name="Localization/Dictionaries" Variant="zh-cn" LoadType="0" Packed="True" />
       <AssetBundle Name="Localization/Dictionaries" Variant="zh-tw" LoadType="0" Packed="True" />
-      <AssetBundle Name="Localization/Fonts" Variant="en-us" LoadType="0" Packed="True" />
-      <AssetBundle Name="Localization/Fonts" Variant="ko-kr" LoadType="0" Packed="True" />
-      <AssetBundle Name="Localization/Fonts" Variant="zh-cn" LoadType="0" Packed="True" />
-      <AssetBundle Name="Localization/Fonts" Variant="zh-tw" LoadType="0" Packed="True" />
       <AssetBundle Name="Music/music_bg" LoadType="0" Packed="True" />
       <AssetBundle Name="Music/music_login" LoadType="0" Packed="True" />
       <AssetBundle Name="Music/music_sangong" LoadType="0" Packed="True" />
@@ -87,7 +83,6 @@
       <Asset Guid="72e76810224064300b7d32e8322a5d12" AssetBundleName="Sounds/explosion_enemy" />
       <Asset Guid="7488e6e2ed6a9744aa630bac663815c2" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="76501f61ddf9fe04991490dae5d6da7c" AssetBundleName="UI/UIForms" />
-      <Asset Guid="77cbb7c5404c10242ab59953e0746314" AssetBundleName="Localization/Fonts" AssetBundleVariant="zh-cn" />
       <Asset Guid="78976214ea209d540bd7bb5a1f815428" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="79214f53abeee4841a9654d417d8fae8" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="7c9de59014f570645920215386226c5b" AssetBundleName="UI/UISprites/Common" />
@@ -120,13 +115,11 @@
       <Asset Guid="a835427bda1830b4eabef36d2d940614" AssetBundleName="UI/UIForms" />
       <Asset Guid="aaa794a3e1a75ce41be703a23f0b478f" AssetBundleName="UI/UISprites/Main" />
       <Asset Guid="b7d81eb6109cfda47935111c966edce4" AssetBundleName="UI/UISprites/Common" />
-      <Asset Guid="bb5503fe5a25f2f498da035f1f3e58ee" AssetBundleName="Localization/Fonts" AssetBundleVariant="en-us" />
       <Asset Guid="bbfd75fe6fe00e1448fe988173ede7f9" AssetBundleName="UI/UIForms" />
       <Asset Guid="beb4928bf72bda24a82c71b683bcc866" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="bf74af0740f533b4dbe9531d2999c5e6" AssetBundleName="UI/UISprites/Login" />
       <Asset Guid="bf75b984df8a84987bcf3a8bf6e2862d" AssetBundleName="Sounds/weapon_player" />
       <Asset Guid="c02f2e0c6646baa45bb2b0a95870cc1a" AssetBundleName="UI/UISprites/Main" />
-      <Asset Guid="c0805e8f410cb6d4e84d0a981cb156e1" AssetBundleName="Localization/Fonts" AssetBundleVariant="zh-tw" />
       <Asset Guid="c3c2b9eb70ad6044bb36be498fbf6424" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="c6b57bee0e317be46b780c8116bdfd13" AssetBundleName="UI/UISprites/Login" />
       <Asset Guid="c7d1e11dd37634b48a9dd4012b8e4306" AssetBundleName="UI/UISounds" />
@@ -142,7 +135,6 @@
       <Asset Guid="e82837c9099f69a48b48fc44eb8d119d" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="e830964cdb85ff3429bca484c16bab44" AssetBundleName="UI/UISounds" />
       <Asset Guid="ed307627ef0dd9b4c950361643324a8b" AssetBundleName="UI/UISprites/TopBar" />
-      <Asset Guid="ef07add67d7230a4da456818f61439c8" AssetBundleName="Localization/Fonts" AssetBundleVariant="ko-kr" />
       <Asset Guid="f246a71e3e727cf45a67d0852880d07a" AssetBundleName="UI/UITex" />
       <Asset Guid="f24c8841f33c21e4494253bbe1f54f69" AssetBundleName="UI/UIForms" />
       <Asset Guid="f2902febdba2a604eb2a06d36b217ce4" AssetBundleName="UI/UIForms" />

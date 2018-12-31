@@ -13,6 +13,7 @@ namespace GamePlay
 	public class RoomData
 	{
 		public ReactiveProperty<int> gId;
+		public ReactiveProperty<int> win_pId;
 		public ReactiveProperty<int> id;
 		public ReactiveProperty<int> bid;
 		public ReactiveProperty<string> name;	
@@ -34,6 +35,7 @@ namespace GamePlay
 					}
 				}
 
+				ret = ret.OrderBy(x => x.uiPos.Value).ToList();
 				return ret;
 			}
 		}
@@ -43,12 +45,14 @@ namespace GamePlay
 		public void InitData(int gId,int roomId, string roomName, int clubId = 0)
 		{
 			id = new ReactiveProperty<int>(roomId);
+			win_pId = new ReactiveProperty<int>(0);
 			this.gId = new ReactiveProperty<int>(gId);
 			bid = new ReactiveProperty<int>(0);
 			name = new ReactiveProperty<string>(roomName);
 			_clubId = clubId;
 		
 			roomPlayers = new ReactiveCollection<PlayerOther>();
+			
 			roomSeats = new ReactiveCollection<RoomSeat>();
 			for (int i = 0; i < 6; i++)
 			{
@@ -141,6 +145,13 @@ namespace GamePlay
 			}
 
 			return null;
+		}
+
+		public void SetPos(int pid,byte pos,byte state)
+		{
+			RoomManager.Instance.rData.roomSeats[pos].pid = pid;
+			RoomManager.Instance.rData.roomSeats[pos].pos = pos;
+			RoomManager.Instance.rData.roomSeats[pos].state = state;
 		}
 	}
 /// <summary>

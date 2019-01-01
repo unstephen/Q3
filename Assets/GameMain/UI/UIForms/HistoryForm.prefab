@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114368252489407672}
   - component: {fileID: 114764671951521668}
   m_Layer: 5
-  m_Name: ShopForm
+  m_Name: HistoryForm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

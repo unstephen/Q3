@@ -7,7 +7,7 @@ using System.IO;
 
 namespace GamePlay
 {
-    public class ShopForm : UGuiForm
+    public class HistoryForm : UGuiForm
     {
         GoodItem goodsItem;
         List<GoodItem> goodsList;
@@ -17,41 +17,9 @@ namespace GamePlay
             base.OnInit(userData);
             GUILink link = GetComponent<GUILink>();
 
-            goodsItem = link.Get<GoodItem>("GoodInfo");
-            goodsItem.SetActive(false);
-            goodsList = new List<GoodItem>();
-
             link.SetEvent("ButtonClose", UIEventType.Click, OnClickExit);
-
-            RefreshGoods();
         }
 
-        void RefreshGoods()
-        {
-            List<GoodsData> goods = GameManager.Instance.goodsList;
-
-            //string jsonStr = File.ReadAllText("shopJson.txt");
-            //Recv_Get_Shop shopData = JsonMapper.ToObject<Recv_Get_Shop>(jsonStr);
-            //Debug.Log(jsonStr);
-            if (goods != null)
-            {
-                int index = 0;
-                foreach (var item in goods)
-                {
-                    GoodItem tempItem = goodsItem.Clone() as GoodItem;
-                    if (tempItem)
-                    {
-                        tempItem.SetActive(true);
-                        tempItem.OpenUI();
-                        tempItem.SetItemInfo(item, index);
-
-                        goodsList.Add(tempItem);
-                    }
-
-                    index++;
-                }
-            }
-        }
         public void OnClickExit(params object[] args)
         {
             Close();

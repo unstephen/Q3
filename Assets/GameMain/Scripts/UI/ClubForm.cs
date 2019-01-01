@@ -38,11 +38,18 @@ namespace GamePlay
             panelList.Add(searchClub);
             createClub = uiLink.AddComponent<SubPanelCreateClub>("SubCreateClub");
             panelList.Add(createClub);
+
+            uiLink.SetEvent("ButtonClose", UIEventType.Click, OnClickExit);
         }
 
         void RefreshGoods()
         {
 
+        }
+
+        public void OnClickExit(params object[] args)
+        {
+            Close();
         }
 
         public void OnStartButtonClick(params object[] args)

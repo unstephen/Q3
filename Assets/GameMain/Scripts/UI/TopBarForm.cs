@@ -11,6 +11,7 @@ namespace GamePlay
         private Text textName;
         private Text textId;
         private Text textToken;
+        private Text textMoney;
 
         protected override void OnInit(object userData)
         {
@@ -20,6 +21,7 @@ namespace GamePlay
             textName = link.Get<Text>("TextName");
             textId = link.Get<Text>("TextID");
             textToken = link.Get<Text>("TextTicket");
+            textMoney = link.Get<Text>("textMoney");
             //link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
         }
 

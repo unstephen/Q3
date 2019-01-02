@@ -23,7 +23,7 @@ namespace GamePlay
             link.SetEvent("BtnShop", UIEventType.Click, OnShopClick);
             link.SetEvent("BtnJoinRoom", UIEventType.Click, OnJoinRoom);
             link.SetEvent("BtnClub", UIEventType.Click, OnOpenClub);
-
+            link.SetEvent("BtnHistory", UIEventType.Click, OnOpenHistory);
 
             role = GameManager.Instance.GetRoleData();
             //string id = "user_id=" + role.id.Value;
@@ -48,18 +48,24 @@ namespace GamePlay
         {
             Recv_Get_MyClub myClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MyClub>(GameConst._mainPage,
     GameManager.Instance.GetSendInfoStringList<Send_Get_MyClub>(role.id.Value, role.token.Value));
-            if (myClub != null && myClub.code == 0)
-            {
-                role.AddMyClubListData(myClub.data);
+            //if (myClub != null && myClub.code == 0)
+            //{
+            //    role.AddMyClubListData(myClub.data);
 
-                GameEntry.UI.OpenUIForm(UIFormId.ClubForm, this);
-            }
+            //    GameEntry.UI.OpenUIForm(UIFormId.ClubForm, this);
+            //}
+
+            GameEntry.UI.OpenUIForm(UIFormId.ClubForm, this);
+        }
+
+        public void OnOpenHistory(object[] args)
+        {
+            GameEntry.UI.OpenUIForm(UIFormId.HistoryForm, this);
         }
 
         public void OnStartSangong(params object[] args)
         {
-            var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
-            main.ChangeGame(GameMode.Sangong);
+            GameEntry.UI.OpenUIForm(UIFormId.GameSettingForm, this);
         }
 
         public void OnShopClick(params object[] args)

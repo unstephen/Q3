@@ -21,6 +21,8 @@ namespace GamePlay
             goodsItem.SetActive(false);
             goodsList = new List<GoodItem>();
 
+            link.SetEvent("ButtonClose", UIEventType.Click, OnClickExit);
+
             RefreshGoods();
         }
 
@@ -50,18 +52,10 @@ namespace GamePlay
                 }
             }
         }
-
-        public void OnStartButtonClick(params object[] args)
+        public void OnClickExit(params object[] args)
         {
-
+            Close();
         }
-
-
-        public void OnQuitButtonClick(params object[] args)
-        {
-            Log.Debug("quit{0}", 111111);
-        }
-
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)

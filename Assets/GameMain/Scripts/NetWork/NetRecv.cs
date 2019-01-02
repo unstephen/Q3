@@ -352,9 +352,7 @@ public class RecvHandler : IPacketHandler
         {
             RoomManager.Instance.Self.Value.SetPos(pos);
             RoomManager.Instance.Self.Value.state = EPlayerState.Seat;
-            RoomManager.Instance.Self.Value.score.Value = score;
-          
-
+            RoomManager.Instance.Self.Value.score.Value = score;    
         }
         else
         {
@@ -373,12 +371,12 @@ public class RecvHandler : IPacketHandler
 
     private void RecvNotifyShared(byte[] args)
     {
-        throw new NotImplementedException();
+       
     }
 
     private void RecvNotifyPrivate(byte[] args)
     {
-        throw new NotImplementedException();
+       
     }
 
     private void RecvNotifyDraw(byte[] args)

@@ -50,5 +50,13 @@
         /// 俱樂部
         /// </summary>
         ClubForm = 108,
+        /// <summary>
+        /// 历史记录
+        /// </summary>
+        HistoryForm = 109,
+        /// <summary>
+        /// 房间设置
+        /// </summary>
+        GameSettingForm = 110
     }
 }

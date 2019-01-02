@@ -21,7 +21,7 @@ public class GoodItem : UGuiComponentClone
         icon = link.Get<Image>("Image");
         price = link.Get<Text>("Price");
 
-        link.SetEvent("goodButton", UIEventType.Click, _ => OnClick());
+        //link.SetEvent("goodButton", UIEventType.Click, _ => OnClick());
     }
 
     public void SetItemInfo(GoodsData data, int index)
@@ -35,16 +35,16 @@ public class GoodItem : UGuiComponentClone
 
     public void OnClick()
     {
-        GameEntry.UI.OpenUIForm(UIFormId.DialogForm, new DialogParams
-        {
-            Mode = 2,
-            Title = "购买商品",
-            Message = "是否花费" + price.text + "够买" + idstr.text + "?",
-            ConfirmText = "确定",
-            OnClickConfirm = delegate (object userData) { DoMessegeBox(true); },
-            CancelText = "取消",
-            OnClickCancel = delegate (object userData) { DoMessegeBox(false); }
-        });
+        //GameEntry.UI.OpenUIForm(UIFormId.DialogForm, new DialogParams
+        //{
+        //    Mode = 2,
+        //    Title = "购买商品",
+        //    Message = "是否花费" + price.text + "够买" + idstr.text + "?",
+        //    ConfirmText = "确定",
+        //    OnClickConfirm = delegate (object userData) { DoMessegeBox(true); },
+        //    CancelText = "取消",
+        //    OnClickCancel = delegate (object userData) { DoMessegeBox(false); }
+        //});
     }
 
     public void DoMessegeBox(bool sure)

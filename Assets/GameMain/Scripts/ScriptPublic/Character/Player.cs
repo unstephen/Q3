@@ -137,16 +137,28 @@ namespace GamePlay
 		{
 			pos.Value = index;
 			RoomManager.Instance.rData.SetPos(id.Value, index, 1);
-		
-			for (int i=0; i<tableUI.playerWigets.Count; i++)
+			bool hasUI = false;
+			for (int i = 0; i < tableUI.playerWigets.Count; i++)
 			{
-				if (tableUI.playerWigets[i].pId <= 0)
+				if (tableUI.playerWigets[i].pId == id.Value)
 				{
-					uiPos.Value = (byte)i;
+					hasUI = true;
 					break;
 				}
 			}
-			headUI = tableUI.GetPlayerHeadUI(uiPos.Value);
+            if(!hasUI)
+            {
+	            for (int i = 0; i < tableUI.playerWigets.Count; i++)
+	            {
+		            if (tableUI.playerWigets[i].pId <= 0)
+		            {
+			            uiPos.Value = (byte) i;
+			            break;
+		            }
+	            }
+
+	            headUI = tableUI.GetPlayerHeadUI(uiPos.Value);   
+            }
 		}
 
 		public Vector3 GetCardAnchor()

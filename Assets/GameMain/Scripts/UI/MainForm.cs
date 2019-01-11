@@ -24,6 +24,8 @@ namespace GamePlay
             link.SetEvent("BtnJoinRoom", UIEventType.Click, OnJoinRoom);
             link.SetEvent("BtnClub", UIEventType.Click, OnOpenClub);
             link.SetEvent("BtnHistory", UIEventType.Click, OnOpenHistory);
+            link.SetEvent("BtnRule", UIEventType.Click, OnOpenRule);
+            link.SetEvent("BtnSurface", UIEventType.Click, OnOpenSurface);
 
             role = GameManager.Instance.GetRoleData();
             //string id = "user_id=" + role.id.Value;
@@ -66,6 +68,16 @@ namespace GamePlay
         public void OnStartSangong(params object[] args)
         {
             GameEntry.UI.OpenUIForm(UIFormId.GameSettingForm, this);
+        }
+
+        public void OnOpenRule(params object[] args)
+        {
+            GameEntry.UI.OpenUIForm(UIFormId.TipForm, 0);
+        }
+
+        public void OnOpenSurface(params object[] args)
+        {
+            GameEntry.UI.OpenUIForm(UIFormId.TipForm, 1);
         }
 
         public void OnShopClick(params object[] args)

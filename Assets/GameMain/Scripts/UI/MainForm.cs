@@ -65,7 +65,8 @@ namespace GamePlay
 
         public void OnStartSangong(params object[] args)
         {
-            GameEntry.UI.OpenUIForm(UIFormId.GameSettingForm, this);
+            var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
+            main.ChangeGame(GameMode.Sangong);
         }
 
         public void OnShopClick(params object[] args)
@@ -187,7 +188,9 @@ namespace GamePlay
             else
             {
                 //Join
-                Recv_JoinRoom joinRoom = NetWorkManager.Instance.CreateGetMsg<Recv_JoinRoom>(GameConst._joinRoom, GameManager.Instance.GetSendInfoStringList<Send_Join_Room>(role.id.Value, role.token.Value,roomId.ToString(),inputText.Value.ToString()));
+                string psd = inputText.Value.ToString();
+                psd = string.IsNullOrEmpty(psd) ? "1" : psd;
+                Recv_JoinRoom joinRoom = NetWorkManager.Instance.CreateGetMsg<Recv_JoinRoom>(GameConst._joinRoom, GameManager.Instance.GetSendInfoStringList<Send_Join_Room>(role.id.Value, role.token.Value,roomId.ToString(),psd));
 
                 if (joinRoom != null)
                 {

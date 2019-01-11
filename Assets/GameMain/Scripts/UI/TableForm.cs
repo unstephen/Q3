@@ -408,7 +408,7 @@ namespace GamePlay
             disPosable.Clear();
             _PlayerName = name;
           
-            role.name.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textName).AddTo(disPosable);
+            role.name.ObserveEveryValueChanged(x => x.Value).Select(x=>x+pId).SubscribeToText(textName).AddTo(disPosable);
             role.score.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textScore).AddTo(disPosable);
             RoomManager.Instance.rData.bid.ObserveEveryValueChanged(x => x.Value).Select(x => x == role.id.Value)
                 .Subscribe(

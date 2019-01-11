@@ -20,6 +20,7 @@ namespace GamePlay
 		public ReactiveCollection<PlayerOther> roomPlayers;
 		public ReactiveProperty<PlayerSelf> playerSelf;
 		public ReactiveCollection<RoomSeat> roomSeats;
+		public bool canRubbing;//能否搓牌
 
 		public List<Player> allPlayers
 		{
@@ -54,7 +55,7 @@ namespace GamePlay
 			roomPlayers = new ReactiveCollection<PlayerOther>();
 			
 			roomSeats = new ReactiveCollection<RoomSeat>();
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 7; i++)
 			{
 				roomSeats.Add(new RoomSeat(){pos = (byte)i});
 			}

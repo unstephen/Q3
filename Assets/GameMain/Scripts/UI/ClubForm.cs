@@ -78,6 +78,7 @@ namespace GamePlay
             {
                 Debug.LogError("this role is null in clubform!");
             }
+
             role.curClubId.Subscribe(x =>
             {
                 panelIndex = x < 0 ? 2 : (x == 0 ? 1 : 0);

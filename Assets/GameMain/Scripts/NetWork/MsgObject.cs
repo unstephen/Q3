@@ -205,7 +205,7 @@ public struct SearchClubData
     public int total;
     public int page;
     public int page_size;
-    List<SearchClubBaseData> list;
+    public List<SearchClubBaseData> list;
 }
 
 public struct SearchClubBaseData
@@ -275,7 +275,7 @@ public struct HistorySingle
 
 public class Recv_Get_SearchHistory : Http_MsgBase
 {
-    HistorySingle data;
+    public HistorySingle data;
 }
 
 public class Recv_SearchRoom_Data
@@ -529,7 +529,7 @@ public class Send_SearchHistory : Send_MsgBase
         List<string> temp = new List<string>();
         temp = base.CreateSendInfo(args);
 
-        temp.Add("page=" + (string)args[2]);
+        temp.Add("page=" + args[2]);
         temp.Add("page_size=" + args[3]);
 
         return temp;

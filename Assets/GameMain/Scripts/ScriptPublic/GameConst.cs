@@ -7,6 +7,8 @@ public class GameConst {
     public const int cardMaxNum = 3;
     public const int pokerMax = 13;
     public const int pokerCount = 52;
+    public const int pageSize = 10;
+
     public const string httpUrl = "http://47.92.73.235:8080";
     public const string ipadress = "47.92.73.235";
     public const int port = 8080;

@@ -27,9 +27,9 @@ public class RoleData
 	private ReactiveProperty<int> _Money;	
 	public ReactiveProperty<int> curClubId; // 当前查看的clubid
 
-    public List<ClubData> myClubList;
+    public ReactiveCollection<ClubData> myClubList;
 
-	public ReactiveCollection<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
+    public ReactiveCollection<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
 	private ReactiveProperty<int> recoreLimite;
 	
 	public void InitData(string roleId, string token)
@@ -38,7 +38,7 @@ public class RoleData
         this.token = new ReactiveProperty<string>(token);
 
         recordList = new ReactiveCollection<GameRecord>();
-        myClubList = new List<ClubData>();
+        myClubList = new  ReactiveCollection<ClubData>();
 	}
 	
     public void InitBaseData(int clubId)
@@ -83,7 +83,7 @@ public class RoleData
     {
         if (myClubList == null)
         {
-            myClubList = new List<ClubData>();
+            myClubList = new ReactiveCollection<ClubData>();
         }
         else
         {

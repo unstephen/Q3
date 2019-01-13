@@ -6,19 +6,14 @@ using UnityEngine.UI;
 
 public class SubPanelClubInfo : UGuiComponent
 {
-    string[] toggleStr = new string[3] { "Toggle1", "Toggle2", "Toggle3" };
-    List<Toggle> toggleList = new List<Toggle>();
+    string[] toggleStr = new string[3] { "ClubBtn_1", "ClubBtn_2", "ClubBtn_3" };
+    List<Button> toggleList = new List<Button>();
     List<Text> labelList = new List<Text>();
 
     List<ClubData> clubList = new List<ClubData>();
 
     SubPanelClubInfoList panelInfoList;
-
-    Text text_id;
-    Text text_name;
-    Text text_info;
-    Text text_vip;
-    Text text_count;
+    subPanelBaseClubInfo panelInfo;
 
     private int curIndex;
     protected override void OnInit(object userData)
@@ -29,10 +24,10 @@ public class SubPanelClubInfo : UGuiComponent
 
         for (int i = 0; i < toggleStr.Length; i++)
         {
-            Toggle temp = link.Get<Toggle>(toggleStr[i]);
+            Button temp = link.Get<Button>(toggleStr[i]);
             toggleList.Add(temp);
 
-            Text tempText = link.Get<Text>("Label" + i);
+            Text tempText = link.Get<Text>("Text_" + i);
             labelList.Add(tempText);
 
             int index = i;
@@ -42,12 +37,7 @@ public class SubPanelClubInfo : UGuiComponent
         link.SetEvent("ButtonBack", UIEventType.Click, BackToSearch);
 
         panelInfoList = link.AddComponent<SubPanelClubInfoList>("Page");
-
-        text_id = link.Get<Text>("id_Text");
-        text_name = link.Get<Text>("name_Text");
-        text_info = link.Get<Text>("info_Text");
-        text_vip = link.Get<Text>("vip_Text");
-        text_count = link.Get<Text>("count_Text");
+        panelInfo = link.AddComponent<subPanelBaseClubInfo>("PanelBaseInfo");
 
         curIndex = 0;
     }
@@ -89,6 +79,16 @@ public class SubPanelClubInfo : UGuiComponent
                 labelList[i].text = "暂无";
             }
         }
+
+        if (clubList.Count > 0)
+        {
+            panelInfo.OpenUI(0);
+            panelInfo.transform.SetSiblingIndex(1);
+        }
+        else
+        {
+            panelInfo.HideUI();
+        }
     }
 
     public void OnClickChange(int index)
@@ -104,14 +104,9 @@ public class SubPanelClubInfo : UGuiComponent
 
             curIndex = index;
 
-            ClubData temp = role.myClubList[index];
-            text_id.text = temp.club_id;
-            text_name.text = temp.club_name;
-            text_info.text = temp.ongoing_games;
-            text_vip.text = temp.vip_level;
-            text_count.text = temp.member_number;
-
-
+            panelInfo.transform.SetSiblingIndex(index + 1);
+            panelInfo.ShowBaseInfo(index);
         }
+
     }
 }

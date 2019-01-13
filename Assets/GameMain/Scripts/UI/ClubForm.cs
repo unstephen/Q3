@@ -14,6 +14,9 @@ namespace GamePlay
         SubPanelSerachClub searchClub;
         SubPanelCreateClub createClub;
 
+        RoleData role;
+        int curIndex;
+
         List<UGuiComponent> panelList = new List<UGuiComponent>();
 
         int panelIndex; // -1：創建 0：搜索 大于1：信息
@@ -63,7 +66,23 @@ namespace GamePlay
             Log.Debug("quit{0}", 111111);
         }
 
+        private void RefreshMyClub()
+        {
 
+        }
+
+        private void CheckPanelShow(int index)
+        {
+            if (index == curIndex)
+            {
+                return;
+            }
+
+            for (int i = 0; i < panelList.Count; ++i)
+            {
+                panelList[i].SetActive(index == i);
+            }
+        }
 #if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
 #else
@@ -73,12 +92,13 @@ namespace GamePlay
             base.OnOpen(userData);
             //            PlayerStateInit s = new PlayerStateInit();
             //            s.star
-            RoleData role = GameManager.Instance.GetRoleData();
+            role = GameManager.Instance.GetRoleData();
             if (role == null)
             {
                 Debug.LogError("this role is null in clubform!");
             }
 
+            curIndex = 0;
             role.curClubId.Subscribe(x =>
             {
                 panelIndex = x < 0 ? 2 : (x == 0 ? 1 : 0);

@@ -54,6 +54,14 @@ public class CardManager : MonoSingleton<CardManager>
 
     }
 
+    public void Reset()
+    {
+        foreach (var player in Players)
+        {
+            player.handCardsData.Clear();
+        }
+    }
+
     public List<Player> Players
     {
         get { return RoomManager.Instance.rData.allPlayers; }
@@ -269,5 +277,33 @@ public class CardManager : MonoSingleton<CardManager>
         //进入发牌阶段
         cardManagerState = CardManagerStates.Ready;
         StartCoroutine(BackHeapCards());
+    }
+    /// <summary>
+    /// 服务器牌数据转为客户端牌的序号
+    /// </summary>
+    /// <param name="type">花色</param>
+    /// <param name="num">大小</param>
+    /// <returns></returns>
+    public static int CardConvert2C(int type, int num)
+    {
+        int ret;
+        if (CardTypes.Diamonds == type)
+        {
+            ret = num == 13 ? 1 : (num + 1);
+        }
+        else if (CardTypes.Clubs == type)
+        {
+            ret = num == 13 ? 14 : (num + 14);
+        }
+        else if (CardTypes.Hearts == type)
+        {
+            ret = num == 13 ? 27 : (num + 27);
+        }
+        else
+        {
+            ret = num == 13 ? 40 : (num + 40);
+        }
+
+        return ret;
     }
 }

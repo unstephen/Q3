@@ -23,6 +23,13 @@ namespace GamePlay
             base.Initialize(fromMode);
 
         }
+
+        public override void Shutdown()
+        {
+            base.Shutdown();
+            NetWorkManager.Instance.CloseChanel();
+        }
+
         public override void Update(float elapseSeconds, float realElapseSeconds)
         {
             base.Update(elapseSeconds, realElapseSeconds);

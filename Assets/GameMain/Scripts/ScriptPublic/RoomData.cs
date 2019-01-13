@@ -125,16 +125,25 @@ namespace GamePlay
 
 		public void SetPlayerData(int pId, string userId, string userLoc, int score)
 		{
+			Log.Info("SetPlayerData设置玩家数据pId={0},userId={1},score={2}",pId,userId,score);
 			var player = GetPlayer(pId);
+			bool bNew = false;
 			if (player==null)
 			{
 				player = new PlayerOther();
 				player.id.Value = pId;
+				bNew = true;
 			}
 			
 			player.name.Value = userId;
 			player.score.Value = score;
 			player.userLoc.Value = userLoc;
+			player.SetPos(GetPosByPid(pId));
+			player.state = EPlayerState.Seat;
+			if (bNew)
+			{
+				RoomManager.Instance.rData.roomPlayers.Add(player as PlayerOther);
+			}
 		}
 
 		public Player GetPlayer(int pId)
@@ -153,6 +162,18 @@ namespace GamePlay
 			RoomManager.Instance.rData.roomSeats[pos].pid = pid;
 			RoomManager.Instance.rData.roomSeats[pos].pos = pos;
 			RoomManager.Instance.rData.roomSeats[pos].state = state;
+		}
+
+		public byte GetPosByPid(int pid)
+		{
+			byte ret = 255;
+			foreach (var seat in RoomManager.Instance.rData.roomSeats)
+			{
+				if (seat.pid == pid)
+					ret = seat.pos;
+			}
+
+			return ret;
 		}
 	}
 /// <summary>

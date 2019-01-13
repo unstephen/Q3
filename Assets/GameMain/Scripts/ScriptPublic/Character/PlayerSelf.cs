@@ -79,6 +79,7 @@ namespace GamePlay
 			tableUI.BtnLeaveSeat.gameObject.SetActive(false);
 			tableUI.BetPanel.SetActive(false);
 			tableUI.BtnBanker0.gameObject.SetActive(false);
+			NetWorkManager.Instance.Send(Protocal.READY,RoomManager.Instance.rData.gId.Value);
 		}
 
 		public override void OnBid()

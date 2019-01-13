@@ -6,8 +6,8 @@ public class Protocal
     public const byte UNWATCH = 4;     
     public const byte JOIN = 9;     //进入房间后，直接进入观看状态，玩家开始订阅房间内的消息，牌、短讯、状态等都能获取到。
     public const byte LEAVE = 10;     //离开座位。
-    public const byte READY = 11;     //准备开始参与游戏。
-    public const byte READY_CANCEL = 12; //取消准备
+
+    public const byte CHAT = 13; //聊天
     public const byte PLAYER_SUMMARY = 15; //玩家总结信息
     public const byte BID = 16; //抢庄
     public const byte BET_REQ = 17; //进行下注，下注积分不能超过带入当前截止带入的剩余积分。
@@ -44,4 +44,9 @@ public class Protocal
     public const byte NOTIFY_SB = 44;//Seat# is the small blind
     public const byte NOTIFY_BB = 45;//Seat# is the big blind
     public const byte NOTIFY_BID = 46;
+    public const byte READY = 47;     //准备开始参与游戏。
+    public const byte READY_CANCEL = 48; //取消准备
+    public const byte NOTIFY_READY = 49; //通知准备
+    public const byte NOTIFY_READY_CANCEL = 50; //取消准备
+    public const byte BID_REQ = 51; //通知正在玩的玩家 抢庄
 }

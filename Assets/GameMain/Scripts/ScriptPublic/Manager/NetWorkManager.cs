@@ -542,6 +542,16 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
         channel.SendBufferSize = 1024;
         channel.HeartBeatInterval = 3600 * 24;
     }
+
+    public void CloseChanel()
+    {
+        if (channel != null)
+        {
+            channel.Close();
+            GameEntry.Network.DestroyNetworkChannel("q3");
+            channel = null;
+        }
+    }
     /// <summary>
     /// Q3 TCP的发送消息函数
     /// </summary>

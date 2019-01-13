@@ -26,6 +26,7 @@ namespace GamePlay
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
             if (CardManager.Instance.cardManagerState == CardManagerStates.Playing)
             {
+                //先发牌再抢庄
                 fsm.Owner.state = EPlayerState.Banker;
                 ChangeState<PlayerStateBanker>(fsm);
             }

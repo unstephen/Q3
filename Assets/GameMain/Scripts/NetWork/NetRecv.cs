@@ -5,6 +5,7 @@ using System;
 using GameFramework.Network;
 using GamePlay;
 using UnityGameFramework.Runtime;
+using GameEntry = UnityGameFramework.Runtime.GameEntry;
 
 public class RecvHandler : IPacketHandler
 {
@@ -88,8 +89,63 @@ public class RecvHandler : IPacketHandler
             case Protocal.PLAYER_SUMMARY:
                 RecvPlayerSummary(args);
                 break;
+            case Protocal.NOTIFY_READY:
+                RecvNotifyReady(args);
+                break;
+            case Protocal.NOTIFY_READY_CANCEL:
+                RecvNotifyReadyCancel(args);
+                break;
+            case Protocal.BID_REQ:
+                RecvBIDREQ(args);
+                break;
+                
             default:
                 break;
+        } 
+    }
+
+    private void RecvBIDREQ(byte[] args)
+    {
+        int gId = MsgParse.PopInt(ref args);
+        if (gId != RoomManager.Instance.rData.gId.Value)
+            return;
+        
+        RoomManager.Instance.Self.Value.state = EPlayerState.Banker;
+    }
+
+    private void RecvNotifyReady(byte[] args)
+    {
+        int gId = MsgParse.PopInt(ref args);
+        if (gId != RoomManager.Instance.rData.gId.Value)
+            return;
+        int pId = MsgParse.PopInt(ref args);
+        
+        var player = RoomManager.Instance.rData.GetPlayer(pId);
+        if (player != null && player!=RoomManager.Instance.Self.Value)
+        {
+            player.state = EPlayerState.GamePrepare;
+        }
+        else if (GameManager.Instance.IsSelf(pId))
+        {
+            RoomManager.Instance.Self.Value.state = EPlayerState.GamePrepare;
+        }
+    }
+    
+    private void RecvNotifyReadyCancel(byte[] args)
+    {
+        int gId = MsgParse.PopInt(ref args);
+        if (gId != RoomManager.Instance.rData.gId.Value)
+            return;
+        int pId = MsgParse.PopInt(ref args);
+        
+        var player = RoomManager.Instance.rData.GetPlayer(pId);
+        if (player != null && player!=RoomManager.Instance.Self.Value)
+        {
+            player.state = EPlayerState.Seat;
+        }
+        else if (GameManager.Instance.IsSelf(pId))
+        {
+            RoomManager.Instance.Self.Value.state = EPlayerState.Seat;
         }
     }
 
@@ -131,7 +187,7 @@ public class RecvHandler : IPacketHandler
         {
             case Protocal.WATCH:
             {
-                NetWorkManager.Instance.Send(Protocal.SEAT_QUERY,RoomManager.Instance.rData.gId);    
+                NetWorkManager.Instance.Send(Protocal.SEAT_QUERY,RoomManager.Instance.rData.gId.Value);    
             }
             break;
             case Protocal.LEAVE:
@@ -179,12 +235,29 @@ public class RecvHandler : IPacketHandler
         if (player != null)
         {
             player.state = EPlayerState.Watch;
+            RoomManager.Instance.rData.roomSeats[player.pos.Value].pid = 0;
+            RoomManager.Instance.rData.roomSeats[player.pos.Value].state = 0;
+            if (!GameManager.Instance.IsSelf(pId))
+            {
+                player.Clear();
+            }
         }
     }
 
     private void RecvNotifyChat(byte[] args)
     {
+        int gid = MsgParse.PopInt(ref args);
+        if (gid != RoomManager.Instance.rData.gId.Value)
+            return;
         
+        int pId = MsgParse.PopInt(ref args);
+        MsgParse.PopShort(ref args);
+        var content = MsgParse.PopString(ref args);
+        var player = RoomManager.Instance.rData.GetPlayer(pId);
+        if (player != null)
+        {
+            player.tableUI.PopTalk(player.headUI.cardPos,content); 
+        }
     }
 
     private void RecvNotifyStart(byte[] args)
@@ -192,10 +265,12 @@ public class RecvHandler : IPacketHandler
         int gid = MsgParse.PopInt(ref args);
         if (gid != RoomManager.Instance.rData.gId.Value)
             return;
+        //牌管理器初始化
+        CardManager.Instance.Reset();
         //所有人状态变为发牌
         foreach (var player in RoomManager.Instance.rData.allPlayers)
         {
-            player.state = EPlayerState.Deal;
+            player.state = EPlayerState.GameStart;
         }
     }
 
@@ -364,7 +439,7 @@ public class RecvHandler : IPacketHandler
                 player.SetPos(pos);
                 player.state = EPlayerState.Seat;
                 player.score.Value = score;
-                RoomManager.Instance.rData.roomPlayers[pos] = player;
+                RoomManager.Instance.rData.roomPlayers.Add(player);
             }
         }
     }
@@ -376,12 +451,30 @@ public class RecvHandler : IPacketHandler
 
     private void RecvNotifyPrivate(byte[] args)
     {
-       
+        int gId = MsgParse.PopInt(ref args);
+        if (gId != RoomManager.Instance.rData.gId.Value)
+            return;
+        int pId = MsgParse.PopInt(ref args);
+ 
+        var player = RoomManager.Instance.rData.GetPlayer(pId);
+        if (player != null)
+        {
+            player.handCardsData.Add(1);
+        }
+        Log.Debug("给{0}发牌数据,本地序号={1}",player.name,1);
     }
 
     private void RecvNotifyDraw(byte[] args)
     {
-        
+        int gId = MsgParse.PopInt(ref args);
+        if (gId != RoomManager.Instance.rData.gId.Value)
+            return;
+        int pId = MsgParse.PopInt(ref args);
+        byte rank = MsgParse.PopByte(ref args);
+        byte suit = MsgParse.PopByte(ref args);
+        int localRank = CardManager.CardConvert2C(suit, rank);
+        RoomManager.Instance.Self.Value.handCardsData.Add(localRank);
+        Log.Debug("给自己发牌数据,本地序号={0}",localRank);
     }
 
     /// <summary>

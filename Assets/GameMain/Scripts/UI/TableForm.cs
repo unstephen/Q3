@@ -23,7 +23,9 @@ namespace GamePlay
         private Text TextTime;
         private Text TextRoomId;
         private GameObject BL_lose, BL_win,PanelSettle;
-        
+        //聊天
+        private Transform PanelChat,TalkPopup;
+        private Text TalkPopText;
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -49,6 +51,11 @@ namespace GamePlay
             BL_win = link.Get("BL_win");
             PanelSettle = link.Get("PanelSettle");
             
+            PanelChat = link.Get("PanelChat").transform;
+            TalkPopup = link.Get("TalkPopup").transform;
+            TalkPopText = link.Get<Text>("TalkPopText");
+            
+            
             
             link.SetEvent("Quit", UIEventType.Click, OnClickExit);
             link.SetEvent("BtnSeat", UIEventType.Click, OnClickSeat);
@@ -70,6 +77,13 @@ namespace GamePlay
             link.SetEvent("GMNotifyPrivate", UIEventType.Click, GMNotifyPrivate);
             link.SetEvent("GMNotifyDraw", UIEventType.Click, GMNotifyDraw);
             link.SetEvent("GMNotifyJoin", UIEventType.Click, GMNotifyJoin);
+            //聊天
+            for (int i = 1; i <= 5; i++)
+            {
+                string talkUIName = "Talk"+i;
+                string talkContent = link.Get<Text>(talkUIName).text;
+                link.SetEvent(talkUIName, UIEventType.Click, _=>OnClickTalk(talkContent)); 
+            }
             
             
             
@@ -83,6 +97,11 @@ namespace GamePlay
             CardManager.Instance.InitCardPos(tempUITrans);
         }
 
+        private void OnClickTalk(string talkContent)
+        {
+            NetWorkManager.Instance.Send(Protocal.CHAT,RoomManager.Instance.rData.gId.Value,talkContent);
+        }
+
         private void OnClickSettleOK(object[] args)
         {
             PanelSettle.SetActive(false);
@@ -90,6 +109,14 @@ namespace GamePlay
             {
                 player.state = EPlayerState.Seat;
             }
+        }
+
+        public void PopTalk(Transform pos,string talkContent)
+        {
+            TalkPopup.SetParent(pos);
+            TalkPopup.gameObject.SetActive(true);
+            TalkPopText.text = talkContent;
+            Observable.TimerFrame(50).Subscribe(x => TalkPopup.gameObject.SetActive(false));
         }
 
         private void GMNotifyJoin(object[] args)
@@ -273,6 +300,11 @@ namespace GamePlay
 //            }
         }
 
+        public void OpenTalkPanel()
+        {
+            
+        }
+
         public void OnClickExit(params object[] args)
         {
             NetWorkManager.Instance.Send(Protocal.UNWATCH,RoomManager.Instance.rData.gId.Value);
@@ -384,6 +416,9 @@ namespace GamePlay
         public Transform cardPos;
         private Image bidIcon;
         public int pId;
+        private Image imgReady;
+        private Image scoreImg;
+        private Text TextStyle;
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -391,10 +426,23 @@ namespace GamePlay
 
             textName = link.Get<Text>("TextName");
             textScore = link.Get<Text>("TextScore");
+            TextStyle = link.Get<Text>("TextStyle");
             cardPos = link.Get<Transform>("cardPos");
             bidIcon = link.Get<Image>("bid");
+            imgReady = link.Get<Image>("img_ready");
+            scoreImg = link.Get<Image>("scoreImg");
             textName.text = "";
             textScore.text = "";
+            scoreImg.gameObject.SetActive(false);
+            link.SetEvent("headIcon", UIEventType.Click, OnClickHead);
+        }
+
+        private void OnClickHead(object[] args)
+        {
+            if (pId == GameManager.Instance.GetRoleData().pId.Value)
+            {
+                
+            }
         }
 
         protected override void OnOpen(object userData)
@@ -404,10 +452,11 @@ namespace GamePlay
 
         public void SetPlayerData(Player role)
         {
+            role.headUI = this;
             pId = role.id.Value;
             disPosable.Clear();
             _PlayerName = name;
-          
+            Log.Debug("{0} SetPlayerData {1}",gameObject.name,role.name);
             role.name.ObserveEveryValueChanged(x => x.Value).Select(x=>x+pId).SubscribeToText(textName).AddTo(disPosable);
             role.score.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textScore).AddTo(disPosable);
             RoomManager.Instance.rData.bid.ObserveEveryValueChanged(x => x.Value).Select(x => x == role.id.Value)
@@ -428,11 +477,41 @@ namespace GamePlay
             textName.text = "";
             textScore.text = "";
             pId = 0;
+            bidIcon.gameObject.SetActive(false);
+            imgReady.gameObject.SetActive(false);
+            scoreImg.gameObject.SetActive(false);
         }
 
         public void OnGameEnd()
         {
             bidIcon.gameObject.SetActive(false);
+        }
+
+        public void OnGameReady()
+        {
+            imgReady.gameObject.SetActive(true);
+        }
+
+        public void OnEnd()
+        {
+            imgReady.gameObject.SetActive(false);
+        }
+
+        public void OnCardStyle(string styleName)
+        {
+            scoreImg.gameObject.SetActive(true);
+            TextStyle.text = styleName;
+        }
+        
+        public void OnStart()
+        {
+            imgReady.gameObject.SetActive(false);
+        }
+
+        public void OnSeat()
+        {
+            imgReady.gameObject.SetActive(false);
+            scoreImg.gameObject.SetActive(false);
         }
     }
     public class PanelSelectScore : UGuiComponent

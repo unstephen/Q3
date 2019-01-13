@@ -37,16 +37,17 @@
         /// </summary>
         Neutral2,
     }
-    public enum CardTypes
+    public class CardTypes
     {
         //方片
-        Diamonds = 0,
+        public const int Diamonds = 2;
         //梅花
-        Clubs,
+        public const int Clubs = 1;
+       
         //红桃
-        Hearts,
+        public const int Hearts=3;
         //黑桃
-        Spades
+        public const int Spades=4;
     }
     public enum CardManagerStates
     {

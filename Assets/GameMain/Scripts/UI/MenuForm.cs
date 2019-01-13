@@ -34,9 +34,11 @@ namespace GamePlay
 //
 //            wx.WechatLogin();
 
+            //234 wxe8355f09eacfc7dd   123 wxe8355f09eacfc7dd
             string type = "login_type=weixin";
             string token = "access_token=wxe8355f09eacfc7dd";
-            string openId = "openid=123";
+            string openId = "openid=234";
+            //string openId = "openid=123";
                 
             Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
 

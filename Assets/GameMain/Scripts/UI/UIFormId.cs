@@ -57,6 +57,10 @@
         /// <summary>
         /// 房间设置
         /// </summary>
-        GameSettingForm = 110
+        GameSettingForm = 110,
+        /// <summary>
+        /// 说明
+        /// </summary>
+        TipForm = 111,
     }
 }

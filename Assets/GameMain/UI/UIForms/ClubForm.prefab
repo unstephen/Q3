@@ -724,7 +724,6 @@ GameObject:
   - component: {fileID: 224299374990900214}
   - component: {fileID: 222917471550238318}
   - component: {fileID: 114726725382288400}
-  - component: {fileID: 114433851731799426}
   m_Layer: 5
   m_Name: Page
   m_TagString: Untagged
@@ -1533,6 +1532,7 @@ GameObject:
   - component: {fileID: 114934715695069398}
   - component: {fileID: 114783268995919124}
   - component: {fileID: 114863169428372628}
+  - component: {fileID: 114067246566222026}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -2086,6 +2086,7 @@ GameObject:
   - component: {fileID: 222140866200948348}
   - component: {fileID: 114121814215158540}
   - component: {fileID: 114089668345783304}
+  - component: {fileID: 114767589453104162}
   m_Layer: 5
   m_Name: Managers
   m_TagString: Untagged
@@ -2121,6 +2122,7 @@ GameObject:
   - component: {fileID: 222552046463459686}
   - component: {fileID: 114333272594429542}
   - component: {fileID: 114025510456893140}
+  - component: {fileID: 114277771206245402}
   m_Layer: 5
   m_Name: running
   m_TagString: Untagged
@@ -2352,7 +2354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1857637510791866
 GameObject:
   m_ObjectHideFlags: 1
@@ -3154,6 +3156,30 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 1369828267750356}
     component: {fileID: 114723553326487508}
+  - Name: ToggleMembers
+    Tips: 
+    LinkObj: {fileID: 1149567190981204}
+    component: {fileID: 114462561930917194}
+  - Name: ToggleGames
+    Tips: 
+    LinkObj: {fileID: 1115937630201588}
+    component: {fileID: 114665785781329060}
+  - Name: ToggleRequest
+    Tips: 
+    LinkObj: {fileID: 1915991950013584}
+    component: {fileID: 114069088863216392}
+  - Name: PanelMembers
+    Tips: 
+    LinkObj: {fileID: 1856252188021218}
+    component: {fileID: 114152016624408576}
+  - Name: PanelGames
+    Tips: 
+    LinkObj: {fileID: 1625869353241536}
+    component: {fileID: 114011057855187326}
+  - Name: PanelRequest
+    Tips: 
+    LinkObj: {fileID: 1873377105784456}
+    component: {fileID: 114578806984903548}
 --- !u!114 &114050214242782106
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3221,6 +3247,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &114067246566222026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595428132187942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899fae8e068efa64484df607193c5234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114067269689049422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4489,6 +4526,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114277771206245402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786636534971346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3634a61957b90c48a1af84e92c4f8b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114281397267527628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5550,42 +5598,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114433851731799426
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1323331434260978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9e0f627956025742bf206d655e6bd0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Links:
-  - Name: ToggleMembers
-    Tips: 
-    LinkObj: {fileID: 1149567190981204}
-    component: {fileID: 114462561930917194}
-  - Name: ToggleGames
-    Tips: 
-    LinkObj: {fileID: 1115937630201588}
-    component: {fileID: 114665785781329060}
-  - Name: ToggleRequest
-    Tips: 
-    LinkObj: {fileID: 1915991950013584}
-    component: {fileID: 114069088863216392}
-  - Name: PanelMembers
-    Tips: 
-    LinkObj: {fileID: 1856252188021218}
-    component: {fileID: 114152016624408576}
-  - Name: PanelGames
-    Tips: 
-    LinkObj: {fileID: 0}
-    component: {fileID: 0}
-  - Name: PanelRequest
-    Tips: 
-    LinkObj: {fileID: 0}
-    component: {fileID: 0}
 --- !u!114 &114437899896538186
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6345,7 +6357,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
@@ -7870,10 +7882,6 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 1781643023067476}
     component: {fileID: 114237601238238656}
-  - Name: "Erro\uFF01\uFF01\uFF01Link\u4E22\u5931\u7269\u4EF6\uFF0C\u68C0\u67E5"
-    Tips: 
-    LinkObj: {fileID: 0}
-    component: {fileID: 0}
 --- !u!114 &114767339812255294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7906,6 +7914,17 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 1891501438849026}
     component: {fileID: 0}
+--- !u!114 &114767589453104162
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1783916734024602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85db0b323a6f0f54d91a3bbee32946e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114769761241098050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11170,10 +11189,10 @@ RectTransform:
   m_Father: {fileID: 224114993025949010}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 330, y: -25}
-  m_SizeDelta: {x: 650, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224199688475049936
 RectTransform:
@@ -11377,7 +11396,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 42.1}
+  m_SizeDelta: {x: 84.666664, y: 42.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224246444680329170
 RectTransform:
@@ -11914,7 +11933,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 42.1}
+  m_SizeDelta: {x: 84.666664, y: 42.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224406235066697532
 RectTransform:
@@ -13424,7 +13443,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 42.1}
+  m_SizeDelta: {x: 84.666664, y: 42.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224941902327007634
 RectTransform:

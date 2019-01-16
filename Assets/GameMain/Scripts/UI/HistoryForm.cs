@@ -140,6 +140,11 @@ namespace GamePlay
 
         private void ShowItemList(int page, List<HistorySingleBaseData> list)
         {
+            if (list == null)
+            {
+                return;
+            }
+
             int curIndex = 0;
             foreach (var item in list)
             {

@@ -175,7 +175,7 @@ public struct Recv_Get_ClubInfo_Data
 
 public class Recv_Get_ClubInfo : Http_MsgBase
 {
-    Recv_Get_ClubInfo_Data data;
+    public Recv_Get_ClubInfo_Data data;
 }
 /// <summary>
 /// 创建俱乐部

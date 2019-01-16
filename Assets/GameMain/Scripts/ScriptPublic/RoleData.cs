@@ -102,4 +102,14 @@ public class RoleData
             curClubId.SetValueAndForceNotify(myClubList.Count > 0 ? int.Parse(myClubList[0].club_id) : 0);
         }
     }
+
+    public string GetClubIdByIndex(int index)
+    {
+        if (index < myClubList.Count)
+        {
+            return myClubList[index].club_id;
+        }
+
+        return "";
+    }
 }

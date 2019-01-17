@@ -52,7 +52,7 @@ namespace GamePlay
 		
 		public override void OnStart()
 		{
-			base.OnDeal();
+			base.OnStart();
 			tableUI.BtnSeat.gameObject.SetActive(false);
 			tableUI.BtnStartGame.gameObject.SetActive(false);
 			tableUI.BtnCancelReady.gameObject.SetActive(false);

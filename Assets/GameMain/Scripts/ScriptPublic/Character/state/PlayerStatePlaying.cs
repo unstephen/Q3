@@ -24,11 +24,19 @@ namespace GamePlay
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (CardManager.Instance.cardManagerState == CardManagerStates.Playing)
+//            if (CardManager.Instance.cardManagerState == CardManagerStates.Playing)
+//            {
+//                //先发牌再抢庄
+//                fsm.Owner.state = EPlayerState.Banker;
+//                ChangeState<PlayerStateBanker>(fsm);
+//            }
+            if (fsm.Owner.state == EPlayerState.Banker)
             {
-                //先发牌再抢庄
-                fsm.Owner.state = EPlayerState.Banker;
                 ChangeState<PlayerStateBanker>(fsm);
+            }
+            else if (fsm.Owner.state == EPlayerState.Bet)
+            {
+                ChangeState<PlayerStateBet>(fsm);
             }
         }
 

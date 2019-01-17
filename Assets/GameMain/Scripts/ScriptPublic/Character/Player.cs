@@ -79,6 +79,7 @@ namespace GamePlay
 		public ReactiveProperty<int> balance = new ReactiveProperty<int>();
 		public ReactiveProperty<int> clubId = new ReactiveProperty<int>();
 		public ReactiveProperty<int> bet = new ReactiveProperty<int>();
+		
 
 		protected PlayerStateController stateController;
 		public PlayerHeadInfo headUI;

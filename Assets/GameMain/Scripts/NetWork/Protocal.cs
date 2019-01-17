@@ -9,7 +9,7 @@ public class Protocal
 
     public const byte CHAT = 13; //聊天
     public const byte PLAYER_SUMMARY = 15; //玩家总结信息
-    public const byte BID = 16; //抢庄
+  
     public const byte BET_REQ = 17; //进行下注，下注积分不能超过带入当前截止带入的剩余积分。
     
     public const byte RecvLogin = 35;     //登陸
@@ -34,7 +34,7 @@ public class Protocal
     
     
     
-    public const byte NOTIFY_BUTTON = 34;//Seat# is the button..
+   
     public const byte SEAT_QUERY = 39;//获取房间内座位信息
     public const byte PLAYER_INFO = 40;//通过PID获取玩家的基本信息
     public const byte BALANCE_INFO = 42;//查看用户可带入的积分。
@@ -49,4 +49,6 @@ public class Protocal
     public const byte NOTIFY_READY = 49; //通知准备
     public const byte NOTIFY_READY_CANCEL = 50; //取消准备
     public const byte BID_REQ = 51; //通知正在玩的玩家 抢庄
+    public const byte BID = 52; //抢庄
+    public const byte NOTIFY_BID_BUTTON = 53;//Seat# is the button..
 }

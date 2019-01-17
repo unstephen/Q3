@@ -71,7 +71,7 @@ public class RecvHandler : IPacketHandler
             case Protocal.NOTIFY_STAGE:
                 RecvNotifyStage(args);
                 break;
-            case Protocal.NOTIFY_BUTTON:
+            case Protocal.NOTIFY_BID_BUTTON:
                 RecvNotifyButton(args);
                 break;
             case Protocal.BALANCE:
@@ -351,6 +351,9 @@ public class RecvHandler : IPacketHandler
         if (gId != RoomManager.Instance.rData.gId.Value)
             return;
         var stage = MsgParse.PopByte(ref args);
+        Log.Debug("通知Stage={0}",stage);
+        int mm = MsgParse.PopInt(ref args);
+        RoomManager.Instance.rData.timer.Value = mm / (float)1000;
         /*
          * Stage:
                1 -  抢庄
@@ -361,7 +364,7 @@ public class RecvHandler : IPacketHandler
         {
             if (stage == 1)
             {
-                player.state = EPlayerState.Playing;
+                player.state = EPlayerState.Banker;
             } 
             else if (stage == 2)
             {
@@ -380,14 +383,11 @@ public class RecvHandler : IPacketHandler
         if (gId != RoomManager.Instance.rData.gId.Value)
             return;
         
-        byte pos = MsgParse.PopByte(ref args);
-        foreach (var player in RoomManager.Instance.rData.allPlayers)
+        int pId = MsgParse.PopInt(ref args);
+        var player = RoomManager.Instance.rData.GetPlayer(pId);
+        if (player != null)
         {
-            if (player.pos.Value == pos)
-            {
-                RoomManager.Instance.rData.bid.Value = player.id.Value;
-                return;
-            }
+            RoomManager.Instance.rData.bid.Value = player.id.Value;
         }
     }
 
@@ -436,6 +436,7 @@ public class RecvHandler : IPacketHandler
             {
                 player = new PlayerOther();
                 player.id.Value = pId;
+                player.InitData();
                 player.SetPos(pos);
                 player.state = EPlayerState.Seat;
                 player.score.Value = score;
@@ -459,6 +460,10 @@ public class RecvHandler : IPacketHandler
         var player = RoomManager.Instance.rData.GetPlayer(pId);
         if (player != null)
         {
+            if (player.handCardsData.Count == 0)
+            {
+                player.state = EPlayerState.Deal;
+            }
             player.handCardsData.Add(1);
         }
         Log.Debug("给{0}发牌数据,本地序号={1}",player.name,1);
@@ -469,12 +474,22 @@ public class RecvHandler : IPacketHandler
         int gId = MsgParse.PopInt(ref args);
         if (gId != RoomManager.Instance.rData.gId.Value)
             return;
-        int pId = MsgParse.PopInt(ref args);
+      
         byte rank = MsgParse.PopByte(ref args);
         byte suit = MsgParse.PopByte(ref args);
+        int pId = MsgParse.PopInt(ref args);
         int localRank = CardManager.CardConvert2C(suit, rank);
-        RoomManager.Instance.Self.Value.handCardsData.Add(localRank);
-        Log.Debug("给自己发牌数据,本地序号={0}",localRank);
+        var player = RoomManager.Instance.rData.GetPlayer(pId);
+        if (player != null)
+        {
+            if (player.handCardsData.Count == 0)
+            {
+                player.state = EPlayerState.Deal;
+            }
+            player.handCardsData.Add(localRank);
+        }
+
+        Log.Debug("给{0}发牌数据,本地序号={1}",player.name,localRank);
     }
 
     /// <summary>

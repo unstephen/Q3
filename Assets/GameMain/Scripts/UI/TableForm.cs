@@ -394,8 +394,8 @@ namespace GamePlay
 
         private void OnClickBid(object[] args)
         {
-            //发送抢庄
-            NetWorkManager.Instance.Send(Protocal.BID,RoomManager.Instance.rData.gId.Value,GameManager.Instance.GetRoleData().pId.Value);
+            //发送抢庄,amount暂时=0
+            NetWorkManager.Instance.Send(Protocal.BID,RoomManager.Instance.rData.gId.Value,0);
         }
 
         private void GMNotifyBet(object[] args)

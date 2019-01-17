@@ -20,6 +20,7 @@ namespace GamePlay
 		public ReactiveCollection<PlayerOther> roomPlayers;
 		public ReactiveProperty<PlayerSelf> playerSelf;
 		public ReactiveCollection<RoomSeat> roomSeats;
+		public ReactiveProperty<float> timer = new ReactiveProperty<float>();
 		public bool canRubbing;//能否搓牌
 
 		public List<Player> allPlayers
@@ -130,10 +131,20 @@ namespace GamePlay
 			bool bNew = false;
 			if (player==null)
 			{
+				if (GameManager.Instance.IsSelf(pId))
+				{
+					player = playerSelf.Value;
+				}
+			}
+
+			if (player == null)
+			{
 				player = new PlayerOther();
 				player.id.Value = pId;
+				player.InitData();
 				bNew = true;
 			}
+		
 			
 			player.name.Value = userId;
 			player.score.Value = score;
@@ -153,6 +164,9 @@ namespace GamePlay
 				if (player.id.Value == pId)
 					return player;
 			}
+
+			if (GameManager.Instance.IsSelf(pId))
+				return playerSelf.Value;
 
 			return null;
 		}

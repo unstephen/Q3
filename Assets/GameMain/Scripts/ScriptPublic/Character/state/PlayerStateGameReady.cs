@@ -31,12 +31,20 @@ namespace GamePlay
             {
                 ChangeState<PlayerStateSeat>(fsm);
             }
+            else if (fsm.Owner.state == EPlayerState.GameStart)
+            {
+                ChangeState<PlayerStateStart>(fsm);
+            }
+            else if (fsm.Owner.state == EPlayerState.Banker)
+            {
+                ChangeState<PlayerStateBanker>(fsm);
+            }
         }
 
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)
         {
             base.OnLeave(fsm, isShutdown);
-         
+            fsm.Owner.OnStart();
         }
 
         protected override void OnDestroy(GameFramework.Fsm.IFsm<Player> fsm)

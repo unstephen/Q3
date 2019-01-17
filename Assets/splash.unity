@@ -383,7 +383,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11454530, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 2}
       propertyPath: m_UIGroups.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11413340, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 2}
       propertyPath: m_SoundGroups.Array.size
@@ -509,6 +509,15 @@ Prefab:
     - target: {fileID: 11461470, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 2}
       propertyPath: m_EnableLoadDictionarySuccessEvent
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224942055104012690, guid: adb3eb1c35fcff14f89fba7b05c9d71c,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454530, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 2}
+      propertyPath: m_UIGroups.Array.data[1].m_Name
+      value: TopBar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 2}

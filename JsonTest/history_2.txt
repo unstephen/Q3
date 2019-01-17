@@ -1,0 +1,19 @@
+{
+    "code": 0,
+    "errMsg": "",
+    "data": {
+        "total": 1,
+        "page": 1,
+        "page_size": 10,
+        "message": "",
+        "list": [
+            {
+                "room_id": "4021",
+                "room_name": "5毛",
+                "club_name": "三公爱好者聚集地",
+                "base_score": 1,
+                "room_type": "1小时局"
+            }
+        ]
+    }
+}

@@ -117,9 +117,9 @@ public struct ClubData
 {
     public string club_id;
     public string club_name;
-    public string vip_level;
-    public string member_number;
-    public string ongoing_games;
+    public int vip_level;
+    public int member_number;
+    public int ongoing_games;
 }
 
 public struct Recv_Get_MyClub_Data
@@ -175,7 +175,7 @@ public struct Recv_Get_ClubInfo_Data
 
 public class Recv_Get_ClubInfo : Http_MsgBase
 {
-    Recv_Get_ClubInfo_Data data;
+    public Recv_Get_ClubInfo_Data data;
 }
 /// <summary>
 /// 创建俱乐部

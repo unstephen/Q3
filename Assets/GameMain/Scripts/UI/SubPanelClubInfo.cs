@@ -1,26 +1,35 @@
 ﻿using GamePlay;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SubPanelClubInfo : UGuiComponent
 {
-    string[] toggleStr = new string[3] { "Toggle1", "Toggle2", "Toggle3" };
-    List<Toggle> toggleList = new List<Toggle>();
+    RoleData role;
+
+    string[] toggleStr = new string[3] { "ClubBtn_1", "ClubBtn_2", "ClubBtn_3" };
+    List<Button> toggleList = new List<Button>();
+    string[] toggleInfoStr = new string[3] { "ToggleMembers", "ToggleGames", "ToggleRequest" };
+    List<Toggle> toggleInfoList = new List<Toggle>();
     List<Text> labelList = new List<Text>();
 
     List<ClubData> clubList = new List<ClubData>();
 
-    SubPanelClubInfoList panelInfoList;
+    SubPanelClubInfoList panelInfoList; //俱乐部的按钮列表
+    subPanelBaseClubInfo panelInfo; //俱乐部的详情面板
 
-    Text text_id;
-    Text text_name;
-    Text text_info;
-    Text text_vip;
-    Text text_count;
+    //SubChildPanelMember childMember; //成员
+    //SubChildPanelGames childGame; //游戏   
+    //SubChildPanelRequest childRequest; //申请
+    List<UGuiComponent> childPanelList = new List<UGuiComponent>();
+
+    //全部的俱乐部数据
+    List<Recv_Get_ClubInfo> recvClubInfoList = new List<Recv_Get_ClubInfo>();
 
     private int curIndex;
+    private int curChildIndex;
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
@@ -29,10 +38,10 @@ public class SubPanelClubInfo : UGuiComponent
 
         for (int i = 0; i < toggleStr.Length; i++)
         {
-            Toggle temp = link.Get<Toggle>(toggleStr[i]);
+            Button temp = link.Get<Button>(toggleStr[i]);
             toggleList.Add(temp);
 
-            Text tempText = link.Get<Text>("Label" + i);
+            Text tempText = link.Get<Text>("Text_" + i);
             labelList.Add(tempText);
 
             int index = i;
@@ -41,22 +50,59 @@ public class SubPanelClubInfo : UGuiComponent
 
         link.SetEvent("ButtonBack", UIEventType.Click, BackToSearch);
 
-        panelInfoList = link.AddComponent<SubPanelClubInfoList>("Page");
+        //panelInfoList = link.AddComponent<SubPanelClubInfoList>("Page");
+        panelInfo = link.AddComponent<subPanelBaseClubInfo>("PanelBaseInfo");
 
-        text_id = link.Get<Text>("id_Text");
-        text_name = link.Get<Text>("name_Text");
-        text_info = link.Get<Text>("info_Text");
-        text_vip = link.Get<Text>("vip_Text");
-        text_count = link.Get<Text>("count_Text");
+        SubChildPanelMember childMember = link.AddComponent<SubChildPanelMember>("PanelMembers");
+        childPanelList.Add(childMember);
+        SubChildPanelGames childGame = link.AddComponent<SubChildPanelGames>("PanelGames");
+        childPanelList.Add(childGame);
+        SubChildPanelRequest childRequest = link.AddComponent<SubChildPanelRequest>("PanelRequest");
+        childPanelList.Add(childRequest);
+
+        for (int i = 0; i < toggleInfoStr.Length; i++)
+        {
+            Toggle temp = link.Get<Toggle>(toggleInfoStr[i]);
+            toggleInfoList.Add(temp);
+
+            int index = i;
+            link.SetEvent(toggleInfoStr[i], UIEventType.Click, _ => OnClickInfoPanelChange(index));
+        }
 
         curIndex = 0;
+        curChildIndex = 0;
     }
 
     protected override void OnOpen(object userData)
     {
         base.OnOpen(userData);
 
+        role = GameManager.Instance.GetRoleData();
+
+        recvClubInfoList.Clear();
+        //for (int i = 0; i < role.myClubList.Count; i++)
+        //{
+        //    Recv_Get_ClubInfo tempClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_ClubInfo>(GameConst._mainPage,
+        //        GameManager.Instance.GetSendInfoStringList<Send_Get_ClubInfo>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
+
+        //    recvClubInfoList.Add(tempClub);
+        //}
+
+        string jsonStr1 = File.ReadAllText("JsonTest/myclubinfo_1.txt");
+        Recv_Get_ClubInfo myClub_1 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr1);
+        Debug.Log(jsonStr1);
+        recvClubInfoList.Add(myClub_1);
+        string jsonStr2 = File.ReadAllText("JsonTest/myclubinfo_2.txt");
+        Recv_Get_ClubInfo myClub_2 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr2);
+        Debug.Log(jsonStr2);
+        recvClubInfoList.Add(myClub_2);
+        string jsonStr3 = File.ReadAllText("JsonTest/myclubinfo_3.txt");
+        Recv_Get_ClubInfo myClub_3 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr3);
+        Debug.Log(jsonStr3);
+        recvClubInfoList.Add(myClub_3);
+
         RefreshToggles();
+        InitClubInfoPanel(myClub_1.data);
     }
 
     private void BackToSearch(object[] args)
@@ -72,7 +118,7 @@ public class SubPanelClubInfo : UGuiComponent
     {
         clubList.Clear();
 
-        RoleData role = GameManager.Instance.GetRoleData();
+        
         foreach (var item in role.myClubList)
         {
             clubList.Add(item);
@@ -89,6 +135,16 @@ public class SubPanelClubInfo : UGuiComponent
                 labelList[i].text = "暂无";
             }
         }
+
+        if (clubList.Count > 0)
+        {
+            panelInfo.OpenUI(0);
+            panelInfo.transform.SetSiblingIndex(1);
+        }
+        else
+        {
+            panelInfo.HideUI();
+        }
     }
 
     public void OnClickChange(int index)
@@ -104,14 +160,40 @@ public class SubPanelClubInfo : UGuiComponent
 
             curIndex = index;
 
-            ClubData temp = role.myClubList[index];
-            text_id.text = temp.club_id;
-            text_name.text = temp.club_name;
-            text_info.text = temp.ongoing_games;
-            text_vip.text = temp.vip_level;
-            text_count.text = temp.member_number;
+            panelInfo.transform.SetSiblingIndex(index + 1);
+            panelInfo.ShowBaseInfo(index);
 
-
+            InitClubInfoPanel(recvClubInfoList[index].data);
         }
+
+    }
+
+    public void OnClickInfoPanelChange(int index)
+    {
+        if (index == curChildIndex)
+        {
+            return;
+        }
+
+        curChildIndex = index;
+        for (int i = 0; i < childPanelList.Count; i++)
+        {
+            childPanelList[i].SetActive(index == i);
+        }
+    }
+
+    public void InitClubInfoPanel(Recv_Get_ClubInfo_Data data)
+    {
+        childPanelList[0].OpenUI(data.managers);
+        childPanelList[1].OpenUI(data.ongoing_games);
+        childPanelList[2].OpenUI(data.applicants);
+
+        childPanelList[1].HideUI();
+        childPanelList[2].HideUI();
+
+        toggleInfoList[0].isOn = true;
+        toggleInfoList[1].isOn = false;
+        toggleInfoList[2].isOn = false;
+        curChildIndex = 0;
     }
 }

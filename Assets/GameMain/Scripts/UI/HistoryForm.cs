@@ -65,13 +65,13 @@ namespace GamePlay
 
         void RefreshHistorySingle(int page)
         {
-            //    RoleData role = GameManager.Instance.GetRoleData();
-            //Recv_Get_SearchHistory mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_SearchHistory>(GameConst._mainPage,
-            //GameManager.Instance.GetSendInfoStringList<Send_SearchHistory>(role.id.Value, role.token.Value, page.ToString(), GameConst.pageSize.ToString()));
+            RoleData role = GameManager.Instance.GetRoleData();
+            Recv_Get_SearchHistory historyData = NetWorkManager.Instance.CreateGetMsg<Recv_Get_SearchHistory>(GameConst._mainPage,
+            GameManager.Instance.GetSendInfoStringList<Send_SearchHistory>(role.id.Value, role.token.Value, page.ToString(), GameConst.pageSize.ToString()));
 
-            string jsonStr = File.ReadAllText("JsonTest/history_2.txt");
-            Recv_Get_SearchHistory historyData = LitJson.JsonMapper.ToObject<Recv_Get_SearchHistory>(jsonStr);
-            Debug.Log(jsonStr);
+            //string jsonStr = File.ReadAllText("JsonTest/history_2.txt");
+            //Recv_Get_SearchHistory historyData = LitJson.JsonMapper.ToObject<Recv_Get_SearchHistory>(jsonStr);
+            //Debug.Log(jsonStr);
 
             if (historyData != null)
             {
@@ -97,13 +97,13 @@ namespace GamePlay
 
         void RefreshHistoryAll()
         {
-            //    RoleData role = GameManager.Instance.GetRoleData();
-            //Recv_Get_History mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_History>(GameConst._mainPage,
-            //GameManager.Instance.GetSendInfoStringList<Send_SearchHistoryAll>(role.id.Value, role.token.Value));
+            RoleData role = GameManager.Instance.GetRoleData();
+            Recv_Get_History historyData = NetWorkManager.Instance.CreateGetMsg<Recv_Get_History>(GameConst._mainPage,
+            GameManager.Instance.GetSendInfoStringList<Send_SearchHistoryAll>(role.id.Value, role.token.Value));
 
-            string jsonStr = File.ReadAllText("JsonTest/history_1.txt");
-            Recv_Get_History historyData = LitJson.JsonMapper.ToObject<Recv_Get_History>(jsonStr);
-            Debug.Log(jsonStr);
+            //string jsonStr = File.ReadAllText("JsonTest/history_1.txt");
+            //Recv_Get_History historyData = LitJson.JsonMapper.ToObject<Recv_Get_History>(jsonStr);
+            //Debug.Log(jsonStr);
 
             if (historyData != null)
             {
@@ -140,6 +140,11 @@ namespace GamePlay
 
         private void ShowItemList(int page, List<HistorySingleBaseData> list)
         {
+            if (list == null)
+            {
+                return;
+            }
+
             int curIndex = 0;
             foreach (var item in list)
             {

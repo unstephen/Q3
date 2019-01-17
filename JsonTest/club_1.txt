@@ -1,0 +1,16 @@
+{
+    "code": 0,
+    "errMsg": "",
+    "data": {
+        "total": 1,
+        "page": 1,
+        "page_size": 10,
+        "list": [
+            {
+                "club_id": "1234",
+                "club_name": "三公爱好者聚集地",
+                "create_user_name": "创始人"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "code": 0,
+    "errMsg": "",
+    "data": {
+        "list": [
+            {
+                "type": "today",
+                "games_count": 0,
+                "profit": 0
+            },
+            {
+                "type": "last_week",
+                "games_count": 5,
+                "profit": -105
+            },
+            {
+                "type": "last_month",
+                "games_count": 20,
+                "profit": 2015
+            }
+        ]
+    }
+}

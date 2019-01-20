@@ -23,10 +23,23 @@ namespace GamePlay
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (fsm.Owner.state == EPlayerState.Settle)
+            //如果手牌数据有3个有效的（不为0）则翻牌算牌型
+            if (fsm.Owner.handCardsData.Count > 0)
             {
-                ChangeState<PlayerStateSettle>(fsm);
+                int validNum = 0;
+                for (int i = 0; i < fsm.Owner.handCardsData.Count; i++)
+                {
+                    if (fsm.Owner.handCardsData[i] > 0)
+                        validNum++;
+                }
+
+                if (validNum == fsm.Owner.handCardsData.Count)
+                {
+                    fsm.Owner.OnShowCard();
+                    ChangeState<PlayerStateCardStyle>(fsm);
+                }
             }
+          
         }
 
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)

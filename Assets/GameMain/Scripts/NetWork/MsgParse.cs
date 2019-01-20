@@ -32,6 +32,16 @@ public class MsgParse
         Buffer.BlockCopy(intArray,0,combimeArray,curArray.Length,4);
         curArray = combimeArray;
     }
+    
+    public static void PushShort(short number,ref byte[] curArray)
+    {
+        byte[] intArray = BitConverter.GetBytes(number);
+        MsgParse.ReverseBytes(ref intArray);
+        byte[] combimeArray = new byte[curArray.Length+2];
+        Buffer.BlockCopy(curArray,0,combimeArray,0,curArray.Length);
+        Buffer.BlockCopy(intArray,0,combimeArray,curArray.Length,2);
+        curArray = combimeArray;
+    }
 
 
     public static byte PopByte(ref byte[] data)
@@ -116,6 +126,17 @@ public class MsgParse
         Buffer.BlockCopy(data,4,newData,0,data.Length-4);
         data = newData;
         return BitConverter.ToInt32(intArray,0);
+    }
+    
+    public static short PopShort(ref byte[] data)
+    {
+        byte[] intArray = new byte[2];
+        Buffer.BlockCopy(data,0,intArray,0,2);
+        MsgParse.ReverseBytes(ref intArray);
+        byte[] newData = new byte[data.Length-2];
+        Buffer.BlockCopy(data,2,newData,0,data.Length-2);
+        data = newData;
+        return BitConverter.ToInt16(intArray,0);
     }
 
 }

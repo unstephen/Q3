@@ -16,7 +16,7 @@ namespace GamePlay
         protected override void OnEnter(GameFramework.Fsm.IFsm<Player> fsm)
         {
             base.OnEnter(fsm);
-            fsm.Owner.OnDeal();
+            fsm.Owner.OnStart();
             Log.Debug("游戏开始");
         }
 
@@ -25,7 +25,13 @@ namespace GamePlay
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
             if (fsm.Owner.state == EPlayerState.Deal)
             {
+                //先发牌再抢庄
                 ChangeState<PlayerStateDeal>(fsm);
+            }
+            else if (fsm.Owner.state == EPlayerState.Banker)
+            {
+                //先抢庄再发牌
+                ChangeState<PlayerStateBanker>(fsm);
             }
         }
 

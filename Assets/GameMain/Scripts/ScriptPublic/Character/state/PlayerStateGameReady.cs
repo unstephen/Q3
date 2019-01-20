@@ -17,8 +17,7 @@ namespace GamePlay
         {
             base.OnEnter(fsm);
             fsm.Owner.OnGameReady();
-            Log.Debug("进入准备");
-            NetWorkManager.Instance.Send(Protocal.READY,RoomManager.Instance.rData.gId.Value);
+            Log.Debug("{0}进入准备",fsm.Owner.name);
         }
 
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
@@ -32,12 +31,20 @@ namespace GamePlay
             {
                 ChangeState<PlayerStateSeat>(fsm);
             }
+            else if (fsm.Owner.state == EPlayerState.GameStart)
+            {
+                ChangeState<PlayerStateStart>(fsm);
+            }
+            else if (fsm.Owner.state == EPlayerState.Banker)
+            {
+                ChangeState<PlayerStateBanker>(fsm);
+            }
         }
 
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)
         {
             base.OnLeave(fsm, isShutdown);
-         
+            fsm.Owner.OnStart();
         }
 
         protected override void OnDestroy(GameFramework.Fsm.IFsm<Player> fsm)

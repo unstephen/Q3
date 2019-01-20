@@ -29,6 +29,11 @@ namespace GamePlay
             {
                 ChangeState<PlayerStateBet>(fsm);
             }
+            else if (fsm.Owner.state == EPlayerState.Deal)
+            {
+                //先抢庄再发牌
+                ChangeState<PlayerStateDeal>(fsm);
+            }
         }
 
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)

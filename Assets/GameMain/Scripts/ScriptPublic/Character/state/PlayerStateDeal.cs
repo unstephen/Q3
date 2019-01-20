@@ -18,13 +18,13 @@ namespace GamePlay
         {
             base.OnEnter(fsm);
             fsm.Owner.OnDeal();
-            Log.Debug("进入发牌");
+            Log.Debug("开始接受服务器的牌数据");
         }
 
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (fsm.Owner.state == EPlayerState.Playing)
+            if (fsm.Owner.handCardsData.Count==3)
             {
                 ChangeState<PlayerStatePlaying>(fsm);
             }

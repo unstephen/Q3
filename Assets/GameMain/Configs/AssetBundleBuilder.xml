@@ -2,7 +2,7 @@
 <UnityGameFramework>
   <AssetBundleBuilder>
     <Settings>
-      <InternalResourceVersion>18</InternalResourceVersion>
+      <InternalResourceVersion>22</InternalResourceVersion>
       <Platforms>2</Platforms>
       <ZipSelected>True</ZipSelected>
       <RecordScatteredDependencyAssetsSelected>False</RecordScatteredDependencyAssetsSelected>

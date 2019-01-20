@@ -28,6 +28,10 @@ namespace GamePlay
             {
                 ChangeState<PlayerStateSeatPre>(fsm);
             }
+            else if (fsm.Owner.state == EPlayerState.Seat)
+            {
+                ChangeState<PlayerStateSeat>(fsm);
+            }
         }
 
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)

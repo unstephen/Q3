@@ -57,6 +57,7 @@ namespace GamePlay
                 preMode = m_CurrentGame.GameMode;
                 m_CurrentGame.Shutdown();
                 m_CurrentGame = null;
+                m_needSendLogin = true;
             }
             m_CurrentGame = m_Games[mode];
             m_CurrentGame.Initialize(preMode);

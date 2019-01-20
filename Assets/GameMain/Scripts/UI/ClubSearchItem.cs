@@ -7,9 +7,11 @@ public class ClubSearchItem : UGuiComponentClone
     Text idstr;
     Text nameStr;
     Text ownerStr;
+    Text result;
+    Button handle;
     public int index;
 
-    int curClubId;
+    string curClubId;
 
     protected override void OnInit(object userData)
     {
@@ -20,6 +22,8 @@ public class ClubSearchItem : UGuiComponentClone
         idstr = link.Get<Text>("id");
         nameStr = link.Get<Text>("name");
         ownerStr = link.Get<Text>("owner");
+        result = link.Get<Text>("Result");
+        handle = link.Get<Button>("btnJoin");
 
         link.SetEvent("btnJoin", UIEventType.Click, OnClickJoin);
 
@@ -34,7 +38,12 @@ public class ClubSearchItem : UGuiComponentClone
         nameStr.text = data.club_name;
         ownerStr.text = data.create_user_name;
 
-        curClubId = int.Parse(data.club_id);
+        RoleData role = GameManager.Instance.GetRoleData();
+        bool bShow = role.CheckRequestClub(data.club_id);
+        handle.gameObject.SetActive(!bShow);
+        result.gameObject.SetActive(bShow);
+
+        curClubId = data.club_id;
     }
 
     public void OnClickJoin(object[] args)
@@ -42,5 +51,8 @@ public class ClubSearchItem : UGuiComponentClone
         RoleData role = GameManager.Instance.GetRoleData();
         Http_MsgBase myClub = NetWorkManager.Instance.CreateGetMsg<Http_MsgBase>(GameConst._applyClub,
 GameManager.Instance.GetSendInfoStringList<Send_RequestClub>(role.id.Value, role.token.Value, curClubId));
+
+        handle.gameObject.SetActive(false);
+        result.gameObject.SetActive(true);
     }
 }

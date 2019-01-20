@@ -300,6 +300,25 @@ public class Recv_JoinRoom : Http_MsgBase
     public Recv_JoinRoom_Data data;
 }
 
+//俱乐部成员
+public struct ClubMemberData
+{
+    public string member_id;
+    public string nick;
+    public string head_image_url;
+    public int rolel; //1-普通成员 2-管理员
+}
+
+public struct ClubAllMemberData
+{
+    public List<ClubMemberData> list;
+}
+
+public class Recv_Post_AllClubMember : Http_MsgBase
+{
+    public ClubAllMemberData data;
+}
+
 /// <summary>
 /// 发送的基础数据
 /// </summary>
@@ -494,12 +513,12 @@ public class Send_RequestClub : Send_MsgBase
         List<string> temp = new List<string>();
         temp = base.CreateSendInfo(args);
 
-        temp.Add("club_id=" + (string)args[2]);
+        temp.Add("club_id=" + args[2]);
 
         return temp;
     }
 }
-
+//处理俱乐部申请
 public class Send_AgreenClub : Send_MsgBase
 {
     public override List<string> CreateSendInfo(params object[] args)
@@ -509,6 +528,50 @@ public class Send_AgreenClub : Send_MsgBase
 
         temp.Add("apply_id=" + args[2]);
         temp.Add("action=" + args[3]); // refuse/accept
+
+        return temp;
+    }
+}
+//设置管理员权限
+public class Send_HandleManager : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("club_id=" + args[2]);
+        temp.Add("member_id=" + args[3]);
+        temp.Add("action=" + args[3]);//add ; del
+
+        return temp;
+    }
+}
+//剔除成员
+public class Send_DeleteMember : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("club_id=" + args[2]);
+        temp.Add("member_id=" + args[3]);
+
+        return temp;
+    }
+}
+//获取俱乐部成员
+public class Send_GetAllMember : Send_MsgBase
+{
+    public override List<string> CreateSendInfo(params object[] args)
+    {
+        List<string> temp = new List<string>();
+        temp = base.CreateSendInfo(args);
+
+        temp.Add("club_id=" + args[2]);
+        temp.Add("page=" + args[3].ToString());
+        temp.Add("page_size" + args[4].ToString());
 
         return temp;
     }

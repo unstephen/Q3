@@ -252,8 +252,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 426, y: 239.5}
-  m_SizeDelta: {x: 852, y: 479}
+  m_AnchoredPosition: {x: 140.5, y: -120}
+  m_SizeDelta: {x: 281, y: 987}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &100100000
 Prefab:
@@ -783,6 +783,10 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 1258476565535816}
     component: {fileID: 114182987711702076}
+  - Name: headicon
+    Tips: 
+    LinkObj: {fileID: 1429890454609296}
+    component: {fileID: 114142794037350194}
 --- !u!114 &114210369326892698
 MonoBehaviour:
   m_ObjectHideFlags: 1

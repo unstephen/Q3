@@ -31,6 +31,9 @@ public class RoleData
 
     public ReactiveCollection<GameRecord> recordList; //对局记录，最多保存50条，超出上限的删除最近的一条
 	private ReactiveProperty<int> recoreLimite;
+
+    private List<string> curRequestClubList = new List<string>();
+    public Dictionary<string, RoleClubData> roleClubList = new Dictionary<string, RoleClubData>();
 	
 	public void InitData(string roleId, string token)
 	{
@@ -44,6 +47,23 @@ public class RoleData
     public void InitBaseData(int clubId)
     {
         curClubId.SetValueAndForceNotify(clubId);
+    }
+
+    public void InitClubMemberList(string clubId, Recv_Post_AllClubMember data)
+    {
+        if (roleClubList == null)
+        {
+            return;
+        }
+        if (roleClubList.ContainsKey(clubId))
+        {
+            roleClubList[clubId].AddClubMember(data.data);
+        }
+        else
+        {
+            roleClubList.Add(clubId, new RoleClubData());
+            roleClubList[clubId].AddClubMember(data.data);
+        }
     }
 
     public void SetRoleProperty(Recv_MainPage_Data pageData)
@@ -111,5 +131,41 @@ public class RoleData
         }
 
         return "";
+    }
+
+    private void AddRequestClub(string id)
+    {
+        if (curRequestClubList == null)
+        {
+            curRequestClubList = new List<string>();
+        }
+
+        curRequestClubList.Add(id);
+    }
+
+    public bool CheckRequestClub(string id)
+    {
+        foreach (var item in curRequestClubList)
+        {
+            if (item == id)
+            {
+                return true;
+            }
+        }
+
+        return false;
+        //return curRequestClubList.FindIndex(x => (x == id)) != -1;
+    }
+
+    public void DeleteClubMember()
+    {
+
+    }
+
+    public void ClearData()
+    {
+        curRequestClubList.Clear();
+        recordList.Clear();
+        myClubList.Clear();
     }
 }

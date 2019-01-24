@@ -12,6 +12,7 @@ namespace GamePlay
         private Text textId;
         private Text textToken;
         private Text textMoney;
+        Image icon;
 
         protected override void OnInit(object userData)
         {
@@ -22,6 +23,7 @@ namespace GamePlay
             textId = link.Get<Text>("TextID");
             textToken = link.Get<Text>("TextTicket");
             textMoney = link.Get<Text>("textMoney");
+            icon = link.Get<Image>("headicon");
             //link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
         }
 
@@ -45,6 +47,20 @@ namespace GamePlay
             role.name.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textName).AddTo(disPosable);
             role.id.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textId).AddTo(disPosable);
             role.token.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textToken).AddTo(disPosable);
+
+            string headUrl = "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0";
+            string temp = NetWorkManager.Instance.GetResponseString(headUrl);
+
+            WWW www = new WWW(headUrl);
+            //yield return www;
+
+            Texture2D tex2d = www.texture;
+            //将图片保存至缓存路径
+            byte[] pngData = tex2d.EncodeToPNG();
+            //File.WriteAllBytes(path + url.GetHashCode(), pngData);
+
+            Sprite m_sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), new Vector2(0, 0));
+            icon.sprite = m_sprite;
         }
 
 #if UNITY_2017_3_OR_NEWER

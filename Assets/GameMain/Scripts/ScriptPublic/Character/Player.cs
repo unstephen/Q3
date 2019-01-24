@@ -79,6 +79,8 @@ namespace GamePlay
 		public ReactiveProperty<int> balance = new ReactiveProperty<int>();
 		public ReactiveProperty<int> clubId = new ReactiveProperty<int>();
 		public ReactiveProperty<int> bet = new ReactiveProperty<int>();
+		public ReactiveProperty<bool> bBiding = new ReactiveProperty<bool>();
+		public ReactiveProperty<int> winFlag = new ReactiveProperty<int>();
 		
 
 		protected PlayerStateController stateController;
@@ -97,7 +99,15 @@ namespace GamePlay
 			}
 		}
 
-		public EPlayerState state { get; set; }
+		private EPlayerState _state;
+		public EPlayerState state {
+			get { return _state; }
+			set
+			{
+				_state = value;
+				Log.Debug("{0} 的state变为{1}",name,value);
+			}
+		}
 		public List<CardItem> handCards = new List<CardItem>();
 		public List<int> handCardsData = new List<int>();
 
@@ -129,6 +139,7 @@ namespace GamePlay
 				new PlayerStateBanker(),
 				new PlayerStateBet(),
 				new PlayerStateEnd(),
+				new PlayerStateCardStyle(),
 				new PlayerStateSettle()
 			);
 			stateController.Start<PlayerStateInit>();
@@ -217,10 +228,8 @@ namespace GamePlay
 			{
 				RoomManager.Instance.rData.roomPlayers.Remove(this as PlayerOther);
 			}
-			foreach (var card in handCards)
-			{
-				Object.Destroy(card.gameObject);
-			}
+
+			ClearCards();
 		}
 
 
@@ -305,6 +314,25 @@ namespace GamePlay
 		{
 			
 			
+		}
+
+		public virtual void OnMakeHandCard()
+		{
+			foreach (var cardnum in handCardsData)
+			{
+				GetCard(cardnum);
+			}
+		    OnShowCard();
+		}
+
+		public void ClearCards()
+		{
+			foreach (var card in handCards)
+			{
+				Object.Destroy(card.gameObject);
+			}
+			handCards.Clear();
+		    handCardsData.Clear();
 		}
 
 		public string GetCardStyleName()

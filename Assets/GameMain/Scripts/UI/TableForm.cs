@@ -17,11 +17,17 @@ namespace GamePlay
         private const int PlayerMax = 6;
         public Button BtnSeat,BtnStartGame,BtnBanker0,BtnCancelReady,BtnLeaveSeat;
         private PanelSelectScore selectScoreUI;
-        public GameObject BetPanel;
-        private Slider SliderBet;
+        public GameObject BetPanel,timerPanel;
+        public Slider SliderBet;
         private Text TextBet;
         private Text TextTime;
         private Text TextRoomId;
+        private Text TextMinBet0;
+        private Text TextMinBet1;
+        private Text TextMinBet2;
+        private Text TextMinBet3;
+        private Text timerTxt;
+        private Image timerImg;
         private GameObject BL_lose, BL_win,PanelSettle;
         //聊天
         private Transform PanelChat,TalkPopup;
@@ -47,8 +53,15 @@ namespace GamePlay
             TextBet = link.Get<Text>("TextBet");
             TextTime = link.Get<Text>("TextTime");
             TextRoomId = link.Get<Text>("TextRoomId");
+            TextMinBet0 = link.Get<Text>("TextMinBet0");
+            TextMinBet1 = link.Get<Text>("TextMinBet1");
+            TextMinBet2 = link.Get<Text>("TextMinBet2");
+            TextMinBet3 = link.Get<Text>("TextMinBet3");
+            timerTxt = link.Get<Text>("timerTxt");
             BL_lose = link.Get("BL_lose");
             BL_win = link.Get("BL_win");
+            timerPanel = link.Get("timer");
+            timerImg = link.Get<Image>("timerImg");
             PanelSettle = link.Get("PanelSettle");
             
             PanelChat = link.Get("PanelChat").transform;
@@ -64,6 +77,10 @@ namespace GamePlay
             link.SetEvent("BtnLeaveSeat", UIEventType.Click, OnClickLeaveSeat);
             link.SetEvent("BtnBanker0", UIEventType.Click, OnClickBid);
             link.SetEvent("BtnBet", UIEventType.Click, OnClickBet);
+            link.SetEvent("BtnMinBet0", UIEventType.Click, OnClickMinBet0);
+            link.SetEvent("BtnMinBet1", UIEventType.Click, OnClickMinBet1);
+            link.SetEvent("BtnMinBet2", UIEventType.Click, OnClickMinBet2);
+            link.SetEvent("BtnMinBet3", UIEventType.Click, OnClickMinBet3);
             link.SetEvent("BtnSettleOK", UIEventType.Click, OnClickSettleOK);
             //GM按钮，模拟服务器回消息回调
             link.SetEvent("GMNotifyStart", UIEventType.Click, GMNotifyStart);
@@ -96,6 +113,7 @@ namespace GamePlay
             }
             CardManager.Instance.InitCardPos(tempUITrans);
         }
+
 
         private void OnClickTalk(string talkContent)
         {
@@ -247,8 +265,34 @@ namespace GamePlay
         private void OnClickBet(object[] args)
         {
             NetWorkManager.Instance.Send(Protocal.BET_REQ,RoomManager.Instance.rData.gId.Value, (int)SliderBet.value);
-           
+            BetPanel.SetActive(false);
         }
+        
+        private void OnClickMinBet0(object[] args)
+        {
+            Log.Debug("下注分数={0}",RoomManager.Instance.rData.minBet);
+            NetWorkManager.Instance.Send(Protocal.BET_REQ,RoomManager.Instance.rData.gId.Value, RoomManager.Instance.rData.minBet);
+            BetPanel.SetActive(false);
+        }
+        
+        private void OnClickMinBet1(object[] args)
+        {
+            NetWorkManager.Instance.Send(Protocal.BET_REQ,RoomManager.Instance.rData.gId.Value, RoomManager.Instance.rData.minBet*2);
+            BetPanel.SetActive(false);
+        }
+        
+        private void OnClickMinBet2(object[] args)
+        {
+            NetWorkManager.Instance.Send(Protocal.BET_REQ,RoomManager.Instance.rData.gId.Value, RoomManager.Instance.rData.minBet*3);
+            BetPanel.SetActive(false);
+        }
+        
+        private void OnClickMinBet3(object[] args)
+        {
+            NetWorkManager.Instance.Send(Protocal.BET_REQ,RoomManager.Instance.rData.gId.Value, RoomManager.Instance.rData.minBet*4);
+            BetPanel.SetActive(false);
+        }
+
 
         private void OnClickLeaveSeat(object[] args)
         {
@@ -273,6 +317,7 @@ namespace GamePlay
             if (player.id.Value == RoomManager.Instance.Self.Value.id.Value)
             {
                 playerWigets[0].SetPlayerData(player);
+                player.uiPos.Value = 0;
             }
             else
             {
@@ -281,6 +326,7 @@ namespace GamePlay
                     if (playerWigets[i].pId == 0)
                     {
                         playerWigets[i].SetPlayerData(player);
+                        player.uiPos.Value = (byte)i;
                         break;
                     }
                 }
@@ -322,6 +368,8 @@ namespace GamePlay
 
             return null;
         }
+
+        
 #if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
 #else
@@ -343,7 +391,29 @@ namespace GamePlay
             //下注积分不能超过带入当前截止带入的剩余积分。
             RoomManager.Instance.Self.Value.score.Subscribe(x => SliderBet.maxValue = x).AddTo(disPosable);
             RoomManager.Instance.rData.id.SubscribeToText(TextRoomId).AddTo(disPosable);
+            RoomManager.Instance.rData.maxCoolTime.Select(x => x > 0).Subscribe(x =>
+            {
+                Log.Debug("倒计时开始{0}",x);
+                timerPanel.SetActive(x);
+            }).AddTo(disPosable);
+            Observable.EveryFixedUpdate().Where(x => RoomManager.Instance.rData.timer.Value > 0).Subscribe(x =>
+            {
+                RoomManager.Instance.rData.timer.Value = RoomManager.Instance.rData.timer.Value - Time.fixedDeltaTime;
+                if (RoomManager.Instance.rData.timer.Value <= 0)
+                {
+                    RoomManager.Instance.rData.timer.Value = -1;
+                    RoomManager.Instance.rData.maxCoolTime.Value = -1;
+                }
+
+                timerImg.fillAmount = RoomManager.Instance.rData.timer.Value /  RoomManager.Instance.rData.maxCoolTime.Value;
+                timerTxt.text = Mathf.CeilToInt(RoomManager.Instance.rData.timer.Value).ToString();
+            }).AddTo(disPosable);
             
+            TextMinBet0.text = RoomManager.Instance.rData.minBet.ToString();
+            TextMinBet1.text = (RoomManager.Instance.rData.minBet*2).ToString();
+            TextMinBet2.text = (RoomManager.Instance.rData.minBet*3).ToString();
+            TextMinBet3.text = (RoomManager.Instance.rData.minBet*4).ToString();
+            SliderBet.minValue = RoomManager.Instance.rData.minBet;
             ResetWiget();
         }
 
@@ -395,7 +465,8 @@ namespace GamePlay
         private void OnClickBid(object[] args)
         {
             //发送抢庄,amount暂时=0
-            NetWorkManager.Instance.Send(Protocal.BID,RoomManager.Instance.rData.gId.Value,0);
+            int amount = 1;
+            NetWorkManager.Instance.Send(Protocal.BID,RoomManager.Instance.rData.gId.Value,amount);
         }
 
         private void GMNotifyBet(object[] args)
@@ -406,11 +477,17 @@ namespace GamePlay
                 player.state = EPlayerState.Bet;
             }
         }
+
+        public void DoShowTieEffect()
+        {
+           
+        }
     }
     
     public class PlayerHeadInfo : UGuiComponent
     {
         private string _PlayerName;
+        private Image headIcon;
         private Text textName;
         private Text textScore;
         public Transform cardPos;
@@ -429,11 +506,14 @@ namespace GamePlay
             TextStyle = link.Get<Text>("TextStyle");
             cardPos = link.Get<Transform>("cardPos");
             bidIcon = link.Get<Image>("bid");
+            headIcon = link.Get<Image>("headIcon");
             imgReady = link.Get<Image>("img_ready");
             scoreImg = link.Get<Image>("scoreImg");
             textName.text = "";
             textScore.text = "";
             scoreImg.gameObject.SetActive(false);
+            headIcon.gameObject.SetActive(false);
+            textScore.gameObject.SetActive(false);
             link.SetEvent("headIcon", UIEventType.Click, OnClickHead);
         }
 
@@ -456,6 +536,8 @@ namespace GamePlay
             pId = role.id.Value;
             disPosable.Clear();
             _PlayerName = name;
+            headIcon.gameObject.SetActive(true);
+            textScore.gameObject.SetActive(true);
             Log.Debug("{0} SetPlayerData {1}",gameObject.name,role.name);
             role.name.ObserveEveryValueChanged(x => x.Value).Select(x=>x+pId).SubscribeToText(textName).AddTo(disPosable);
             role.score.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textScore).AddTo(disPosable);
@@ -480,6 +562,8 @@ namespace GamePlay
             bidIcon.gameObject.SetActive(false);
             imgReady.gameObject.SetActive(false);
             scoreImg.gameObject.SetActive(false);
+            headIcon.gameObject.SetActive(false);
+            textScore.gameObject.SetActive(false);
         }
 
         public void OnGameEnd()

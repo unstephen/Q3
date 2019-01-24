@@ -13,13 +13,15 @@ namespace GamePlay
 	{
 		public RoomData rData;
 	
-		public void Init(int GID,int id, string name, int clubId)
+		public void Init(int GID,int id, string name, int clubId,int max_score,int base_score)
 		{
 			if (rData == null)
 			{
 				rData = new RoomData();
 			}
 			rData.InitData(GID,id, name, clubId);
+			rData.maxBet = max_score;
+			rData.minBet = base_score;
 		}
 
 		public ReactiveProperty<PlayerSelf> Self

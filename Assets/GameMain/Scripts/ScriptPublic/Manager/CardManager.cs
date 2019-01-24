@@ -113,7 +113,7 @@ public class CardManager : MonoSingleton<CardManager>
     {
         //进入发牌阶段
         cardManagerState = CardManagerStates.DealCards;
-        termCurrentPlayer = RoomManager.Instance.GetPlayerByPos(termStartIndex);
+        termCurrentPlayer = RoomManager.Instance.Self.Value;
         if (termCurrentPlayer == null)
         {
             Log.Error("开始发牌的玩家不存在");
@@ -134,13 +134,25 @@ public class CardManager : MonoSingleton<CardManager>
 
         foreach (var player in Players)
         {
-            foreach (var card in player.handCards)
+           // foreach (var card in player.handCards)
             {
                 //移动动画，动画结束后自动销毁
-                var tween = card.transform.DOMove(heapPos.position, 0.3f);
-                tween.OnComplete(() =>
+                var tween0 = player.handCards[0].transform.DOMove(heapPos.position, 0.3f);
+                tween0.OnComplete(() =>
                 {
-                    Destroy(card);
+                    Destroy(player.handCards[0]);
+                });
+                yield return new WaitForSeconds(1 / dealCardSpeed);
+                var tween1 = player.handCards[1].transform.DOMove(heapPos.position, 0.3f);
+                tween1.OnComplete(() =>
+                {
+                    Destroy(player.handCards[1]);
+                });
+                yield return new WaitForSeconds(1 / dealCardSpeed);
+                var tween2 = player.handCards[2].transform.DOMove(heapPos.position, 0.3f);
+                tween2.OnComplete(() =>
+                {
+                    Destroy(player.handCards[2]);
                 });
                 yield return new WaitForSeconds(1 / dealCardSpeed);
             }
@@ -200,17 +212,40 @@ public class CardManager : MonoSingleton<CardManager>
     }
     public void SetNextPlayer()
     {
-        int curPos = termCurrentPlayer.pos.Value;
+        int curPlayerIdx = -1;
         for (int i = 0; i < Players.Count; i++)
         {
-            curPos = (curPos + 1) % Players.Count;
-            if (Players[curPos]!=null)
+            if (Players[i] == termCurrentPlayer)
             {
-                //找到下一个坐了位置的玩家
-                termCurrentPlayer = Players[curPos];
+                curPlayerIdx = i;
                 break;
             }
         }
+
+        if (curPlayerIdx != -1)
+        {
+            for (int i = 0; i < Players.Count; i++)
+            {
+                curPlayerIdx = (curPlayerIdx + 1) % Players.Count;
+                if (Players[curPlayerIdx]!=null)
+                {
+                    //找到下一个坐了位置的玩家
+                    termCurrentPlayer = Players[curPlayerIdx];
+                    break;
+                }
+            } 
+        }
+//        int curPos = termCurrentPlayer.pos.Value;
+//        for (int i = 0; i < Players.Count; i++)
+//        {
+//            curPos = (curPos + 1) % Players.Count;
+//            if (Players[curPos]!=null)
+//            {
+//                //找到下一个坐了位置的玩家
+//                termCurrentPlayer = Players[curPos];
+//                break;
+//            }
+//        }
     }
 
 //    /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using UniRx;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace GamePlay
@@ -18,6 +19,7 @@ namespace GamePlay
 			tableUI.BetPanel.SetActive(false);
 			tableUI.BtnBanker0.gameObject.SetActive(false);
 		}
+		
 		public override void OnShowCard()
 		{
 		   ShowCard();
@@ -47,7 +49,6 @@ namespace GamePlay
 			tableUI.BtnLeaveSeat.gameObject.SetActive(false);
 			tableUI.BetPanel.SetActive(false);
 			tableUI.BtnBanker0.gameObject.SetActive(false);
-	
 		}
 		
 		public override void OnStart()
@@ -60,7 +61,6 @@ namespace GamePlay
 			tableUI.BetPanel.SetActive(false);
 			tableUI.BtnBanker0.gameObject.SetActive(false);
 		}
-		
 		
 
 		public override void OnSeatPre()
@@ -102,6 +102,7 @@ namespace GamePlay
 			tableUI.BtnCancelReady.gameObject.SetActive(false);
 			tableUI.BtnLeaveSeat.gameObject.SetActive(false);
 			tableUI.BetPanel.SetActive(true);
+			tableUI.SliderBet.maxValue = Mathf.Min(balance.Value,RoomManager.Instance.rData.maxBet) ;
 		}
 
 		public override void OnSettle()
@@ -109,13 +110,17 @@ namespace GamePlay
 			base.OnSettle();
 			
 			
-			if (GetData<VarBool>(Constant.PlayerData.Settle))
+			if (winFlag.Value==1)
 			{
 				tableUI.DoShowWinEffect();
 			}
-			else
+			else if(winFlag.Value==-1)
 			{
 				tableUI.DoShowLoseEffect();
+			}
+			else
+			{
+				tableUI.DoShowTieEffect();
 			}
 		}
 

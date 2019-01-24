@@ -10,7 +10,7 @@ public class Protocal
     public const byte CHAT = 13; //聊天
     public const byte PLAYER_SUMMARY = 15; //玩家总结信息
   
-    public const byte BET_REQ = 17; //进行下注，下注积分不能超过带入当前截止带入的剩余积分。
+   
     
     public const byte RecvLogin = 35;     //登陸
     public const byte Error = 250; //錯誤
@@ -24,12 +24,14 @@ public class Protocal
     public const byte NOTIFY_START = 24;//游戏开始
     public const byte NOTIFY_END = 25;//游戏结束
     public const byte NOTIFY_WIN = 26;//PID wins Amount.
-    public const byte NOTIFY_BET = 27;//PID posts a bet
+ 
     public const byte NOTIFY_RAISE = 29;//PID raises Amount.
     public const byte NOTIFY_CALL = 30;//PID calls Amount.
     public const byte NOTIFY_STATE = 31;//Player state change.1 - playing, 2 - folded, 3 - waiting for big blind, 4 - all in, 5 - sitting out.
     public const byte NOTIFY_STAGE = 32;//一局游戏的各个阶段 1 - turn       抢庄 2 - dealer    抢庄
     public const byte SEAT_STATE = 33;//座位状态： 0 - 空闲, 1 - 保留, 2 - 占用,当座位状态为空闲时，PID的值为0
+    public const byte NOTIFY_BUTTON = 34;//通知谁是庄
+    
     
     
     
@@ -43,12 +45,18 @@ public class Protocal
     
     public const byte NOTIFY_SB = 44;//Seat# is the small blind
     public const byte NOTIFY_BB = 45;//Seat# is the big blind
-    public const byte NOTIFY_BID = 46;
+   
     public const byte READY = 47;     //准备开始参与游戏。
     public const byte READY_CANCEL = 48; //取消准备
     public const byte NOTIFY_READY = 49; //通知准备
     public const byte NOTIFY_READY_CANCEL = 50; //取消准备
+    /// <summary>
+    /// out
+    /// </summary>
     public const byte BID_REQ = 51; //通知正在玩的玩家 抢庄
     public const byte BID = 52; //抢庄
-    public const byte NOTIFY_BID_BUTTON = 53;//Seat# is the button..
+    public const byte NOTIFY_BID = 53;//通知抢庄
+    public const byte BET_REQ = 56; //进行下注，下注积分不能超过带入当前截止带入的剩余积分。
+    public const byte NOTIFY_BET = 57;//PID posts a bet
+    public const byte NOTIFY_LAY = 60;//开牌数据，参数类似NOTIFY_DRAW
 }

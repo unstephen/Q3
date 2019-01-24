@@ -39,6 +39,7 @@ namespace GamePlay
         protected override void OnLeave(GameFramework.Fsm.IFsm<Player> fsm, bool isShutdown)
         {
             base.OnLeave(fsm, isShutdown);
+            fsm.Owner.bBiding.Value = false;
         }
 
         protected override void OnDestroy(GameFramework.Fsm.IFsm<Player> fsm)

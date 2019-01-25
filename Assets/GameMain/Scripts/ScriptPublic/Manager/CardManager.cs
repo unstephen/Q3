@@ -137,22 +137,26 @@ public class CardManager : MonoSingleton<CardManager>
            // foreach (var card in player.handCards)
             {
                 //移动动画，动画结束后自动销毁
-                var tween0 = player.handCards[0].transform.DOMove(heapPos.position, 0.3f);
-                tween0.OnComplete(() =>
+                if(player.handCards[0]!=null)
+                player.handCards[0].transform.DOMove(heapPos.position, 0.3f).OnComplete(() =>
                 {
-                    Destroy(player.handCards[0]);
+                    if(player.handCards[0]!=null)
+                    Destroy(player.handCards[0].gameObject);
+                });
+                
+                yield return new WaitForSeconds(1 / dealCardSpeed);
+                if(player.handCards[1]!=null)
+                player.handCards[1].transform.DOMove(heapPos.position, 0.3f).OnComplete(() =>
+                {
+                    if(player.handCards[1]!=null)
+                    Destroy(player.handCards[1].gameObject);
                 });
                 yield return new WaitForSeconds(1 / dealCardSpeed);
-                var tween1 = player.handCards[1].transform.DOMove(heapPos.position, 0.3f);
-                tween1.OnComplete(() =>
+                if(player.handCards[2]!=null)
+                player.handCards[2].transform.DOMove(heapPos.position, 0.3f).OnComplete(() =>
                 {
-                    Destroy(player.handCards[1]);
-                });
-                yield return new WaitForSeconds(1 / dealCardSpeed);
-                var tween2 = player.handCards[2].transform.DOMove(heapPos.position, 0.3f);
-                tween2.OnComplete(() =>
-                {
-                    Destroy(player.handCards[2]);
+                    if(player.handCards[2]!=null)
+                    Destroy(player.handCards[2].gameObject);
                 });
                 yield return new WaitForSeconds(1 / dealCardSpeed);
             }
@@ -174,11 +178,12 @@ public class CardManager : MonoSingleton<CardManager>
 
         //计算每张地主牌的位置
         int cardIndex = 0;
+        int cardAllIndex = 0;
         foreach (var cardName in cardNamesNeeded)
         {
             //给当前玩家发一张牌
             var nowCardNum = termCurrentPlayer.handCards.Count;
-            termCurrentPlayer.GetCard(cardName);
+            termCurrentPlayer.GetCard(cardName,cardIndex);
             var tempPlayer = termCurrentPlayer;
             var cover = Instantiate(heapPos.gameObject);
             //  cover.GetComponent<RectTransform>().localScale = Vector3.one;
@@ -197,7 +202,11 @@ public class CardManager : MonoSingleton<CardManager>
             //
             SetNextPlayer();
 
-            cardIndex++;
+            if (cardAllIndex % (cardNamesNeeded.Count / 3) == 0)
+            {
+                cardIndex++;
+            }
+            cardAllIndex++;
         }
 
     
@@ -333,6 +342,7 @@ public class CardManager : MonoSingleton<CardManager>
         else if (CardTypes.Hearts == type)
         {
             ret = num == 13 ? 27 : (num + 27);
+            
         }
         else
         {
@@ -340,5 +350,27 @@ public class CardManager : MonoSingleton<CardManager>
         }
 
         return ret;
+    }
+    /// <summary>
+    /// 资源序号转为A-K序号
+    /// </summary>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    public static int CConvert2Num(int num,bool filerGong = true)
+    {
+        var ret = num%13;
+        if (filerGong)
+        {
+            if (ret == 0 || ret > 9)
+                return 0;
+            else
+            {
+                return ret;
+            }
+        }
+        else
+        {
+            return ret;
+        }
     }
 }

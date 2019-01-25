@@ -355,7 +355,7 @@ public class RecvHandler : IPacketHandler
         //获取所有玩家最新分数信息
         foreach (var pForScore in RoomManager.Instance.rData.allPlayers)
         {
-            NetWorkManager.Instance.Send(Protocal.PLAYER_INFO,pForScore.id);
+            NetWorkManager.Instance.Send(Protocal.PLAYER_INFO,pForScore.id.Value);
         }
     }
 

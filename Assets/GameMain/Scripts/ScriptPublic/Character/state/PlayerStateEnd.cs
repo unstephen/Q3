@@ -8,6 +8,7 @@ namespace GamePlay
 {
     public class PlayerStateEnd : PlayerStateBase
     {
+        private bool makingcard;
         protected override void OnInit(GameFramework.Fsm.IFsm<Player> fsm)
         {
             base.OnInit(fsm);
@@ -33,9 +34,16 @@ namespace GamePlay
                         validNum++;
                 }
 
-                if (validNum == fsm.Owner.handCardsData.Count)
+                if (!makingcard && validNum == fsm.Owner.handCardsData.Count)
                 {
                     fsm.Owner.OnMakeHandCard();
+                    makingcard = true;
+                   
+                }
+
+                if (makingcard && fsm.Owner.handCards.Count == fsm.Owner.handCardsData.Count)
+                {
+                    makingcard = false;
                     ChangeState<PlayerStateCardStyle>(fsm);
                 }
             }

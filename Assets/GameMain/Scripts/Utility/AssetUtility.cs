@@ -54,7 +54,7 @@
 
         public static string GetCardAsset(string assetName)
         {
-            return string.Format("Assets/Arts/Resources/Prefabs/{0}.prefab", assetName);
+            return string.Format("Assets/GameMain/Prefabs/{0}.prefab", assetName);
         }
     }
 }

@@ -28,8 +28,8 @@ namespace GamePlay
         private Text TextMinBet3;
         private Text timerTxt;
         private Image timerImg;
-        private GameObject BL_lose, BL_win,PanelSettle;
-        //聊天
+        private GameObject BL_lose, BL_win,BL_tie,PanelSettle;
+        //TODO:聊天
         private Transform PanelChat,TalkPopup;
         private Text TalkPopText;
         protected override void OnInit(object userData)
@@ -60,6 +60,8 @@ namespace GamePlay
             timerTxt = link.Get<Text>("timerTxt");
             BL_lose = link.Get("BL_lose");
             BL_win = link.Get("BL_win");
+            BL_tie = link.Get("BL_tie");
+            
             timerPanel = link.Get("timer");
             timerImg = link.Get<Image>("timerImg");
             PanelSettle = link.Get("PanelSettle");
@@ -122,6 +124,9 @@ namespace GamePlay
 
         private void OnClickSettleOK(object[] args)
         {
+            //桌面的牌飞到桌子中间
+            CardManager.Instance.OnGameEnd();
+            
             PanelSettle.SetActive(false);
             foreach (var player in RoomManager.Instance.rData.allPlayers)
             {
@@ -249,6 +254,13 @@ namespace GamePlay
             }
         }
 
+        
+        public void DoShowTieEffect()
+        {
+            PanelSettle.SetActive(true);
+            BL_tie.SetActive(true);
+            BL_tie.transform.DOScale(2, 1).SetEase(Ease.InFlash);
+        }
         public void DoShowWinEffect()
         {
             PanelSettle.SetActive(true);
@@ -464,6 +476,7 @@ namespace GamePlay
 
         private void OnClickBid(object[] args)
         {
+            BtnBanker0.gameObject.SetActive(false);
             //发送抢庄,amount暂时=0
             int amount = 1;
             NetWorkManager.Instance.Send(Protocal.BID,RoomManager.Instance.rData.gId.Value,amount);
@@ -478,10 +491,6 @@ namespace GamePlay
             }
         }
 
-        public void DoShowTieEffect()
-        {
-           
-        }
     }
     
     public class PlayerHeadInfo : UGuiComponent

@@ -216,7 +216,7 @@ namespace GamePlay
                         bInputId.Value = false;
                         var rm = RoomManager.Instance;
                         //初始化房间
-                        rm.Init(joinRoom.data.GID,joinRoom.data.room_id,room_name,0);
+                        rm.Init(joinRoom.data.GID,joinRoom.data.room_id,room_name,0,joinRoom.data.max_score,joinRoom.data.base_score);
                      
                         Log.Debug("加入房间{0}成功，GID={1}",joinRoom.data.room_id,joinRoom.data.GID);
 //                        rm.rData.id.Value = joinRoom.data.room_id;

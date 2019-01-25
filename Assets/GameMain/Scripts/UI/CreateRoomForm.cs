@@ -147,7 +147,7 @@ namespace GamePlay
             if (createRoom != null && createRoom.code == 0)
             { 
                 NetWorkManager.Instance.CreateChanel();
-                DoCreateRoom(createRoom.data.GID,createRoom.data.room_id);
+                DoCreateRoom(createRoom.data.GID,createRoom.data.room_id,createRoom.data.max_score,createRoom.data.base_score);
                 RoomManager.Instance.rData.canRubbing = canRubbing;
             }
         }
@@ -157,11 +157,11 @@ namespace GamePlay
              Close();
          }
 
-        public void DoCreateRoom(int GID,int room_id)
+        public void DoCreateRoom(int GID,int room_id,int max_score,int min_score)
         {
             var mode = main.CurGameMode();
             //初始化房间
-            RoomManager.Instance.Init(GID,room_id,"xxxx",0);
+            RoomManager.Instance.Init(GID,room_id,"xxxx",0,max_score,min_score);
             //初始化扑克管理器
             var cardManager = CardManager.Instance;
             switch (main.CurGameMode())

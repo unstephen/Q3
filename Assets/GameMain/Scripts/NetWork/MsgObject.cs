@@ -55,6 +55,8 @@ public class Recv_CreateRoom_Data
 {
     public int GID;
     public int room_id;
+    public int max_score;
+    public int base_score;
 }
 
 public class Recv_CreateRoom : Http_MsgBase
@@ -292,8 +294,10 @@ public class Recv_SearchRoom : Http_MsgBase
 
 public class Recv_JoinRoom_Data
 {
-    public int room_id;
     public int GID;
+    public int room_id;
+    public int max_score;
+    public int base_score;
 }
 public class Recv_JoinRoom : Http_MsgBase
 {

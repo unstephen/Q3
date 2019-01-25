@@ -23,8 +23,9 @@ namespace GamePlay
         protected override void OnUpdate(GameFramework.Fsm.IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
-            if (fsm.Owner.state == EPlayerState.Settle)
+           // if (fsm.Owner.state == EPlayerState.Settle)
             {
+                fsm.Owner.state = EPlayerState.Settle;
                 ChangeState<PlayerStateSettle>(fsm);
             }
         }

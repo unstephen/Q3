@@ -580,7 +580,7 @@ public class NetWorkManager : MonoSingleton<NetWorkManager>
        
         msg.SetArgs(buffer);
         channel.Send(msg);
-        Log.Debug("->>>>>>>>>>>>{0}",id);
+        Log.Debug("->>>>>>>>>>>>{0},{1}",id,args);
     }
 
     public class Q3NetworkHelper : INetworkChannelHelper

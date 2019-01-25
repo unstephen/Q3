@@ -35,7 +35,7 @@ namespace GamePlay
 
                 if (validNum == fsm.Owner.handCardsData.Count)
                 {
-                    fsm.Owner.OnShowCard();
+                    fsm.Owner.OnMakeHandCard();
                     ChangeState<PlayerStateCardStyle>(fsm);
                 }
             }

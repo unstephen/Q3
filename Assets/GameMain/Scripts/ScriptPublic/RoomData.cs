@@ -20,7 +20,10 @@ namespace GamePlay
 		public ReactiveCollection<PlayerOther> roomPlayers;
 		public ReactiveProperty<PlayerSelf> playerSelf;
 		public ReactiveCollection<RoomSeat> roomSeats;
-		public ReactiveProperty<float> timer = new ReactiveProperty<float>();
+		public ReactiveProperty<float> timer = new ReactiveProperty<float>(-1);
+		public ReactiveProperty<float> maxCoolTime = new ReactiveProperty<float>(-1);
+		public int minBet;
+		public int maxBet;
 		public bool canRubbing;//能否搓牌
 
 		public List<Player> allPlayers
@@ -150,9 +153,10 @@ namespace GamePlay
 			player.score.Value = score;
 			player.userLoc.Value = userLoc;
 			player.SetPos(GetPosByPid(pId));
-			player.state = EPlayerState.Seat;
+			
 			if (bNew)
 			{
+				player.state = EPlayerState.Seat;
 				RoomManager.Instance.rData.roomPlayers.Add(player as PlayerOther);
 			}
 		}

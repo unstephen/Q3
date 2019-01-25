@@ -16,7 +16,12 @@ namespace GamePlay
         protected override void OnEnter(GameFramework.Fsm.IFsm<Player> fsm)
         {
             base.OnEnter(fsm);
-            fsm.Owner.OnBet();
+            fsm.Owner.OnShowCard();
+            if (fsm.Owner.id.Value != RoomManager.Instance.rData.bid.Value)
+            {
+                fsm.Owner.OnBet();
+            }
+
             Log.Debug("进入下注");
         }
 

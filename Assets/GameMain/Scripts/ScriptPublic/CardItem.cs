@@ -86,7 +86,7 @@ public class CardItem:MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     private void OnDestroy()
     {
-        Log.Info("CardItem Destroy");
+       // Log.Info("CardItem Destroy");
     }
 
     public void OnBeginDrag( PointerEventData eventData ) {

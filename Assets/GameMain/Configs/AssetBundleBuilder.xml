@@ -2,17 +2,17 @@
 <UnityGameFramework>
   <AssetBundleBuilder>
     <Settings>
-      <InternalResourceVersion>24</InternalResourceVersion>
+      <InternalResourceVersion>26</InternalResourceVersion>
       <Platforms>2</Platforms>
       <ZipSelected>True</ZipSelected>
       <RecordScatteredDependencyAssetsSelected>False</RecordScatteredDependencyAssetsSelected>
-      <UncompressedAssetBundleSelected>False</UncompressedAssetBundleSelected>
+      <UncompressedAssetBundleSelected>True</UncompressedAssetBundleSelected>
       <DisableWriteTypeTreeSelected>False</DisableWriteTypeTreeSelected>
       <DeterministicAssetBundleSelected>True</DeterministicAssetBundleSelected>
       <ForceRebuildAssetBundleSelected>False</ForceRebuildAssetBundleSelected>
       <IgnoreTypeTreeChangesSelected>False</IgnoreTypeTreeChangesSelected>
       <AppendHashToAssetBundleNameSelected>False</AppendHashToAssetBundleNameSelected>
-      <ChunkBasedCompressionSelected>True</ChunkBasedCompressionSelected>
+      <ChunkBasedCompressionSelected>False</ChunkBasedCompressionSelected>
       <BuildEventHandlerTypeName>
       </BuildEventHandlerTypeName>
       <OutputDirectory>G:/work/project/ab</OutputDirectory>

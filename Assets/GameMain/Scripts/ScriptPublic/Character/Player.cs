@@ -235,6 +235,7 @@ namespace GamePlay
 
 		public virtual void OnSeat()
 		{
+			ClearCards();
 			headUI.OnSeat();
 		}
 		
@@ -284,12 +285,16 @@ namespace GamePlay
 			GetCard(5,GetOutCardPos(2,3),(x)=>handCards.Add(x));
 		}
 
-		public void GetCard(int id)
+		public void GetCard(int id,int index,bool bShowDefault = false)
 		{
 			Log.Info("开始发牌{0}给{1}",id, name);
-			GetCard(id,GetOutCardPos(handCards.Count,3),(x)=>
+			GetCard(id,GetOutCardPos(index,3),(x)=>
 			{
-				x.gameObject.SetActive(false);
+				x.gameObject.SetActive(bShowDefault);
+				if (bShowDefault)
+				{
+					x.SetFrontActive(true);
+				}
 				handCards.Add(x);
 			});
 		}
@@ -318,19 +323,28 @@ namespace GamePlay
 
 		public virtual void OnMakeHandCard()
 		{
+			Log.Debug("开手牌",name);
+			int tempCardIdx = 0;
 			foreach (var cardnum in handCardsData)
 			{
-				GetCard(cardnum);
+				
+				Log.Debug("开手牌{0}",cardnum);
+				GetCard(cardnum,tempCardIdx++,true);
 			}
-		    OnShowCard();
+			foreach (var card in handCards)
+			{
+				card.SetFrontActive(true);
+			}
 		}
 
 		public void ClearCards()
 		{
 			foreach (var card in handCards)
 			{
+				Log.Debug("删除牌{0}",card.name);
 				Object.Destroy(card.gameObject);
 			}
+		
 			handCards.Clear();
 		    handCardsData.Clear();
 		}
@@ -364,10 +378,11 @@ namespace GamePlay
 			else
 			{
 				//点数
-				var cp0 = (bGongCard(card0) || card0%10==0) ? 0 : card0;
-				var cp1 = (bGongCard(card1) || card1%10==0) ? 0 : card1;
-				var cp2 = (bGongCard(card2) || card2%10==0) ? 0 : card2;
-				return string.Format("{0}点", cp0 + cp1 + cp2);
+				var cp0 = CardManager.CConvert2Num((bGongCard(card0) || card0%10==0) ? 0 : card0);
+				var cp1 = CardManager.CConvert2Num((bGongCard(card1) || card1%10==0) ? 0 : card1);
+				var cp2 = CardManager.CConvert2Num((bGongCard(card2) || card2%10==0) ? 0 : card2);
+				var tablePoint = cp0 + cp1 + cp2;
+				return string.Format("{0}点", tablePoint%10);
 			}
 		}
 
@@ -400,8 +415,7 @@ namespace GamePlay
 		{
 			//UI显示重置
 			headUI.OnGameEnd();
-			//桌面的牌飞到桌子中间
-			CardManager.Instance.OnGameEnd();
+		
 		}
         //本局结束
 		public virtual void OnEnd()

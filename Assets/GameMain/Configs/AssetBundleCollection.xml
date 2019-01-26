@@ -11,6 +11,7 @@
       <AssetBundle Name="Music/music_bg" LoadType="0" Packed="True" />
       <AssetBundle Name="Music/music_login" LoadType="0" Packed="True" />
       <AssetBundle Name="Music/music_sangong" LoadType="0" Packed="True" />
+      <AssetBundle Name="Prefabs" LoadType="0" Packed="True" />
       <AssetBundle Name="Scenes" LoadType="0" Packed="False" />
       <AssetBundle Name="Sounds/explosion_asteroid" LoadType="0" Packed="True" />
       <AssetBundle Name="Sounds/explosion_enemy" LoadType="0" Packed="True" />
@@ -36,6 +37,7 @@
       <Asset Guid="033dbc819d6bc2945a5ba3435f2cb819" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="036ded012d71123489ae8d43007bfb9f" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="03c3bf3b0e5b7694da569bce2897687e" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="041fd6e30bbd8894ba6c248a9fcd82bd" AssetBundleName="Prefabs" />
       <Asset Guid="04d7dde7615d71b4db1a0c8d67a62e95" AssetBundleName="UI/UIForms" />
       <Asset Guid="053059072d6246e4fa92207c168670a0" AssetBundleName="UI/UITex" />
       <Asset Guid="06081819c255b08489cbd67064fa501a" AssetBundleName="UI/UISprites/Frames" />
@@ -44,7 +46,11 @@
       <Asset Guid="09966b19e546cc94aa84d0743cb2a83d" AssetBundleName="UI/UIForms" />
       <Asset Guid="09f3156d584cb9d4ca6e5bf44d678643" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="0b9e24eddbb8d7f4ebc3d82cc87b01b4" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="0cd9c31c499af2e4c8693a1e7f18af66" AssetBundleName="Prefabs" />
+      <Asset Guid="0ef5931f695c52e4987d384ea492c2dc" AssetBundleName="Prefabs" />
       <Asset Guid="1053b0070685be347ab58587156842dc" AssetBundleName="Localization/Dictionaries" AssetBundleVariant="zh-tw" />
+      <Asset Guid="1212c27f475915d4d8cfb631e8902189" AssetBundleName="Prefabs" />
+      <Asset Guid="13a7245d8ad09d240b80e3edbd5b8086" AssetBundleName="Prefabs" />
       <Asset Guid="13a971a06e124ac418a1162d9865fa3f" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="1429dd0ea794959429f2107a050bd2b1" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="14869ac0d4433f04db1704e39d03412e" AssetBundleName="Localization/Dictionaries" AssetBundleVariant="en-us" />
@@ -53,18 +59,25 @@
       <Asset Guid="156d241f796508c4da4fc354a7fbf5a8" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="163cd79bb637a834799a82b4fc326c60" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="1750b537152ea8847925eaf4d0170c9d" AssetBundleName="UI/UISprites/Main" />
+      <Asset Guid="1843613069749fc42929385d571b8789" AssetBundleName="Prefabs" />
       <Asset Guid="18884de5906debd419d8e5e60dbb6ad4" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="1b26f78aac6b0154e9280e733cb8e941" AssetBundleName="Prefabs" />
       <Asset Guid="1be4472894949437694aead55c6da60f" AssetBundleName="Sounds/weapon_enemy" />
       <Asset Guid="1c70c9276ee6f3448baffc16eed2d726" AssetBundleName="Scenes" />
+      <Asset Guid="1d6472bf5064e9f4592c56b92042e189" AssetBundleName="Prefabs" />
       <Asset Guid="1e404da5c75f13649b49e9cfea0072a9" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="1fb09e9b5f6c1a54ead21d2d46b1ec6b" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="1fbb796517f072b4e84fc88f0250bc13" AssetBundleName="UI/UISprites/Login" />
       <Asset Guid="21c530608be66294fa13f5355ec015a0" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="21f502be84b6b1d4c990d6f4923f4175" AssetBundleName="Prefabs" />
       <Asset Guid="228510c9cb046684e9d04c6827849649" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="24906db3e4f9dc64b9c0ba81146281ca" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="282243a262a45454aa5402c2637c4cd1" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="2bc0f40dd51c73d439620db95f6625e4" AssetBundleName="Prefabs" />
       <Asset Guid="2c339deb187e93647a7d8116bdc00894" AssetBundleName="UI/UITex" />
       <Asset Guid="2e67b8867040dd347aee9b23400c8134" AssetBundleName="UI/UIForms" />
+      <Asset Guid="2eca024467e474c4682f314662c7f809" AssetBundleName="Prefabs" />
+      <Asset Guid="2f0910eef9e859a4f8bc323600b11dfc" AssetBundleName="Prefabs" />
       <Asset Guid="310853a128e0eef498e845deefa0ae7e" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="315e8ed2db27c254cb3366ff0793cd90" AssetBundleName="DataTables" />
       <Asset Guid="32617ed5bf14eae478cc21e723276e91" AssetBundleName="UI/UISprites/Common" />
@@ -76,6 +89,7 @@
       <Asset Guid="363970dbd0fef6b40872f42539d49051" AssetBundleName="UI/UIItems" />
       <Asset Guid="36c80d56660ac6f43a288c9c183ace13" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="372a8b1e52bedc64b9207b12d167afaa" AssetBundleName="DataTables" />
+      <Asset Guid="37585c2c8c7fa7847a5349c197cb67f7" AssetBundleName="Prefabs" />
       <Asset Guid="3768eefe7ea89c64aa4da333f37a2367" AssetBundleName="Music/music_sangong" />
       <Asset Guid="3a5b9da0b0e4cf84285d017c759c1242" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="3aa539b1e46111d4299a83c73ebe762c" AssetBundleName="UI/UIForms" />
@@ -83,6 +97,8 @@
       <Asset Guid="3e7f5f56f30386942b28a48d5f8d1df0" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="3e9f5aae449a5a84ab6ee40bcae3e7cc" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="40bee5cdd74f2984087e56e5a5a598ed" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="4194efd4a330e784fa62261034d85c40" AssetBundleName="Prefabs" />
+      <Asset Guid="42451813913a2bd47948403526627ac4" AssetBundleName="Prefabs" />
       <Asset Guid="42fbb183d74a814498ca9e842a949f64" AssetBundleName="UI/UITex" />
       <Asset Guid="433e2568bbe6586428e3ab675a02f5ca" AssetBundleName="UI/UISprites/Main" />
       <Asset Guid="43a3a259f8cdb2748bdf0355b63e5a2e" AssetBundleName="UI/UISprites/Icons" />
@@ -95,18 +111,21 @@
       <Asset Guid="4cc3a3a90d797f14a9ab22ff9e40d881" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="50799143ed079334eaf3a0f2ac99947b" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="51dde56ffd9c0554080f573680e96758" AssetBundleName="UI/UISprites/Main" />
+      <Asset Guid="5295a8008dbe9c04495e7478f1672fc2" AssetBundleName="Prefabs" />
       <Asset Guid="529630cf30001554b9b9ba60fffd5ff8" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="52b9834ee047df04d9b67dacf6341094" AssetBundleName="UI/UITex" />
       <Asset Guid="5536309860c595d40a9652a1d2f4eeb2" AssetBundleName="UI/UISprites/Main" />
       <Asset Guid="556a98316158824459644a2b917e35fd" AssetBundleName="UI/UITex" />
       <Asset Guid="558fa463aa400ef478ae5a19618b1cd3" AssetBundleName="UI/UISprites/Main" />
       <Asset Guid="58bff6a70736d53438f31b14a439c25f" AssetBundleName="UI/UIForms" />
+      <Asset Guid="58e71b888aecad943b1dca86548ba633" AssetBundleName="Prefabs" />
       <Asset Guid="5a32ea0d94bb58f428d202239015cf8c" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="5af0023cc21863f4c869dc67817e1ce2" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="5b398aeb54d9ef349a9245a03e150b13" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="5bc919dcf17dc4a478bc6cb42c4664e5" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="5dcd89912e222bf4c87f76db4044bc5e" AssetBundleName="Localization/Dictionaries" AssetBundleVariant="ko-kr" />
       <Asset Guid="5f7f4d2634e7d5348a4870a9d68c9e0e" AssetBundleName="UI/UISprites/Common" />
+      <Asset Guid="621403b0dbd0d68469f0c2758293add0" AssetBundleName="Prefabs" />
       <Asset Guid="635a97393549c154cb77536907307240" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="63c37c4a87b1de6419379bf85b79014d" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="6596fc9bf27d0244db9f3b8b4b021d33" AssetBundleName="UI/UISprites/Icons" />
@@ -114,14 +133,19 @@
       <Asset Guid="67310433fa191884d8036f8749213144" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="683759aa61c5ad74a8c2471463edb732" AssetBundleName="UI/UITex" />
       <Asset Guid="68bc5b1fafc2e054c8704bdc62c4acbf" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="69bfb5fef7afab5429a950fa4db28c8d" AssetBundleName="Prefabs" />
+      <Asset Guid="6a3ea041012fc844aa2432a99de0ec56" AssetBundleName="Prefabs" />
       <Asset Guid="6a7ba2fbcbec3a848a379c3636fc1555" AssetBundleName="UI/UITex" />
       <Asset Guid="6c17108a328a02345aaa7d6b85aee382" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="6c20f47f06947f14e97aff664b72cb73" AssetBundleName="Prefabs" />
       <Asset Guid="6cbc2c323b77f804fb958fa4eca33998" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="6e18733293473bb4c9e5b5bdec78bfbf" AssetBundleName="Scenes" />
       <Asset Guid="6e237170fe1f34949bc2b73728a73cdf" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="6e2d44db471f20c46bea47145a52b4e7" AssetBundleName="UI/UITex" />
+      <Asset Guid="6f63397066e4f8c4d9c6ac10cc3fed0a" AssetBundleName="Prefabs" />
       <Asset Guid="72e76810224064300b7d32e8322a5d12" AssetBundleName="Sounds/explosion_enemy" />
       <Asset Guid="7488e6e2ed6a9744aa630bac663815c2" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="7559a4934d6b24f489c98bba6e9bc457" AssetBundleName="Prefabs" />
       <Asset Guid="76501f61ddf9fe04991490dae5d6da7c" AssetBundleName="UI/UIForms" />
       <Asset Guid="78976214ea209d540bd7bb5a1f815428" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="79214f53abeee4841a9654d417d8fae8" AssetBundleName="UI/UISprites/Frames" />
@@ -129,18 +153,25 @@
       <Asset Guid="7c9de59014f570645920215386226c5b" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="7cc8d00a75893944a86fbd364ca7efb2" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="7d46df0930febb64e81be04fb16d269d" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="7d612eb3911dc6a49a7f1d1dcc33fc21" AssetBundleName="Prefabs" />
+      <Asset Guid="7f4645445d444ae46bc479bb917b39af" AssetBundleName="Prefabs" />
       <Asset Guid="7f5aee8da226edf4991598327cb32ce0" AssetBundleName="UI/UISprites/Logos" />
       <Asset Guid="7fcb29fc00f6d9640a9db7a32acc517e" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="8211c044ca5248048ad4ca039dcc99df" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="821d054b69b610a4ca74f21208793bc2" AssetBundleName="UI/UITex" />
       <Asset Guid="8547515cc86eb7645b82c81bf9663f34" AssetBundleName="UI/UISprites/Common" />
+      <Asset Guid="88dbcc47763c00f41b7ae70962612f6e" AssetBundleName="Prefabs" />
       <Asset Guid="8a6ca907e7da98244af9c32208a7d97e" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="8a708d96a007d7342ac065c5c937105d" AssetBundleName="Prefabs" />
       <Asset Guid="8df45e36c6b816e4a949837159f0444c" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="8e923fb95035ae64caaf6d65e6b0b689" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="8f4e1918ac855804ab04a6c4b9b7d95d" AssetBundleName="UI/UISprites/Login" />
+      <Asset Guid="91d03e23735705d4aa40d1eacc0b358c" AssetBundleName="Prefabs" />
+      <Asset Guid="934ef7b04e1ca4f4c9acabae9b540a2d" AssetBundleName="Prefabs" />
       <Asset Guid="94f68aa15b02ec74ba57568fa0935efb" AssetBundleName="UI/UITex" />
       <Asset Guid="97ada5eb3972b5a4a91adcfec68a9637" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="991823d284089de4b8d5f710410c5390" AssetBundleName="UI/UITex" />
+      <Asset Guid="9a001c021a814bb49a5209ad42cf22a9" AssetBundleName="Prefabs" />
       <Asset Guid="9a1b2435230a8fc4e9dc5a65b8f42b87" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="9b717d9c834c2c540b0557abeb1bc79d" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="9be2e1e45f4edd74c8764538ad306b78" AssetBundleName="Localization/Dictionaries" AssetBundleVariant="zh-cn" />
@@ -153,6 +184,8 @@
       <Asset Guid="a3056b4128410ad4081be949557303d6" AssetBundleName="UI/UISprites/Frames" />
       <Asset Guid="a3c8e227a9ffebc4596f83548e72497a" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="a3c99ccaf591b3044aa625c8093f11da" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="a3c9da53f217a2a489bd09214f6021f5" AssetBundleName="Prefabs" />
+      <Asset Guid="a438574d924b65c4f99e1a89e8b679e4" AssetBundleName="Prefabs" />
       <Asset Guid="a4c65863faf87b54a9480848c39770dc" AssetBundleName="UI/UISprites/Main" />
       <Asset Guid="a544d97fed06c5f4fad3d87b172a6574" AssetBundleName="UI/UIForms" />
       <Asset Guid="a580156498145ab44951ea0f1de99b97" AssetBundleName="UI/UISprites/Icons" />
@@ -160,20 +193,27 @@
       <Asset Guid="a63c7217f6595e64ebfb3a8157356764" AssetBundleName="UI/UITex" />
       <Asset Guid="a6bd076ae28d18b4d892e8efbef3fa3d" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="a71f8bb1b1b2c51438e2bafc884cb02c" AssetBundleName="DataTables" />
+      <Asset Guid="a781385f81185554f8d4884190d14221" AssetBundleName="Prefabs" />
       <Asset Guid="a835427bda1830b4eabef36d2d940614" AssetBundleName="UI/UIForms" />
+      <Asset Guid="a8f0b3446fa34a24b9460f2ac0b243e8" AssetBundleName="Prefabs" />
       <Asset Guid="a8fceb85581abe842918e8ad6a60da50" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="aaa794a3e1a75ce41be703a23f0b478f" AssetBundleName="UI/UISprites/Main" />
       <Asset Guid="ac14850be3766c743a696a2c045c91ee" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="ad3496c5bc315ff4f888e7bd2bac89f9" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="aded29c8b3906984788da86b8f0bc092" AssetBundleName="Prefabs" />
       <Asset Guid="b0259f2305e9e4145a57b320b6a990ab" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="b143b76f5b17f9a43a994ad3b88f3aa7" AssetBundleName="Prefabs" />
       <Asset Guid="b20ceb51a7b3afb45b92ddce7480efca" AssetBundleName="UI/UISprites/Common" />
+      <Asset Guid="b64901cb6fec8634188c1aa565f05b8c" AssetBundleName="Prefabs" />
       <Asset Guid="b729799d1b1d84841a272215d5c0cbd3" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="b7d81eb6109cfda47935111c966edce4" AssetBundleName="UI/UISprites/Common" />
+      <Asset Guid="bb0618d5f2fd05e4a8e6c18ac843b71d" AssetBundleName="Prefabs" />
       <Asset Guid="bbfd75fe6fe00e1448fe988173ede7f9" AssetBundleName="UI/UIForms" />
       <Asset Guid="beb4928bf72bda24a82c71b683bcc866" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="bf74af0740f533b4dbe9531d2999c5e6" AssetBundleName="UI/UISprites/Login" />
       <Asset Guid="bf75b984df8a84987bcf3a8bf6e2862d" AssetBundleName="Sounds/weapon_player" />
       <Asset Guid="c02f2e0c6646baa45bb2b0a95870cc1a" AssetBundleName="UI/UISprites/Main" />
+      <Asset Guid="c0ee59518db61ec48b36cdbd614d0768" AssetBundleName="Prefabs" />
       <Asset Guid="c1e9c5df9f72ac849966d252a640aa68" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="c3c2b9eb70ad6044bb36be498fbf6424" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="c6b57bee0e317be46b780c8116bdfd13" AssetBundleName="UI/UISprites/Login" />
@@ -186,9 +226,12 @@
       <Asset Guid="cb6ba108b509fef449a73b6de9c2b5c7" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="cc3936987dc51cd41a589e6de2e3f0cb" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="cded4d446caf1d24c9b9c49fde8a9d9b" AssetBundleName="UI/UITex" />
+      <Asset Guid="cfad33c12eda58b409932e921095747d" AssetBundleName="Prefabs" />
       <Asset Guid="cfe53cf384344bd47a8680f8c5f97a7b" AssetBundleName="DataTables" />
       <Asset Guid="d224745890909f14394f9a6369e46ad0" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="d259f8d9b45f1dc41b094b4281d89e42" AssetBundleName="Prefabs" />
       <Asset Guid="d42588317a35c82479d227be09a4c731" AssetBundleName="UI/UISprites/Frames" />
+      <Asset Guid="d445502c0159b694d952f979ca3fe510" AssetBundleName="Prefabs" />
       <Asset Guid="d5a72aee00c1ea047b3475e384ffe27f" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="d8a2fd82a52464a4ab1f7c796c2b1ef4" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="dad3aeb518911284d9da23e43c0e12e0" AssetBundleName="UI/UISprites/TopBar" />
@@ -200,6 +243,7 @@
       <Asset Guid="dfc88fe85c2f6ff418fa8936d6ab2825" AssetBundleName="UI/UITex" />
       <Asset Guid="e279fab65cbbc0d4aa1df32092232b2e" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="e38d40669f5032749a7084e8e9a1b6c2" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="e49f55281ac7ca2459a89061b5bd6d90" AssetBundleName="Prefabs" />
       <Asset Guid="e5ca26c53b6ab8a46b52817008d7c7fa" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="e5fb8cd5bcb23694eabf2b23988f3fd5" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="e693c1d80c88b8a42a7e347d967d76f6" AssetBundleName="UI/UISprites/Main" />
@@ -207,19 +251,30 @@
       <Asset Guid="e82837c9099f69a48b48fc44eb8d119d" AssetBundleName="UI/UISprites/Common" />
       <Asset Guid="e830964cdb85ff3429bca484c16bab44" AssetBundleName="UI/UISounds" />
       <Asset Guid="e95036fbda6d2be469a2cafba5cee722" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="e9ad7f8b3c1eacb48be138f768c0b06f" AssetBundleName="Prefabs" />
       <Asset Guid="ea2ce5bb08e3e5740bfbcc75645bd6f6" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="ea4b3ff87bd43984ca07405331b984db" AssetBundleName="Prefabs" />
+      <Asset Guid="eb3feb9e35e5dee49be6ac2a13b2a493" AssetBundleName="Prefabs" />
+      <Asset Guid="ed157c191daaca04e8bd188c7fb4eb2d" AssetBundleName="Prefabs" />
       <Asset Guid="ed307627ef0dd9b4c950361643324a8b" AssetBundleName="UI/UISprites/TopBar" />
+      <Asset Guid="ee71840c917e3ed4ba7360feff5542b4" AssetBundleName="Prefabs" />
       <Asset Guid="ef004ad04d30218449b9ae8f0aaa68e9" AssetBundleName="UI/UIForms" />
       <Asset Guid="f00c56b8e0e9bb74c93534fa6974b7c8" AssetBundleName="UI/UITex" />
+      <Asset Guid="f0273ee5c118fb64db98a19f882a73f8" AssetBundleName="Prefabs" />
+      <Asset Guid="f07f497c717ebdb4180322c708ff506d" AssetBundleName="Prefabs" />
+      <Asset Guid="f0935c62f47ebfd4fa8d0cdd4accee02" AssetBundleName="Prefabs" />
       <Asset Guid="f246a71e3e727cf45a67d0852880d07a" AssetBundleName="UI/UITex" />
       <Asset Guid="f24c8841f33c21e4494253bbe1f54f69" AssetBundleName="UI/UIForms" />
       <Asset Guid="f251283e8bbe4c04991cbb9a7003ff9f" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="f2f97a713beae744181ba934f9c4113a" AssetBundleName="DataTables" />
       <Asset Guid="f438a72a91e1c3c4a9ced40888ffec96" AssetBundleName="UI/UISprites/Icons" />
+      <Asset Guid="f621520f6076a0747b48e7d28a219fd6" AssetBundleName="Prefabs" />
       <Asset Guid="f872cc8f74d450040b3a00856e6cf0a7" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="faa8d64e3c2b2704193fd3265620bc41" AssetBundleName="UI/UITex" />
+      <Asset Guid="fb3100b5de7acc342866058bf658fb62" AssetBundleName="Prefabs" />
       <Asset Guid="fce2ff571ae223e498e4e24303161de8" AssetBundleName="UI/UISprites/Icons" />
       <Asset Guid="fcf4ca716c061af499a2baa8e738d30d" AssetBundleName="UI/UIForms" />
+      <Asset Guid="fd7dff76dc61a694d882f87866e9128f" AssetBundleName="Prefabs" />
       <Asset Guid="ff22cee3283ebe946b5268b2c66f947c" AssetBundleName="UI/UISprites/TopBar" />
       <Asset Guid="ffbc0dc20e9d35f41806561ea979a8f2" AssetBundleName="UI/UISprites/Icons" />
     </Assets>

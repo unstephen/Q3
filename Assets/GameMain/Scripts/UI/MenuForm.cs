@@ -28,29 +28,29 @@ namespace GamePlay
 
         public void OnStartButtonClick(params object[] args)
         {
-//            WeChat wx = gameObject.AddComponent<WeChat>();
-//            if (wx == null)
-//                return;
-//
-//            wx.WechatLogin();
+            WeChat wx = gameObject.AddComponent<WeChat>();
+            if (wx == null)
+                return;
+
+            wx.WechatLogin();
 
             //234 wxe8355f09eacfc7dd   123 wxe8355f09eacfc7dd
             string type = "login_type=weixin";
-            string token = "access_token=wxe8355f09eacfc7dd";
-            string openId = "openid=234";
+            //string token = "access_token=wxe8355f09eacfc7dd";
+            //string openId = "openid=234";
            // string openId = "openid=123";
                 
-            Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
+            //Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, r, openId });
 
-            if (login != null && login.code == 0)
-            {
-                GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
-            }
-            //NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
-            if (login != null)
-            {
-                m_ProcedureMenu.StartGame();
-            }
+            //if (login != null && login.code == 0)
+            //{
+            //    GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token);
+            //}
+            ////NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
+            //if (login != null)
+            //{
+            //    m_ProcedureMenu.StartGame();
+            //}
         }
         
  
@@ -80,6 +80,11 @@ namespace GamePlay
             {
                 role.token.SubscribeToText(Textrecv);
             }
+
+            role.token.Subscribe(x =>
+            {
+                m_ProcedureMenu.StartGame();
+            }).AddTo(disPosable);
             //            PlayerStateInit s = new PlayerStateInit();
             //            s.star
         }

@@ -22,8 +22,9 @@ public class RoleData
 	public ReactiveProperty<int> pId = new ReactiveProperty<int>();
 
     public ReactiveProperty<string> token;
+    public ReactiveProperty<string> openId;
 
-	public ReactiveProperty<string> name;
+    public ReactiveProperty<string> name;
 	private ReactiveProperty<int> _Money;	
 	public ReactiveProperty<int> curClubId; // 当前查看的clubid
 
@@ -35,10 +36,11 @@ public class RoleData
     private List<string> curRequestClubList = new List<string>();
     public Dictionary<string, RoleClubData> roleClubList = new Dictionary<string, RoleClubData>();
 	
-	public void InitData(string roleId, string token)
+	public void InitData(string roleId, string token, string openId)
 	{
 		id = new ReactiveProperty<int>(Convert.ToInt32(roleId));
         this.token = new ReactiveProperty<string>(token);
+        this.openId = new ReactiveProperty<string>(openId);
 
         recordList = new ReactiveCollection<GameRecord>();
         myClubList = new  ReactiveCollection<ClubData>();

@@ -136,8 +136,16 @@ public class WeChat:MonoBehaviour
             string userUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken.access_token + "&openid=" + accessToken.openid;
             StartCoroutine("SetUserInfo", userUrl);
 
-            RoleData role = GameManager.Instance.GetRoleData();
-            role.token.SetValueAndForceNotify(accessToken.access_token);
+            //正式开始初始化role
+            Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login,
+                new List<string> { "login_type=weixin", accessToken.access_token, accessToken.openid });
+            if (login != null && login.code == 0)
+            {
+                GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token, accessToken.openid);
+
+            }
+            //RoleData role = GameManager.Instance.GetRoleData();
+            //role.token.SetValueAndForceNotify(accessToken.access_token);
         }
         else
         {

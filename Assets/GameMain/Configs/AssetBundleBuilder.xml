@@ -2,8 +2,8 @@
 <UnityGameFramework>
   <AssetBundleBuilder>
     <Settings>
-      <InternalResourceVersion>26</InternalResourceVersion>
-      <Platforms>2</Platforms>
+      <InternalResourceVersion>27</InternalResourceVersion>
+      <Platforms>130</Platforms>
       <ZipSelected>True</ZipSelected>
       <RecordScatteredDependencyAssetsSelected>False</RecordScatteredDependencyAssetsSelected>
       <UncompressedAssetBundleSelected>True</UncompressedAssetBundleSelected>
@@ -15,7 +15,7 @@
       <ChunkBasedCompressionSelected>False</ChunkBasedCompressionSelected>
       <BuildEventHandlerTypeName>
       </BuildEventHandlerTypeName>
-      <OutputDirectory>G:/work/project/ab</OutputDirectory>
+      <OutputDirectory>C:/Work/project/ab</OutputDirectory>
     </Settings>
   </AssetBundleBuilder>
 </UnityGameFramework>

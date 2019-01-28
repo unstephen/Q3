@@ -8,9 +8,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     public List<GoodsData> goodsList;
 
-    public void InitRoleData(string id, string token)
+    public void InitRoleData(string id, string token, string openId)
     {
-        GetRoleData().InitData(id, token);
+        GetRoleData().InitData(id, token, openId);
 
         if (sendBaseData == null)
         {

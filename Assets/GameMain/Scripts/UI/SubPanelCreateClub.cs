@@ -61,14 +61,15 @@ public class SubPanelCreateClub : UGuiComponent
 
         if (createClub != null && createClub.code == 0)
         {
-            GameEntry.UI.OpenDialog(new DialogParams
-            {
-                Mode = 1,
-                Title = "创建俱乐部 ",
-                Message = "创建成功",
-                ConfirmText = "确定",
-                OnClickConfirm = delegate (object userData) { RefreshCurClubId(int.Parse(createClub.data.club_id)); }
-            });
+            //GameEntry.UI.OpenDialog(new DialogParams
+            //{
+            //    Mode = 1,
+            //    Title = "创建俱乐部 ",
+            //    Message = "创建成功",
+            //    ConfirmText = "确定",
+            //    OnClickConfirm = delegate (object userData) { RefreshCurClubId(int.Parse(createClub.data.club_id)); }
+            //});
+            role.curClubId.SetValueAndForceNotify(1);
         }
     }
 

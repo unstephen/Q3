@@ -85,6 +85,10 @@ namespace GamePlay
                 if (!pageHistoryList.ContainsKey(page))
                 {
                     List<HistorySingleBaseData> tempList = new List<HistorySingleBaseData>();
+                    if (historyData.data.list == null)
+                    {
+                        return;
+                    }
                     foreach (var item in historyData.data.list)
                     {
                         tempList.Add(item);
@@ -108,14 +112,25 @@ namespace GamePlay
             if (historyData != null)
             {
                 int curIndex = 0;
-                foreach (var item in historyData.data.list)
+                if (historyData.data.list != null)
                 {
-                    HistoryText temp = historyTextList[curIndex];
-                    temp.count.text = item.games_count.ToString();
-                    temp.score.text = item.profit.ToString();
-                    historyTextList[curIndex] = temp;
+                    foreach (var item in historyData.data.list)
+                    {
+                        HistoryText temp = historyTextList[curIndex];
+                        temp.count.text = item.games_count.ToString();
+                        temp.score.text = item.profit.ToString();
+                        historyTextList[curIndex] = temp;
 
-                    curIndex++;
+                        curIndex++;
+                    }
+                }
+                else
+                {
+                    foreach (var textitem in historyTextList)
+                    {
+                        textitem.count.text = "0";
+                        textitem.score.text = "0";
+                    }
                 }
             }
         }

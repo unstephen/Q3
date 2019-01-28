@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SubPanelSerachClub : UGuiComponent
 {
     ClubSearchItem searchItem;
     List<ClubSearchItem> searchItemList;
+    Button btnMyClub;
 	// Use this for initialization
 	void Start () {
 		
@@ -24,6 +26,7 @@ public class SubPanelSerachClub : UGuiComponent
 
         GUILink link = GetComponent<GUILink>();
         link.SetEvent("Create", UIEventType.Click, OnCreateClub);
+        btnMyClub = link.Get<Button>("My");
         link.SetEvent("My", UIEventType.Click, OnMyClub);
 
         searchItem = link.AddComponent<ClubSearchItem>("ClubInfo");
@@ -54,9 +57,12 @@ public class SubPanelSerachClub : UGuiComponent
     {
         base.OnOpen(userData);
 
-    //    RoleData role = GameManager.Instance.GetRoleData();
-    //    Recv_Get_MainPage mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MainPage>(GameConst._mainPage,
-    //GameManager.Instance.GetSendInfoStringList<Send_Get_MainPage>(role.id.Value, role.token.Value));
+        //    RoleData role = GameManager.Instance.GetRoleData();
+        //    Recv_Get_MainPage mainPage = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MainPage>(GameConst._mainPage,
+        //GameManager.Instance.GetSendInfoStringList<Send_Get_MainPage>(role.id.Value, role.token.Value));
+
+        RoleData role = GameManager.Instance.GetRoleData();
+        btnMyClub.gameObject.SetActive(role.HasClub());
 
         string jsonStr = File.ReadAllText("JsonTest/club_1.txt");
         Recv_Get_SearchClub shopData = LitJson.JsonMapper.ToObject<Recv_Get_SearchClub>(jsonStr);

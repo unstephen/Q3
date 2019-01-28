@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityGameFramework.Runtime;
 using UnityEngine.UI;
 using UniRx;
+using System.Collections;
 
 namespace GamePlay
 {
@@ -13,6 +14,7 @@ namespace GamePlay
         private Text textToken;
         private Text textMoney;
         Image icon;
+        string headUrl;
 
         protected override void OnInit(object userData)
         {
@@ -27,12 +29,26 @@ namespace GamePlay
             //link.SetEvent("BtnSangong", UIEventType.Click, OnStartSangong);
         }
 
-//         public void OnStartSangong(params object[] args)
-//         {
-//             var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
-//             main.ChangeGame(GameMode.Sangong);
-//         }
+        //         public void OnStartSangong(params object[] args)
+        //         {
+        //             var main = GameEntry.Procedure.CurrentProcedure as ProcedureMain;
+        //             main.ChangeGame(GameMode.Sangong);
+        //         }
 
+        IEnumerator getimage()
+        {
+            WWW www = new WWW(headUrl);//用WWW加载网络图片
+            yield return www;
+            //icon = transform.GetComponent<Image>();
+            if (www != null && string.IsNullOrEmpty(www.error))
+            {
+                //获取Texture
+                Texture2D texture = www.texture;
+                //因为我们定义的是Image，所以这里需要把Texture2D转化为Sprite
+                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                icon.sprite = sprite;
+            }
+        }
 
 
 #if UNITY_2017_3_OR_NEWER
@@ -46,21 +62,14 @@ namespace GamePlay
             RoleData role = GameManager.Instance.GetRoleData();
             role.name.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textName).AddTo(disPosable);
             role.id.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textId).AddTo(disPosable);
-            role.token.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textToken).AddTo(disPosable);
+            //role.token.ObserveEveryValueChanged(x => x.Value).SubscribeToText(textToken).AddTo(disPosable);
 
-            string headUrl = "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0";
-            string temp = NetWorkManager.Instance.GetResponseString(headUrl);
-
-            WWW www = new WWW(headUrl);
-            //yield return www;
-
-            Texture2D tex2d = www.texture;
-            //将图片保存至缓存路径
-            byte[] pngData = tex2d.EncodeToPNG();
-            //File.WriteAllBytes(path + url.GetHashCode(), pngData);
-
-            Sprite m_sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), new Vector2(0, 0));
-            icon.sprite = m_sprite;
+            //headUrl = "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0";
+            if (role != null && !string.IsNullOrEmpty(role.headUrl))
+            {
+                headUrl = role.headUrl;
+                StartCoroutine("getimage");
+            }
         }
 
 #if UNITY_2017_3_OR_NEWER

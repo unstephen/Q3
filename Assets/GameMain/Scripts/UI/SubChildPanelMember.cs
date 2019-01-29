@@ -6,6 +6,8 @@ public class SubChildPanelMember : UGuiComponent
     ClubMemberItem memberItem;
     List<ClubMemberItem> memberItemList;
 
+    string clubId;
+
     protected override void OnOpen(object userData)
     {
         base.OnOpen(userData);
@@ -23,10 +25,33 @@ public class SubChildPanelMember : UGuiComponent
             memberItemList = new List<ClubMemberItem>();
         }
 
-        InitLocal((List<ManagerData>)userData);
+        clubId = (string)userData;
+        //InitLocal((List<ManagerData>)userData);
     }
 
-    public void InitLocal(List<ManagerData> list)
+    public void ShowMembers(int page)
+    {
+        RoleData role = GameManager.Instance.GetRoleData();
+
+        List<ClubMemberData> members = role.GetClubMemberSById(clubId, page);
+        if (memberItem == null)
+        {
+            Recv_Post_AllClubMember allMember = NetWorkManager.Instance.CreateGetMsg<Recv_Post_AllClubMember>(GameConst._mainPage,
+                GameManager.Instance.GetSendInfoStringList<Send_GetAllMember>(role.id.Value, role.token.Value, clubId, page, GameConst.pageSize));
+            if (allMember != null && allMember.code == 0)
+            {
+                role.InitClubMemberList(clubId, allMember);
+
+                InitLocal(allMember.data.list);
+            }
+        }
+        else
+        {
+            InitLocal(members);
+        }
+    }
+
+    public void InitLocal(List<ClubMemberData> list)
     {
         if (list == null || list.Count == 0)
         {
@@ -43,7 +68,7 @@ public class SubChildPanelMember : UGuiComponent
                     memberItemList[curIndex].SetActive(true);
                 }
 
-                memberItemList[curIndex].SetItemInfo(item, curIndex);
+                memberItemList[curIndex].SetItemInfo(item, curIndex, clubId);
             }
             else
             {
@@ -52,7 +77,7 @@ public class SubChildPanelMember : UGuiComponent
                 {
                     tempItem.SetActive(true);
                     tempItem.OpenUI();
-                    tempItem.SetItemInfo(item, curIndex);
+                    tempItem.SetItemInfo(item, curIndex, clubId);
 
                     memberItemList.Add(tempItem);
                 }

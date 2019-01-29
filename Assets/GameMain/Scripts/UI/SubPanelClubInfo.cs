@@ -83,7 +83,7 @@ public class SubPanelClubInfo : UGuiComponent
         for (int i = 0; i < role.myClubList.Count; i++)
         {
             Recv_Get_ClubInfo tempClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_ClubInfo>(GameConst._mainPage,
-                GameManager.Instance.GetSendInfoStringList<Send_Get_ClubInfo>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
+                GameManager.Instance.GetSendInfoStringList<Send_GetAllMember>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
 
             recvClubInfoList.Add(tempClub);
         }
@@ -184,7 +184,7 @@ public class SubPanelClubInfo : UGuiComponent
 
     public void InitClubInfoPanel(Recv_Get_ClubInfo_Data data)
     {
-        childPanelList[0].OpenUI(data.managers);
+        childPanelList[0].OpenUI(data.club_id);
         childPanelList[1].OpenUI(data.ongoing_games);
         childPanelList[2].OpenUI(data.applicants);
 

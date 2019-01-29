@@ -69,6 +69,36 @@ public class RoleData
         }
     }
 
+    public List<ClubMemberData> GetClubMemberSById(string clubId, int page)
+    {
+        if (roleClubList.ContainsKey(clubId))
+        {
+            return roleClubList[clubId].showMemberList(page);
+        }
+
+        return null;
+    }
+
+    public void DeleteClubMember(string clubId, string memberId)
+    {
+        if (roleClubList.ContainsKey(clubId))
+        {
+            roleClubList[clubId].RemoveMember(memberId);
+        }
+    }
+
+    public void ClearClubData()
+    {
+        curRequestClubList.Clear();
+        myClubList.Clear();
+
+        foreach (var item in roleClubList.Values)
+        {
+            item.ClearClubData();
+        }
+        roleClubList.Clear();
+    }
+
     public void SetRoleProperty(Recv_MainPage_Data pageData)
     {
         if (pageData != null)

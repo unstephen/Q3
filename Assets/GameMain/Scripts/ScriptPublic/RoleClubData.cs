@@ -17,7 +17,7 @@ public class RoleClubData
 
     public void AddClubMember(ClubAllMemberData data)
     {
-        memberList.Clear();
+        //memberList.Clear();
 
         if (data.list == null)
         {
@@ -41,6 +41,18 @@ public class RoleClubData
 
         Array.Copy(memberList.ToArray(), begin, temp.ToArray(), 0, GameConst.pageSize);
         return temp;
+    }
+
+    public void RemoveMember(string memberId)
+    {
+        for (int i = 0; i < memberList.Count; i++)
+        {
+            if (memberList[i].member_id == memberId)
+            {
+                memberList.RemoveAt(i);
+                break;
+            }
+        }
     }
 
     public void ClearClubData()

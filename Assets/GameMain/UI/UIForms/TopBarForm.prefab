@@ -242,7 +242,7 @@ RectTransform:
   m_GameObject: {fileID: 193354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224492333745678532}
   - {fileID: 224359510722362714}
@@ -251,10 +251,10 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -767,10 +767,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Links:
-  - Name: "Erro\uFF01\uFF01\uFF01Link\u4E22\u5931\u7269\u4EF6\uFF0C\u68C0\u67E5"
-    Tips: 
-    LinkObj: {fileID: 0}
-    component: {fileID: 0}
   - Name: TextName
     Tips: 
     LinkObj: {fileID: 1236304403878318}
@@ -783,6 +779,10 @@ MonoBehaviour:
     Tips: 
     LinkObj: {fileID: 1258476565535816}
     component: {fileID: 114182987711702076}
+  - Name: headicon
+    Tips: 
+    LinkObj: {fileID: 1429890454609296}
+    component: {fileID: 114142794037350194}
 --- !u!114 &114210369326892698
 MonoBehaviour:
   m_ObjectHideFlags: 1

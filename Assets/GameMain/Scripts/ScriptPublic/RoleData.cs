@@ -20,6 +20,7 @@ public class RoleData
 {
 	public ReactiveProperty<int> id;
 	public ReactiveProperty<int> pId = new ReactiveProperty<int>();
+    public string headUrl;
 
     public ReactiveProperty<string> token;
     public ReactiveProperty<string> openId;
@@ -75,6 +76,8 @@ public class RoleData
             name = new ReactiveProperty<string>(pageData.nick_name);
             _Money = new ReactiveProperty<int>(int.Parse(pageData.account_balance));
             curClubId = new ReactiveProperty<int>(1);
+
+            headUrl = pageData.head_image_url;
         }
     }
 
@@ -125,6 +128,11 @@ public class RoleData
         }
     }
 
+    public bool HasClub()
+    {
+        return myClubList != null && myClubList.Count > 0;
+    }
+
     public string GetClubIdByIndex(int index)
     {
         if (index < myClubList.Count)
@@ -135,7 +143,7 @@ public class RoleData
         return "";
     }
 
-    private void AddRequestClub(string id)
+    public void AddRequestClub(string id)
     {
         if (curRequestClubList == null)
         {

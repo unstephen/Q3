@@ -51,6 +51,10 @@ public class ClubSearchItem : UGuiComponentClone
         RoleData role = GameManager.Instance.GetRoleData();
         Http_MsgBase myClub = NetWorkManager.Instance.CreateGetMsg<Http_MsgBase>(GameConst._applyClub,
 GameManager.Instance.GetSendInfoStringList<Send_RequestClub>(role.id.Value, role.token.Value, curClubId));
+        if (myClub != null && myClub.code == 0)
+        {
+            role.AddRequestClub(curClubId);
+        }
 
         handle.gameObject.SetActive(false);
         result.gameObject.SetActive(true);

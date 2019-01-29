@@ -80,29 +80,29 @@ public class SubPanelClubInfo : UGuiComponent
         role = GameManager.Instance.GetRoleData();
 
         recvClubInfoList.Clear();
-        //for (int i = 0; i < role.myClubList.Count; i++)
-        //{
-        //    Recv_Get_ClubInfo tempClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_ClubInfo>(GameConst._mainPage,
-        //        GameManager.Instance.GetSendInfoStringList<Send_Get_ClubInfo>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
+        for (int i = 0; i < role.myClubList.Count; i++)
+        {
+            Recv_Get_ClubInfo tempClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_ClubInfo>(GameConst._mainPage,
+                GameManager.Instance.GetSendInfoStringList<Send_Get_ClubInfo>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
 
-        //    recvClubInfoList.Add(tempClub);
-        //}
+            recvClubInfoList.Add(tempClub);
+        }
 
-        string jsonStr1 = File.ReadAllText("JsonTest/myclubinfo_1.txt");
-        Recv_Get_ClubInfo myClub_1 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr1);
-        Debug.Log(jsonStr1);
-        recvClubInfoList.Add(myClub_1);
-        string jsonStr2 = File.ReadAllText("JsonTest/myclubinfo_2.txt");
-        Recv_Get_ClubInfo myClub_2 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr2);
-        Debug.Log(jsonStr2);
-        recvClubInfoList.Add(myClub_2);
-        string jsonStr3 = File.ReadAllText("JsonTest/myclubinfo_3.txt");
-        Recv_Get_ClubInfo myClub_3 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr3);
-        Debug.Log(jsonStr3);
-        recvClubInfoList.Add(myClub_3);
+        //string jsonStr1 = File.ReadAllText("JsonTest/myclubinfo_1.txt");
+        //Recv_Get_ClubInfo myClub_1 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr1);
+        //Debug.Log(jsonStr1);
+        //recvClubInfoList.Add(myClub_1);
+        //string jsonStr2 = File.ReadAllText("JsonTest/myclubinfo_2.txt");
+        //Recv_Get_ClubInfo myClub_2 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr2);
+        //Debug.Log(jsonStr2);
+        //recvClubInfoList.Add(myClub_2);
+        //string jsonStr3 = File.ReadAllText("JsonTest/myclubinfo_3.txt");
+        //Recv_Get_ClubInfo myClub_3 = LitJson.JsonMapper.ToObject<Recv_Get_ClubInfo>(jsonStr3);
+        //Debug.Log(jsonStr3);
+        //recvClubInfoList.Add(myClub_3);
 
         RefreshToggles();
-        InitClubInfoPanel(myClub_1.data);
+        InitClubInfoPanel(recvClubInfoList[0].data);
     }
 
     private void BackToSearch(object[] args)

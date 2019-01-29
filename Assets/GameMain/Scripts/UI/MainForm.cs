@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 using UniRx;
 using System.IO;
+using System.Collections;
 
 namespace GamePlay
 {
@@ -50,12 +51,12 @@ namespace GamePlay
 
         private void OnOpenClub(object[] args)
         {
-            //        Recv_Get_MyClub myClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MyClub>(GameConst._mainPage,
-            //GameManager.Instance.GetSendInfoStringList<Send_Get_MyClub>(role.id.Value, role.token.Value));
+            Recv_Get_MyClub myClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_MyClub>(GameConst._mainPage,
+                GameManager.Instance.GetSendInfoStringList<Send_Get_MyClub>(role.id.Value, role.token.Value));
 
-            string jsonStr = File.ReadAllText("JsonTest/myclub.txt");
-            Recv_Get_MyClub myClub = LitJson.JsonMapper.ToObject<Recv_Get_MyClub>(jsonStr);
-            Debug.Log(jsonStr);
+            //string jsonStr = File.ReadAllText("JsonTest/myclub.txt");
+            //Recv_Get_MyClub myClub = LitJson.JsonMapper.ToObject<Recv_Get_MyClub>(jsonStr);
+            //Debug.Log(jsonStr);
             if (myClub != null && myClub.code == 0)
             {
                 role.AddMyClubListData(myClub.data);

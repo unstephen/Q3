@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class RoleClubData
 {
+    public bool selfManager; //自己是不是管理员
     public List<ClubMemberData> memberList;
 
     public RoleClubData()
@@ -55,8 +56,14 @@ public class RoleClubData
         }
     }
 
+    public void SetSelfManager(bool isManager)
+    {
+        selfManager = isManager;
+    }
+
     public void ClearClubData()
     {
         memberList.Clear();
+        selfManager = false;
     }
 }

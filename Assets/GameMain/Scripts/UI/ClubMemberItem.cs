@@ -11,6 +11,7 @@ public class ClubMemberItem : UGuiComponentClone
     Text textName;
     Text textManager;
     Text btnSetManager;
+    Button handle;
 
     int index;
     bool isManager;
@@ -27,6 +28,7 @@ public class ClubMemberItem : UGuiComponentClone
         textName = link.Get<Text>("TextName");
         textManager = link.Get<Text>("TextManager");
 
+        handle = link.Get<Button>("ButtonHandle");
         link.SetEvent("ButtonHandle", UIEventType.Click, OnDeleteMember);
         btnSetManager = link.Get<Text>("TextSetManager");
         link.SetEvent("ButtonManager", UIEventType.Click, OnSetManager);
@@ -62,7 +64,7 @@ public class ClubMemberItem : UGuiComponentClone
         }
     }
 
-    public void SetItemInfo(ClubMemberData data, int index, string clubid)
+    public void SetItemInfo(ClubMemberData data, int index, string clubid, bool canHandle = false)
     {
         this.index = index;
         this.clubId = clubid;
@@ -73,5 +75,7 @@ public class ClubMemberItem : UGuiComponentClone
         isManager = data.rolel == 2;
         textManager.text = isManager ? "管理员" : "";
         btnSetManager.text = isManager ? "删除管理员" : "设为管理员";
+
+        handle.gameObject.SetActive(canHandle);
     }
 }

@@ -53,6 +53,8 @@ namespace GamePlay
         public void OnClickExit(params object[] args)
         {
             Close();
+
+            role.ClearClubData();
         }
 
         public void OnStartButtonClick(params object[] args)

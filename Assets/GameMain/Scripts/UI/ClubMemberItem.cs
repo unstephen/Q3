@@ -42,7 +42,8 @@ public class ClubMemberItem : UGuiComponentClone
 
         if (mainPage != null && mainPage.code == 0)
         {
-
+            role.DeleteClubMember(clubId, textId.text);
+            this.SetActive(false);
         }
     }
 
@@ -61,15 +62,16 @@ public class ClubMemberItem : UGuiComponentClone
         }
     }
 
-    public void SetItemInfo(ManagerData data, int index, bool showManager = false)
+    public void SetItemInfo(ClubMemberData data, int index, string clubid)
     {
         this.index = index;
+        this.clubId = clubid;
 
-        textId.text = data.user_id;
-        textName.text = data.nick_name;
+        textId.text = data.member_id;
+        textName.text = data.nick;
 
-        isManager = showManager;
-        textManager.text = showManager ? "管理员" : "";
-        btnSetManager.text = showManager ? "删除管理员" : "设为管理员";
+        isManager = data.rolel == 2;
+        textManager.text = isManager ? "管理员" : "";
+        btnSetManager.text = isManager ? "删除管理员" : "设为管理员";
     }
 }

@@ -30,6 +30,7 @@ public class SubPanelClubInfo : UGuiComponent
 
     private int curIndex;
     private int curChildIndex;
+    private bool slefManager;
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
@@ -83,9 +84,13 @@ public class SubPanelClubInfo : UGuiComponent
         for (int i = 0; i < role.myClubList.Count; i++)
         {
             Recv_Get_ClubInfo tempClub = NetWorkManager.Instance.CreateGetMsg<Recv_Get_ClubInfo>(GameConst._mainPage,
-                GameManager.Instance.GetSendInfoStringList<Send_Get_ClubInfo>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
+                GameManager.Instance.GetSendInfoStringList<Send_GetAllMember>(role.id.Value, role.token.Value, role.GetClubIdByIndex(i)));
 
-            recvClubInfoList.Add(tempClub);
+            if (tempClub != null && tempClub.code == 0)
+            {
+                recvClubInfoList.Add(tempClub);
+                role.InitRoleClubList(tempClub.data.club_id, tempClub);
+            }
         }
 
         //string jsonStr1 = File.ReadAllText("JsonTest/myclubinfo_1.txt");
@@ -102,7 +107,7 @@ public class SubPanelClubInfo : UGuiComponent
         //recvClubInfoList.Add(myClub_3);
 
         RefreshToggles();
-        InitClubInfoPanel(recvClubInfoList[0].data);
+        InitClubInfoPanel(recvClubInfoList[0].data, role.GetSlefManager(recvClubInfoList[0].data.club_id));
     }
 
     private void BackToSearch(object[] args)
@@ -163,7 +168,7 @@ public class SubPanelClubInfo : UGuiComponent
             panelInfo.transform.SetSiblingIndex(index + 1);
             panelInfo.ShowBaseInfo(index);
 
-            InitClubInfoPanel(recvClubInfoList[index].data);
+            InitClubInfoPanel(recvClubInfoList[index].data, role.GetSlefManager(recvClubInfoList[index].data.club_id));
         }
 
     }
@@ -182,9 +187,9 @@ public class SubPanelClubInfo : UGuiComponent
         }
     }
 
-    public void InitClubInfoPanel(Recv_Get_ClubInfo_Data data)
+    public void InitClubInfoPanel(Recv_Get_ClubInfo_Data data, bool showManager)
     {
-        childPanelList[0].OpenUI(data.managers);
+        childPanelList[0].OpenUI(data.club_id);
         childPanelList[1].OpenUI(data.ongoing_games);
         childPanelList[2].OpenUI(data.applicants);
 
@@ -194,6 +199,8 @@ public class SubPanelClubInfo : UGuiComponent
         toggleInfoList[0].isOn = true;
         toggleInfoList[1].isOn = false;
         toggleInfoList[2].isOn = false;
+        toggleInfoList[2].gameObject.SetActive(showManager);
+
         curChildIndex = 0;
     }
 }

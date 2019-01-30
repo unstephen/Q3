@@ -18,7 +18,7 @@ public struct GameRecord
 */
 public class RoleData
 {
-	public ReactiveProperty<int> id;
+	public ReactiveProperty<string> id;
 	public ReactiveProperty<int> pId = new ReactiveProperty<int>();
     public string headUrl;
 
@@ -39,7 +39,7 @@ public class RoleData
 	
 	public void InitData(string roleId, string token, string openId)
 	{
-		id = new ReactiveProperty<int>(Convert.ToInt32(roleId));
+		id = new ReactiveProperty<string>(roleId);
         this.token = new ReactiveProperty<string>(token);
         this.openId = new ReactiveProperty<string>(openId);
 
@@ -50,6 +50,44 @@ public class RoleData
     public void InitBaseData(int clubId)
     {
         curClubId.SetValueAndForceNotify(clubId);
+    }
+
+    public void InitRoleClubList(string clubId, Recv_Get_ClubInfo data)
+    {
+        if (roleClubList == null)
+        {
+            return;
+        }
+
+        bool result = false;
+        if (roleClubList.ContainsKey(clubId))
+        {
+
+        }
+        else
+        {
+            roleClubList.Add(clubId, new RoleClubData());
+        }
+
+        foreach (var item in data.data.managers)
+        {
+            if (item.user_id == id.Value)
+            {
+                result = true;
+                break;
+            }
+        }
+        roleClubList[clubId].SetSelfManager(result);
+    }
+
+    public bool GetSlefManager(string clubId)
+    {
+        if (roleClubList.ContainsKey(clubId))
+        {
+            return roleClubList[clubId].selfManager;
+        }
+
+        return false;
     }
 
     public void InitClubMemberList(string clubId, Recv_Post_AllClubMember data)
@@ -67,6 +105,36 @@ public class RoleData
             roleClubList.Add(clubId, new RoleClubData());
             roleClubList[clubId].AddClubMember(data.data);
         }
+    }
+
+    public List<ClubMemberData> GetClubMemberSById(string clubId, int page)
+    {
+        if (roleClubList.ContainsKey(clubId))
+        {
+            return roleClubList[clubId].showMemberList(page);
+        }
+
+        return null;
+    }
+
+    public void DeleteClubMember(string clubId, string memberId)
+    {
+        if (roleClubList.ContainsKey(clubId))
+        {
+            roleClubList[clubId].RemoveMember(memberId);
+        }
+    }
+
+    public void ClearClubData()
+    {
+        curRequestClubList.Clear();
+        myClubList.Clear();
+
+        foreach (var item in roleClubList.Values)
+        {
+            item.ClearClubData();
+        }
+        roleClubList.Clear();
     }
 
     public void SetRoleProperty(Recv_MainPage_Data pageData)

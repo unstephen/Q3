@@ -38,7 +38,7 @@ namespace GamePlay
             Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>( GameConst._login, new List<string> { "login_type=weixin", token, openid } );
 
             if (login != null && login.code == 0) {
-                GameManager.Instance.InitRoleData( login.data.user_id, login.data.access_token );
+                GameManager.Instance.InitRoleData( login.data.user_id, login.data.access_token,openid);
             }
             if (login != null) {
                 m_ProcedureMenu.StartGame();

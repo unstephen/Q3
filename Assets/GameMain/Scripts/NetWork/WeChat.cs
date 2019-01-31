@@ -94,6 +94,7 @@ public class WeChat : MonoSingleton<WeChat> {
     }
 
     public void WechatLogin() {
+        Debug.Log( "WechatLogin" );
         Init( gameObject.name, "onWechatResp" );
 
 #if UNITY_ANDROID

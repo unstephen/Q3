@@ -51,7 +51,12 @@ namespace GamePlay
             {
                 m_ProcedureMenu.StartGame();
             }
-//#endif
+
+            //GameManager.Instance.InitRoleData("1000", token, openId);
+            ////NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
+            //m_ProcedureMenu.StartGame();
+
+            //#endif
         }
 
 

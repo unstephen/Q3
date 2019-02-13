@@ -7,6 +7,7 @@ public class SubChildPanelMember : UGuiComponent
     List<ClubMemberItem> memberItemList;
 
     string clubId;
+    bool selfManager;
 
     protected override void OnOpen(object userData)
     {
@@ -49,6 +50,8 @@ public class SubChildPanelMember : UGuiComponent
         {
             InitLocal(members);
         }
+
+        selfManager = role.GetSlefManager(clubId);
     }
 
     public void InitLocal(List<ClubMemberData> list)
@@ -68,7 +71,7 @@ public class SubChildPanelMember : UGuiComponent
                     memberItemList[curIndex].SetActive(true);
                 }
 
-                memberItemList[curIndex].SetItemInfo(item, curIndex, clubId);
+                memberItemList[curIndex].SetItemInfo(item, curIndex, clubId, selfManager);
             }
             else
             {
@@ -77,7 +80,7 @@ public class SubChildPanelMember : UGuiComponent
                 {
                     tempItem.SetActive(true);
                     tempItem.OpenUI();
-                    tempItem.SetItemInfo(item, curIndex, clubId);
+                    tempItem.SetItemInfo(item, curIndex, clubId, selfManager);
 
                     memberItemList.Add(tempItem);
                 }

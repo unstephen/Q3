@@ -1,4 +1,4 @@
-using GameFramework;
+ï»¿using GameFramework;
 using System.Collections.Generic;
 using LitJson;
 using UnityEngine;
@@ -75,9 +75,9 @@ namespace GamePlay
         }
 
         /// <summary>
-        /// ÏÔÊ¾¶ÔÓ¦½çÃæ
+        /// æ˜¾ç¤ºå¯¹åº”ç•Œé¢
         /// </summary>
-        /// <param name="index">0£ºÍæ·¨ 1£º¿Í·ş</param>
+        /// <param name="index">0ï¼šç©æ³• 1ï¼šå®¢æœ</param>
         void RefreshPanelInfo(int index)
         {
             switch (index)
@@ -87,7 +87,7 @@ namespace GamePlay
                         panelWeixin.SetActive(false);
                         panelRule.SetActive(true);
 
-                        titleName.text = "Íæ·¨ËµÃ÷";
+                        titleName.text = "ç©æ³•è¯´æ˜";
                         isfill = true;
                     }
                     break;
@@ -96,7 +96,7 @@ namespace GamePlay
                         panelWeixin.SetActive(true);
                         panelRule.SetActive(false);
 
-                        titleName.text = "¿Í·ş";
+                        titleName.text = "å®¢æœ";
                     }
                     break;
                 default:

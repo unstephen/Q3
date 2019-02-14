@@ -13,6 +13,7 @@ namespace GamePlay
         private ProcedureMenu m_ProcedureMenu = null;
         Text Textrecv;
         Text Textsend;
+        private bool isClicked = false;
 
         protected override void OnInit(object userData)
         {
@@ -26,40 +27,42 @@ namespace GamePlay
 
         }
 
-        public void OnStartButtonClick(params object[] args)
-        {
-//#if UNITY_ANDROID
-//            WeChat wx = gameObject.AddComponent<WeChat>();
-//            if (wx == null)
-//                return;
-
-//            wx.WechatLogin();
-//#elif UNITY_EDITOR
-            //234 wxe8355f09eacfc7dd   123 wxe8355f09eacfc7dd
-            string type = "login_type=weixin";
-            string token = "access_token=wxe8355f09eacfc7dd";
-            string openId = "openid=234";
-
-            Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>(GameConst._login, new List<string> { type, token, openId });
-
-            if (login != null && login.code == 0)
-            {
-                GameManager.Instance.InitRoleData(login.data.user_id, login.data.access_token, openId);
-            }
-            //NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
-            if (login != null)
-            {
-                m_ProcedureMenu.StartGame();
-            }
-
-            //GameManager.Instance.InitRoleData("1000", token, openId);
-            ////NetWorkManager.Instance.CreateGameSocket( GameConst.ipadress, OnSocketConnect );
-            //m_ProcedureMenu.StartGame();
-
-            //#endif
+        private void WechatLogin(WeChatAccessToken token) {//第一次登录  
+            //PlayerPrefs.SetString( CODE, code );
+            WeChat.WxLogin -= WechatLogin;
+            Login( token.access_token, token.openid );
         }
 
+        private void Login(string token, string openid) {
+            Log.Info( "Login...token=" + token + "........openid=" + openid );
+            Recv_Login login = NetWorkManager.Instance.CreateGetMsg<Recv_Login>( GameConst._login, new List<string> { "login_type=weixin", token, openid } );
 
+            if (login != null && login.code == 0) {
+                GameManager.Instance.InitRoleData( login.data.user_id, login.data.access_token,openid);
+            }
+            if (login != null) {
+                m_ProcedureMenu.StartGame();
+            }
+        }
+
+        private const string CODE = "code";
+        public void OnStartButtonClick(params object[] args)
+        {
+            if (isClicked)
+                return;
+            isClicked = true;
+            //var code = PlayerPrefs.GetString( CODE );
+            //if (string.IsNullOrEmpty( code )) {
+                WeChat.WxLogin += WechatLogin;
+                WeChat.Instance.WechatLogin();
+            //}
+            //else {//第二次登录
+            //    Log.Info( "code:" + code );                
+            //}
+           
+        }
+        
+ 
         public void OnQuitButtonClick(params object[] args)
         {
             Log.Debug("quit{0}",111111);
@@ -86,12 +89,6 @@ namespace GamePlay
             {
                 role.token.SubscribeToText(Textrecv);
             }
-//#if UNITY_ANDROID
-//            role.token.Subscribe(x =>
-//            {
-//                m_ProcedureMenu.StartGame();
-//            }).AddTo(disPosable);
-//#endif
             //            PlayerStateInit s = new PlayerStateInit();
             //            s.star
         }
